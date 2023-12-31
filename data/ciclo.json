@@ -1,0 +1,77 @@
+{
+    "controlador.ed.lista.ListaEnlazada": {
+        "cabecera": {
+            "info": {
+                "@class": "modelo.Ciclo",
+                "id": 1,
+                "duracion": 120,
+                "nombre_ciclo": "Primero"
+            },
+            "sig": {
+                "info": {
+                    "@class": "modelo.Ciclo",
+                    "id": 2,
+                    "duracion": 120,
+                    "nombre_ciclo": "Segundo"
+                },
+                "sig": {
+                    "info": {
+                        "@class": "modelo.Ciclo",
+                        "id": 3,
+                        "duracion": 120,
+                        "nombre_ciclo": "Tercero"
+                    },
+                    "sig": {
+                        "info": {
+                            "@class": "modelo.Ciclo",
+                            "id": 4,
+                            "duracion": 120,
+                            "nombre_ciclo": "Cuarto"
+                        },
+                        "sig": {
+                            "info": {
+                                "@class": "modelo.Ciclo",
+                                "id": 5,
+                                "duracion": 120,
+                                "nombre_ciclo": "Quinto"
+                            },
+                            "sig": {
+                                "info": {
+                                    "@class": "modelo.Ciclo",
+                                    "id": 6,
+                                    "duracion": 120,
+                                    "nombre_ciclo": "Sexto"
+                                },
+                                "sig": {
+                                    "info": {
+                                        "@class": "modelo.Ciclo",
+                                        "id": 7,
+                                        "duracion": 120,
+                                        "nombre_ciclo": "Septimo"
+                                    },
+                                    "sig": {
+                                        "info": {
+                                            "@class": "modelo.Ciclo",
+                                            "id": 8,
+                                            "duracion": 120,
+                                            "nombre_ciclo": "Octavo"
+                                        },
+                                        "sig": {
+                                            "info": {
+                                                "@class": "modelo.Ciclo",
+                                                "id": 9,
+                                                "duracion": 120,
+                                                "nombre_ciclo": "Noveno"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "size": 9
+    }
+}
