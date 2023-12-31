@@ -4,48 +4,47 @@
  */
 package modelo;
 
+import controlador.ed.lista.ListaEnlazada;
 
-public class Estudiante extends Persona{
-    private String paralelo;
-    private String ciclo;
-    private String jornada;
-    private String modalidad;
+/**
+ *
+ * @author cristian
+ */
+public class Estudiante extends Usuario {
 
-    public String getParalelo() {
+    private ListaEnlazada<Matricula> matriculas;
+    private Paralelo paralelo;
+
+    public Estudiante() {
+        this.matriculas = new ListaEnlazada<>();
+    }
+
+    public ListaEnlazada<Matricula> getMatriculas() {
+        return matriculas;
+    }
+
+    public Paralelo getParalelo() {
         return paralelo;
     }
 
-    public void setParalelo(String paralelo) {
+    public void setParalelo(Paralelo paralelo) {
         this.paralelo = paralelo;
     }
 
-    public String getCiclo() {
-        return ciclo;
+    public void setMatriculas(ListaEnlazada<Matricula> matriculas) {
+        this.matriculas = matriculas;
     }
 
-    public void setCiclo(String ciclo) {
-        this.ciclo = ciclo;
+    @Override
+    public String toString() {
+        return this.getNombre() + " " + this.getApellido();
     }
 
-    public String getJornada() {
-        return jornada;
+    public String getCicloNombre() {
+        return ciclo != null ? ciclo.toString() : "";
     }
 
-    public void setJornada(String jornada) {
-        this.jornada = jornada;
+    public String getParaleloNombre() {
+        return paralelo != null ? paralelo.toString() : "";
     }
-
-    public String getModalidad() {
-        return modalidad;
-    }
-
-    public void setModalidad(String modalidad) {
-        this.modalidad = modalidad;
-    }
-    
-    
-    
-    
-    
-    
 }

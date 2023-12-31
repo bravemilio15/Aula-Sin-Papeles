@@ -15,7 +15,10 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class AdaptadorDAO<T> implements InterfazDAO<T> {
 
     private Conexion conexion;

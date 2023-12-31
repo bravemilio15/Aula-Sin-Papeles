@@ -4,11 +4,34 @@
  */
 package modelo;
 
+import controlador.ed.lista.ListaEnlazada;
 
-public class Materia extends Estudiante{
+/**
+ *
+ * @author cristian
+ */
+public class Materia {
+
     private Integer id;
     private String nombre;
+    private String Categoria; // Es para ver si es Itinerario Materia Basica y asi para no crear MateriaI
+    private Ciclo ciclo;
 
+    public Ciclo getCiclo() {
+        return ciclo;
+    }
+
+    public void setCiclo(Ciclo ciclo) {
+        this.ciclo = ciclo;
+    }
+
+    public String getCategoria() {
+        return Categoria;
+    }
+
+    public void setCategoria(String Categoria) {
+        this.Categoria = Categoria;
+    }
 
     public Integer getId() {
         return id;
@@ -17,8 +40,6 @@ public class Materia extends Estudiante{
     public void setId(Integer id) {
         this.id = id;
     }
-    
-    
 
     public String getNombre() {
         return nombre;
@@ -27,4 +48,5 @@ public class Materia extends Estudiante{
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
 }

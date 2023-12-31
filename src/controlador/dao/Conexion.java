@@ -9,7 +9,10 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class Conexion {
     private XStream xstream;
     public static String URL = "data/";

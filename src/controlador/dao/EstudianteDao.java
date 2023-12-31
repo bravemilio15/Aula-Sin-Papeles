@@ -9,7 +9,10 @@ import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
 import modelo.Estudiante;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class EstudianteDao extends AdaptadorDAO<Estudiante>{
     
     private Estudiante estudiante;
@@ -26,8 +29,8 @@ public class EstudianteDao extends AdaptadorDAO<Estudiante>{
         return estudiante;
     }
 
-    public void setEstudiante(Estudiante usuario) {
-        this.estudiante = usuario;
+    public void setEstudiante(Estudiante estudiante) {
+        this.estudiante = estudiante;
     }
 
     public void guardar() throws IOException {
@@ -42,5 +45,7 @@ public class EstudianteDao extends AdaptadorDAO<Estudiante>{
     private Integer generateID() {
         return listar().size() + 1;
     }
+    
+   
     
 }

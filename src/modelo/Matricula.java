@@ -4,13 +4,28 @@
  */
 package modelo;
 
+import controlador.ed.lista.ListaEnlazada;
 
+/**
+ *
+ * @author cristian
+ */
 public class Matricula {
-     private Integer id;
-     private String carrera;
-     private String nivel_academico;
-     private String historial_academico;
-     private String estado;
+
+    private Integer id;
+    private String carrera;
+    private String nivel_academico;
+    private String historial_academico;
+    private String estado;
+    private ListaEnlazada<Materia> materias;
+
+    public ListaEnlazada<Materia> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(ListaEnlazada<Materia> materias) {
+        this.materias = materias;
+    }
 
     public Integer getId() {
         return id;
@@ -51,10 +66,5 @@ public class Matricula {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-     
-     
-     
-     
-     
-     
+
 }

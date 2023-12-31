@@ -4,6 +4,10 @@
  */
 package modelo;
 
+/**
+ *
+ * @author cristian
+ */
 public class Rol {
     private Integer rol;
     private String nombre_rol;

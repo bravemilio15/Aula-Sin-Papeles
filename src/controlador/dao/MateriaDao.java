@@ -9,11 +9,13 @@ import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
 import modelo.Materia;
 
+/**
+ *
+ * @author cristian
+ */
+public class MateriaDao extends AdaptadorDAO<Materia> {
 
-public class MateriaDao extends AdaptadorDAO<Materia>{
-    
     private Materia materia;
- 
 
     public MateriaDao() {
         super(Materia.class);
@@ -36,11 +38,9 @@ public class MateriaDao extends AdaptadorDAO<Materia>{
     }
 
     public void modificar(Integer pos) throws EmptyException, PositionException, IOException {
-        this.modificar(materia, pos);
+        super.modificar(materia, pos); //Cambie el This por el Super
     }
 
-    
-    
     private Integer generateID() {
         return listar().size() + 1;
     }

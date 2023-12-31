@@ -1,110 +1,130 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controlador;
 
 import controlador.dao.EstudianteDao;
-import controlador.dao.UsuarioDao;
+import controlador.dao.MatriculaDao;
+import controlador.dao.MateriaDao;
 import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import modelo.Persona;
+import modelo.Ciclo;
 import modelo.Estudiante;
-
+import modelo.Materia;
+import modelo.Matricula;
+import modelo.Paralelo;
+import modelo.Rol;
 
 public class Control {
 
-    private UsuarioDao usuario;
-    private Persona usuarioNormal;
-    private EstudianteDao estudiante;
+    private EstudianteDao estudianteDao;
+    private MatriculaDao matriculaDao;
+    private MateriaDao materiaDao;
 
     public Control() {
-        this.usuario = new UsuarioDao();
-        this.estudiante = new EstudianteDao();
+        this.estudianteDao = new EstudianteDao();
+        this.matriculaDao = new MatriculaDao();
+        this.materiaDao = new MateriaDao();
     }
 
-    public EstudianteDao getEstudiante() {
-        return estudiante;
+    public EstudianteDao getEstudianteDao() {
+        return estudianteDao;
     }
 
-    public void setEstudiante(EstudianteDao estudiante) {
-        this.estudiante = estudiante;
+    public void setEstudianteDao(EstudianteDao estudianteDao) {
+        this.estudianteDao = estudianteDao;
     }
 
-    public UsuarioDao getUsuario() {
-        return usuario;
+    public MatriculaDao getMatriculaDao() {
+        return matriculaDao;
     }
 
-    public void setUsuario(UsuarioDao usuario) {
-        this.usuario = usuario;
+    public void setMatriculaDao(MatriculaDao matriculaDao) {
+        this.matriculaDao = matriculaDao;
     }
 
-    public ListaEnlazada<Persona> listar() {
-        return usuario.listar();
+    public MateriaDao getMateriaDao() {
+        return materiaDao;
     }
 
-    public Persona getUsuarioNormal() {
-         if (usuarioNormal == null) {
-            usuarioNormal = new Persona();
-        }
-        return usuarioNormal;
+    public void setMateriaDao(MateriaDao materiaDao) {
+        this.materiaDao = materiaDao;
     }
 
-    public void setUsuarioNormal(Persona usuarioNormal) {
-        this.usuarioNormal = usuarioNormal;
+    public ListaEnlazada<Estudiante> listarEstudiantes() {
+        return estudianteDao.listar();
     }
 
-    public ListaEnlazada<Estudiante> listarE() {
-        return estudiante.listar();
+    public ListaEnlazada<Matricula> listarMatriculas() {
+        return matriculaDao.listar();
     }
 
-    public void guardarUsuario(String nombre, String apellido, String cedula, String celular, String estado, String nacimiento, int edad,String genero,String correoPer, String correoIns, String rol) {
+    public ListaEnlazada<Materia> listarMaterias() {
+        return materiaDao.listar();
+    }
 
-        usuario.getUsuario().setNombre(nombre);
-        usuario.getUsuario().setApellido(apellido);
-        usuario.getUsuario().setCedula(cedula);
-        usuario.getUsuario().setCelular(celular);
-        usuario.getUsuario().setEstado(estado);
-        usuario.getUsuario().setNacimiento(nacimiento);
-        usuario.getUsuario().setEdad(edad);
-        usuario.getUsuario().setGenero(genero);
-        usuario.getUsuario().setCorreoPer(correoPer);
-        usuario.getUsuario().setCorreoIns(correoIns);
-        usuario.getUsuario().setRol(rol);
-        //usuario.getUsuario().setId_rol(this.rol.buscarRol(rol).getId());
+    public void guardarUsuario(String nombre, String apellido, String cedula, String celular,
+            String estado, String nacimiento, Integer edad, String genero, String correoPer,
+            String correoIns, Rol rol, Paralelo paralelo, Ciclo ciclo, String jornada,
+            String modalidad) {
+
+        Estudiante nuevoEstudiante = new Estudiante();
+        nuevoEstudiante.setNombre(nombre);
+        nuevoEstudiante.setApellido(apellido);
+        nuevoEstudiante.setCedula(cedula);
+        nuevoEstudiante.setCelular(celular);
+        nuevoEstudiante.setEstado(estado);
+        nuevoEstudiante.setNacimiento(nacimiento);
+        nuevoEstudiante.setEdad(edad);
+        nuevoEstudiante.setGenero(genero);
+        nuevoEstudiante.setCorreoPer(correoPer);
+        nuevoEstudiante.setCorreoIns(correoIns);
+        nuevoEstudiante.setRol(rol);
+        nuevoEstudiante.setParalelo(paralelo);
+        nuevoEstudiante.setCiclo(ciclo);
+        nuevoEstudiante.setJornada(jornada);
+        nuevoEstudiante.setModalidad(modalidad);
+
         try {
-            usuario.guardar();
+            estudianteDao.guardar(nuevoEstudiante);
         } catch (IOException ex) {
-            System.out.println("Error");
+            System.out.println("Error al guardar estudiante: " + ex.getMessage());
         }
     }
 
-    public void guardarEstudiante(String nombre, String apellido, String cedula, String paralelo, String ciclo, String jornada,String modalidad) {
+    public void guardarEstudiante(String nombre, String apellido, String cedula,
+            String celular, String estado, String nacimiento, Integer edad,
+            String genero, String correoPer, String correoIns, Rol rol,
+            Paralelo paralelo, Ciclo ciclo, String jornada, String modalidad) {
 
-        estudiante.getEstudiante().setNombre(nombre);
-        estudiante.getEstudiante().setApellido(apellido);
-        estudiante.getEstudiante().setCedula(cedula);
-        estudiante.getEstudiante().setParalelo(paralelo);
-        estudiante.getEstudiante().setCiclo(ciclo);
-        estudiante.getEstudiante().setJornada(jornada);
-        estudiante.getEstudiante().setModalidad(modalidad);
-        //usuario.getUsuario().setId_rol(this.rol.buscarRol(rol).getId());
+        Estudiante nuevoEstudiante = new Estudiante();
+        nuevoEstudiante.setNombre(nombre);
+        nuevoEstudiante.setApellido(apellido);
+        nuevoEstudiante.setCedula(cedula);
+        nuevoEstudiante.setCelular(celular);
+        nuevoEstudiante.setEstado(estado);
+        nuevoEstudiante.setNacimiento(nacimiento);
+        nuevoEstudiante.setEdad(edad);
+        nuevoEstudiante.setGenero(genero);
+        nuevoEstudiante.setCorreoPer(correoPer);
+        nuevoEstudiante.setCorreoIns(correoIns);
+        nuevoEstudiante.setRol(rol);
+        nuevoEstudiante.setParalelo(paralelo);
+        nuevoEstudiante.setCiclo(ciclo);
+        nuevoEstudiante.setJornada(jornada);
+        nuevoEstudiante.setModalidad(modalidad);
+
         try {
-            estudiante.guardar();
+            estudianteDao.guardar(nuevoEstudiante);
         } catch (IOException ex) {
-            System.out.println("Error");
+            System.out.println("Error al guardar estudiante: " + ex.getMessage());
         }
     }
 
-    public ListaEnlazada<Persona> buscarPorRolBinaria(String apellido) {
-        ListaEnlazada<Persona> lista = usuario.listar();
-        ListaEnlazada<Persona> resultado = new ListaEnlazada<>();
+    public ListaEnlazada<Estudiante> buscarPorApellidoBinaria(String apellido) {
+        ListaEnlazada<Estudiante> lista = estudianteDao.listar();
+        ListaEnlazada<Estudiante> resultado = new ListaEnlazada<>();
 
-        Persona[] arreglo = lista.toArray();
+        Estudiante[] arreglo = lista.toArray();
 
         quickSortApellido(arreglo, 0, arreglo.length - 1);
 
@@ -130,36 +150,35 @@ public class Control {
         return resultado;
     }
 
-    public ListaEnlazada<Persona> busquedaPorApellidoLineal(String apellido) {
-        ListaEnlazada<Persona> lista = usuario.listar();
-        ListaEnlazada<Persona> resultado = new ListaEnlazada<>();
+    public ListaEnlazada<Estudiante> busquedaPorApellidoLineal(String apellido) {
+        ListaEnlazada<Estudiante> lista = estudianteDao.listar();
+        ListaEnlazada<Estudiante> resultado = new ListaEnlazada<>();
 
-        Persona[] arreglo = lista.toArray();
+        Estudiante[] arreglo = lista.toArray();
 
         quickSortApellido(arreglo, 0, arreglo.length - 1);
 
-        for (Persona pc : arreglo) {
-            if (pc.getApellido().toLowerCase().startsWith(apellido.toLowerCase())) {
-                resultado.insertar(pc);
+        for (Estudiante estudiante : arreglo) {
+            if (estudiante.getApellido().toLowerCase().startsWith(apellido.toLowerCase())) {
+                resultado.insertar(estudiante);
             }
         }
 
         return resultado;
     }
 
-    private void swapApellido(Persona[] arr, int i, int j) {
-        Persona temp = arr[i];
+    private void swapApellido(Estudiante[] arr, int i, int j) {
+        Estudiante temp = arr[i];
         arr[i] = arr[j];
         arr[j] = temp;
     }
 
-    private int partitionApellido(Persona[] arr, int low, int high) {
-        Persona pivot = arr[high];
+    private int partitionApellido(Estudiante[] arr, int low, int high) {
+        Estudiante pivot = arr[high];
 
         int i = (low - 1);
 
         for (int j = low; j <= high - 1; j++) {
-
             if (arr[j].getApellido().compareToIgnoreCase(pivot.getApellido()) < 0) {
                 i++;
                 swapApellido(arr, i, j);
@@ -169,11 +188,9 @@ public class Control {
         return (i + 1);
     }
 
-    private void quickSortApellido(Persona[] arr, int low, int high) {
+    private void quickSortApellido(Estudiante[] arr, int low, int high) {
         if (low < high) {
-
             int pi = partitionApellido(arr, low, high);
-
             quickSortApellido(arr, low, pi - 1);
             quickSortApellido(arr, pi + 1, high);
         }

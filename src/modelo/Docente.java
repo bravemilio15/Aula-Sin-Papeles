@@ -1,22 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
+import controlador.ed.lista.ListaEnlazada;
 
-public class Docente extends Persona{
-    private Integer id;
+public class Docente extends Usuario {
+
     private String especialidad;
     private String grado_academico;
     private String experiencia_educativa;
+    private ListaEnlazada<Materia> materias;
 
-    public Integer getId() {
-        return id;
+    public ListaEnlazada<Materia> getMaterias() {
+        return materias;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMaterias(ListaEnlazada<Materia> materias) {
+        this.materias = materias;
     }
 
     public String getEspecialidad() {
@@ -42,6 +40,5 @@ public class Docente extends Persona{
     public void setExperiencia_educativa(String experiencia_educativa) {
         this.experiencia_educativa = experiencia_educativa;
     }
-    
-    
+
 }

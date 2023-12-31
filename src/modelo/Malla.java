@@ -6,7 +6,10 @@ package modelo;
 
 import java.util.Date;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class Malla {
     private Integer id;
     private String nombre_malla;

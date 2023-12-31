@@ -4,7 +4,10 @@
  */
 package modelo;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class Cuenta {
     private Integer id;
     private String contra;

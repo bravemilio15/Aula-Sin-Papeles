@@ -5,14 +5,19 @@
 package controlador;
 
 import controlador.dao.MateriaDao;
-import controlador.dao.UsuarioDao;
+import controlador.dao.EstudianteDao;
 import controlador.ed.lista.ListaEnlazada;
 import java.io.IOException;
+import modelo.Ciclo;
 import modelo.Materia;
-import modelo.Persona;
+import modelo.Estudiante;
 
-
+/**
+ *
+ * @author cristian
+ */
 public class ControlMateria {
+
     private MateriaDao materiaDao;
     private Materia materia;
 
@@ -29,7 +34,7 @@ public class ControlMateria {
     }
 
     public Materia getMateria() {
-       if (materia == null) {
+        if (materia == null) {
             materia = new Materia();
         }
         return materia;
@@ -38,12 +43,12 @@ public class ControlMateria {
     public void setMateria(Materia materia) {
         this.materia = materia;
     }
-      public ListaEnlazada<Materia> listar() {
+
+    public ListaEnlazada<Materia> listar() {
         return materiaDao.listar();
     }
 
-      public void guardarMateria(String nombre,String ciclo) {
-
+    public void guardarMateria(String nombre, Ciclo ciclo) {
         materiaDao.getMateria().setNombre(nombre);
         materiaDao.getMateria().setCiclo(ciclo);
         try {
@@ -52,10 +57,5 @@ public class ControlMateria {
             System.out.println("Error");
         }
     }
-    
-            
-            
-            
-            
-      
+
 }
