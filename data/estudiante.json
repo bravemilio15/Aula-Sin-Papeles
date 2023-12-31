@@ -1,0 +1,134 @@
+{
+    "controlador.ed.lista.ListaEnlazada": {
+        "cabecera": {
+            "info": {
+                "@class": "modelo.Estudiante",
+                "id": 1,
+                "nombre": "Emilio Andres",
+                "apellido": "Bravo Herrera",
+                "cedula": 1105918419,
+                "celular": "0961694123",
+                "edad": 18,
+                "genero": "Masculino",
+                "nacimiento": "2004-12-30",
+                "correoPer": "bravemilio15@gmail.com",
+                "correoIns": "emilio.bravo@unl.edu.ec",
+                "modalidad": "Presencial",
+                "ciclo": {
+                    "id": 1,
+                    "duracion": 120,
+                    "nombre_ciclo": "Primero"
+                },
+                "matriculas": {
+                    "cabecera": {
+                        "info": {
+                            "@class": "modelo.Matricula"
+                        },
+                        "sig": {
+                            "info": {
+                                "@class": "modelo.Matricula"
+                            },
+                            "sig": {
+                                "info": {
+                                    "@class": "modelo.Matricula"
+                                }
+                            }
+                        }
+                    },
+                    "size": 3
+                },
+                "paralelo": {
+                    "id": 1,
+                    "nombre_paralelo": "A"
+                }
+            },
+            "sig": {
+                "info": {
+                    "@class": "modelo.Estudiante",
+                    "id": 2,
+                    "nombre": "Cristian David",
+                    "apellido": " Ajila Ramirez",
+                    "cedula": 1105918419,
+                    "celular": "0961694123",
+                    "edad": 20,
+                    "genero": "Masculino",
+                    "nacimiento": "2003-11-11",
+                    "correoPer": "cristian@gmail.com",
+                    "correoIns": "cristian.ajila@unl.edu.ec",
+                    "modalidad": "Presencial",
+                    "ciclo": {
+                        "id": 1,
+                        "duracion": 120,
+                        "nombre_ciclo": "Primero"
+                    },
+                    "matriculas": {
+                        "cabecera": {
+                            "info": {
+                                "@class": "modelo.Matricula"
+                            },
+                            "sig": {
+                                "info": {
+                                    "@class": "modelo.Matricula"
+                                },
+                                "sig": {
+                                    "info": {
+                                        "@class": "modelo.Matricula"
+                                    }
+                                }
+                            }
+                        },
+                        "size": 3
+                    },
+                    "paralelo": {
+                        "id": 1,
+                        "nombre_paralelo": "A"
+                    }
+                },
+                "sig": {
+                    "info": {
+                        "@class": "modelo.Estudiante",
+                        "id": 3,
+                        "nombre": "Naim Andres",
+                        "apellido": "Alvarez Ochoa",
+                        "cedula": 1105918419,
+                        "celular": "0961694123",
+                        "edad": 19,
+                        "genero": "Masculino",
+                        "nacimiento": "2004-12-14",
+                        "correoPer": "bravemilio15@gmail.com",
+                        "correoIns": "emilio.bravo@unl.edu.ec",
+                        "modalidad": "Presencial",
+                        "ciclo": {
+                            "id": 3,
+                            "duracion": 120,
+                            "nombre_ciclo": "Tercero"
+                        },
+                        "matriculas": {
+                            "cabecera": {
+                                "info": {
+                                    "@class": "modelo.Matricula"
+                                },
+                                "sig": {
+                                    "info": {
+                                        "@class": "modelo.Matricula"
+                                    },
+                                    "sig": {
+                                        "info": {
+                                            "@class": "modelo.Matricula"
+                                        }
+                                    }
+                                }
+                            },
+                            "size": 3
+                        },
+                        "paralelo": {
+                            "id": 2,
+                            "nombre_paralelo": "B"
+                        }
+                    }
+                }
+            }
+        },
+        "size": 3
+    }
+}

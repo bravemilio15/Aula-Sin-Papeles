@@ -1,0 +1,24 @@
+{
+    "controlador.ed.lista.ListaEnlazada": {
+        "cabecera": {
+            "info": {
+                "@class": "modelo.Docente",
+                
+                "nombre": "Walter David",
+                "apellido": "Yaguana Quizphe",
+                "cedula": 1105918419,
+                "celular": "0961694123",
+                "edad": 35,
+                "genero": "Masculino",
+                "estado": "Divorciado",
+                "nacimiento": "1988-12-15",
+                "correoPer": "walter@gmail.com",
+                "correoIns": "walter.yaguana@unl.edu.ec",
+                "especialidad": "SQL Developer",
+                "grado_academico": "Doctorado",
+                "experiencia_educativa": "Excelente en la Materia."
+            }
+        },
+        "size": 1
+    }
+}
