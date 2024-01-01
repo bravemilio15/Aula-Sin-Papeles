@@ -4,12 +4,8 @@
  */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
 
-/**
- *
- * @author cristian
- */
+
 public class Materia {
 
     private Integer id;

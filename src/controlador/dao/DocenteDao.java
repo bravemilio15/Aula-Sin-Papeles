@@ -13,10 +13,9 @@ import modelo.Docente;
  *
  * @author cristian
  */
-public class DocenteDao extends AdaptadorDAO<Docente>{
-    
+public class DocenteDao extends AdaptadorDAO<Docente> {
+
     private Docente docente;
- 
 
     public DocenteDao() {
         super(Docente.class);
@@ -35,15 +34,14 @@ public class DocenteDao extends AdaptadorDAO<Docente>{
 
     public void guardar() throws IOException {
         docente.setId(generateID());
-        this.guardar(docente);
+        super.guardar(docente); // 
     }
 
     public void modificar(Integer pos) throws EmptyException, PositionException, IOException {
-        this.modificar(docente, pos);
+        super.modificar(docente, pos);
     }
 
-    private Integer generateID() {
-        return listar().size() + 1;
+    public Integer generateID() {
+        return generarId(); // Utiliza el método heredado de la clase base
     }
-    
 }

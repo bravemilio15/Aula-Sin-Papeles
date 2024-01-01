@@ -62,14 +62,15 @@ public class Control {
         return materiaDao.listar();
     }
 
-    public void guardarUsuario(String nombre, String apellido, String cedula, String celular,
-            String estado, String nacimiento, Integer edad, String genero, String correoPer,
-            String correoIns, Rol rol, Paralelo paralelo, Ciclo ciclo, String jornada,
-            String modalidad) {
+    public void guardarUsuario(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido,
+            String cedula, String celular, String estado, String nacimiento, Integer edad, String genero, String correoPer,
+            String correoIns, Rol rol, Paralelo paralelo, Ciclo ciclo, String jornada, String modalidad) {
 
         Estudiante nuevoEstudiante = new Estudiante();
-        nuevoEstudiante.setNombre(nombre);
-        nuevoEstudiante.setApellido(apellido);
+        nuevoEstudiante.setPrimer_nombre(primerNombre);
+        nuevoEstudiante.setSegundo_nombre(segundoNombre);
+        nuevoEstudiante.setPrimer_apellido(primerApellido);
+        nuevoEstudiante.setSegundo_apellido(segundoApellido);
         nuevoEstudiante.setCedula(cedula);
         nuevoEstudiante.setCelular(celular);
         nuevoEstudiante.setEstado(estado);
@@ -91,14 +92,15 @@ public class Control {
         }
     }
 
-    public void guardarEstudiante(String nombre, String apellido, String cedula,
-            String celular, String estado, String nacimiento, Integer edad,
-            String genero, String correoPer, String correoIns, Rol rol,
-            Paralelo paralelo, Ciclo ciclo, String jornada, String modalidad) {
+    public void guardarEstudiante(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido,
+            String cedula, String celular, String estado, String nacimiento, Integer edad, String genero, String correoPer,
+            String correoIns, Rol rol, Paralelo paralelo, Ciclo ciclo, String jornada, String modalidad) {
 
         Estudiante nuevoEstudiante = new Estudiante();
-        nuevoEstudiante.setNombre(nombre);
-        nuevoEstudiante.setApellido(apellido);
+        nuevoEstudiante.setPrimer_nombre(primerNombre);
+        nuevoEstudiante.setSegundo_nombre(segundoNombre);
+        nuevoEstudiante.setPrimer_apellido(primerApellido);
+        nuevoEstudiante.setSegundo_apellido(segundoApellido);
         nuevoEstudiante.setCedula(cedula);
         nuevoEstudiante.setCelular(celular);
         nuevoEstudiante.setEstado(estado);
@@ -133,10 +135,10 @@ public class Control {
         while (l <= r) {
             int m = l + (r - l) / 2;
 
-            if (arreglo[m].getApellido().equalsIgnoreCase(apellido)) {
+            if (arreglo[m].getPrimer_apellido().equalsIgnoreCase(apellido)) {
                 resultado.insertar(arreglo[m]);
                 return resultado;
-            } else if (arreglo[m].getApellido().compareToIgnoreCase(apellido) < 0) {
+            } else if (arreglo[m].getPrimer_apellido().compareToIgnoreCase(apellido) < 0) {
                 l = m + 1;
             } else {
                 r = m - 1;
@@ -159,7 +161,7 @@ public class Control {
         quickSortApellido(arreglo, 0, arreglo.length - 1);
 
         for (Estudiante estudiante : arreglo) {
-            if (estudiante.getApellido().toLowerCase().startsWith(apellido.toLowerCase())) {
+            if (estudiante.getPrimer_apellido().toLowerCase().startsWith(apellido.toLowerCase())) {
                 resultado.insertar(estudiante);
             }
         }
@@ -179,7 +181,7 @@ public class Control {
         int i = (low - 1);
 
         for (int j = low; j <= high - 1; j++) {
-            if (arr[j].getApellido().compareToIgnoreCase(pivot.getApellido()) < 0) {
+            if (arr[j].getPrimer_apellido().compareToIgnoreCase(pivot.getPrimer_apellido()) < 0) {
                 i++;
                 swapApellido(arr, i, j);
             }
@@ -195,5 +197,4 @@ public class Control {
             quickSortApellido(arr, pi + 1, high);
         }
     }
-
 }

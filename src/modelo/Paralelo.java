@@ -6,10 +6,6 @@ package modelo;
 
 import controlador.ed.lista.ListaEnlazada;
 
-/**
- *
- * @author cristian
- */
 public class Paralelo {
 
     private Integer id;

@@ -46,6 +46,12 @@ public class ControlarDocente {
     public void setDocente(Docente docente) {
         this.docente = docente;
     }
+    
+    public void registrar(){
+        docente.setId(docentes.size()+1);
+        docentes.insertar(docente);
+        guardarDao();
+    }
 
     public void guardarDao() {
         try {
@@ -55,26 +61,35 @@ public class ControlarDocente {
         }
     }
 
-    public void guardarDocente(String nombre, String apellido, String cedula, String celular,
-            String estado, String nacimiento, Integer edad, String genero,
-            String correoPer, String correoIns, String especialidad,
-            String gradoAcademico, String experienciaEducativa) {
+    public void guardarDocente(String primerNombre, String segundoNombre, String primerApellido, String segundoApellido,
+            String cedula, String celular, String estado, String nacimiento, Integer edad, String genero,
+            String correoPer, String correoIns, String especialidad, String gradoAcademico, String experienciaEducativa)
+            throws IOException {
 
-        docenteDao.getDocente().setNombre(nombre);
-        docenteDao.getDocente().setApellido(apellido);
-        docenteDao.getDocente().setCedula(cedula);
-        docenteDao.getDocente().setCelular(celular);
-        docenteDao.getDocente().setEstado(estado);
-        docenteDao.getDocente().setNacimiento(nacimiento);
-        docenteDao.getDocente().setEdad(edad);
-        docenteDao.getDocente().setGenero(genero);
-        docenteDao.getDocente().setCorreoPer(correoPer);
-        docenteDao.getDocente().setCorreoIns(correoIns);
-        docenteDao.getDocente().setEspecialidad(especialidad);
-        docenteDao.getDocente().setGrado_academico(gradoAcademico);
-        docenteDao.getDocente().setExperiencia_educativa(experienciaEducativa);
-        //usuario.getUsuario().setId_rol(this.rol.buscarRol(rol).getId());
-        guardarDao();
+        Docente nuevoDocente = new Docente();
+        
+        nuevoDocente.setPrimer_nombre(primerNombre);
+        nuevoDocente.setSegundo_nombre(segundoNombre);
+        nuevoDocente.setPrimer_apellido(primerApellido);
+        nuevoDocente.setSegundo_apellido(segundoApellido);
+        nuevoDocente.setCedula(cedula);
+        nuevoDocente.setCelular(celular);
+        nuevoDocente.setEstado(estado);
+        nuevoDocente.setNacimiento(nacimiento);
+        nuevoDocente.setEdad(edad);
+        nuevoDocente.setGenero(genero);
+        nuevoDocente.setCorreoPer(correoPer);
+        nuevoDocente.setCorreoIns(correoIns);
+        nuevoDocente.setEspecialidad(especialidad);
+        nuevoDocente.setGrado_academico(gradoAcademico);
+        nuevoDocente.setExperiencia_educativa(experienciaEducativa);
 
+        try {
+            docenteDao.guardar(nuevoDocente);
+        } catch (IOException ex) {
+            System.out.println("Error al guardar docente: " + ex.getMessage());
+            throw ex; // Re-lanzar la excepción para que sea manejada en un nivel superior si es necesario
+        }
     }
+
 }

@@ -149,6 +149,7 @@ public class Utilidades {
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
+   
     }
 
     public static JDatePickerImpl createDatePicker() {
@@ -241,7 +242,7 @@ public class Utilidades {
         cbx.removeAllItems();
 
         cbx.addItem("Electricidad");
-        cbx.addItem("Matematicas Dsicretas");
+        cbx.addItem("Matematicas Discretas");
         cbx.addItem("Algebra Lineal");
         cbx.addItem("Teoria de la programcion");
         cbx.addItem("Comunicacion y redaccion tecnica");
@@ -251,7 +252,7 @@ public class Utilidades {
     public static void cargarSegundo(JComboBox cbx) {
         cbx.removeAllItems();
 
-        cbx.addItem("Estructura de datos");
+        cbx.addItem("Diseno de Circuitos");
         cbx.addItem("Analisis Matematico");
         cbx.addItem("Teoria de la DIstribucion y probabilidad");
         cbx.addItem("Programacion Orientada a Objetos");
@@ -262,7 +263,7 @@ public class Utilidades {
     public static void cargarTercero(JComboBox cbx) {
         cbx.removeAllItems();
 
-        cbx.addItem("Diseno de Circuitos");
+        cbx.addItem("Estructura de Datos");
         cbx.addItem("Requisitos de Sofware");
         cbx.addItem("Estadistica Analitica");
         cbx.addItem("Arquitectura de ordenadores");

@@ -32,12 +32,7 @@ import modelo.Ciclo;
 import modelo.Estudiante;
 import modelo.Paralelo;
 import modelo.tabla.ModeloTablaEstudiante;
-import org.jdatepicker.DateModel;
-import org.jdatepicker.JDatePicker;
-import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-import vista.utilidades.DateLabelFormatter;
 import vista.utilidades.Utilidades;
 
 /**
@@ -50,7 +45,6 @@ public class pnlEstudiante extends javax.swing.JPanel {
     private ControlarEstudiante control = new ControlarEstudiante();
     private CicloDAO cd = new CicloDAO();
     private ParaleloDAO pd = new ParaleloDAO();
-    private JDatePickerImpl datePicker;
     private int pos = -1;
 
     public pnlEstudiante() {
@@ -88,6 +82,7 @@ public class pnlEstudiante extends javax.swing.JPanel {
         txtPersonal.setText("");
         txtEdad.setText("");
         txtInstitucional.setText("");
+        txtNacimiento.setText("");
     }
 
     private void guardar() throws IOException, EmptyException, PositionException {
@@ -99,8 +94,16 @@ public class pnlEstudiante extends javax.swing.JPanel {
             String paraleloSeleccionado = cbxParalelo.getSelectedItem().toString();
             Paralelo paralelo = pd.obtenerParaleloPorNombre(paraleloSeleccionado);
 
-            control.getEstudiante().setNombre(txtNombre.getText());
-            control.getEstudiante().setApellido(txtApellido.getText());
+            // Dividir nombres y apellidos
+            String[] nombres = txtNombre.getText().split("\\s+");
+            String[] apellidos = txtApellido.getText().split("\\s+");
+
+            // Configurar los valores en el objeto Estudiante
+            control.getEstudiante().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
+            control.getEstudiante().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
+            control.getEstudiante().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
+            control.getEstudiante().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
+
             control.getEstudiante().setCedula(txtCedula.getText());
             control.getEstudiante().setCelular(txtCelular.getText());
             control.getEstudiante().setNacimiento(txtNacimiento.getText());
@@ -114,7 +117,7 @@ public class pnlEstudiante extends javax.swing.JPanel {
             control.getEstudiante().setCiclo(ciclo);
             control.getEstudiante().setParalelo(paralelo);
             control.getEstudiante().setModalidad(modalidadSeleccionada);
-            
+
             control.registrar();
             actualizarTabla();
             limpiar();
@@ -133,8 +136,17 @@ public class pnlEstudiante extends javax.swing.JPanel {
                 Estudiante usuarioAModificar = modelo.getDatos().get(fila);
 
                 control.getEstudiante().setId(usuarioAModificar.getId());
-                control.getEstudiante().setNombre(txtNombre.getText());
-                control.getEstudiante().setApellido(txtApellido.getText());
+
+                // Dividir nombres y apellidos
+                String[] nombres = txtNombre.getText().split("\\s+");
+                String[] apellidos = txtApellido.getText().split("\\s+");
+
+                // Configurar los valores en el objeto Estudiante
+                control.getEstudiante().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
+                control.getEstudiante().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
+                control.getEstudiante().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
+                control.getEstudiante().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
+
                 control.getEstudiante().setCedula(txtCedula.getText());
                 control.getEstudiante().setCelular(txtCelular.getText());
 
@@ -172,8 +184,8 @@ public class pnlEstudiante extends javax.swing.JPanel {
                 && !txtInstitucional.getText().trim().isEmpty()
                 && cbxEstado.getSelectedItem() != null
                 && !cbxEstado.getSelectedItem().toString().isEmpty())
-                && Utilidades.validarCedula(txtCedula.getText())
-                && Utilidades.verificarCelular(txtCelular.getText())
+                //&& Utilidades.validarCedula(txtCedula.getText())
+                //&& Utilidades.verificarCelular(txtCelular.getText())
                 && Utilidades.validarCorreoInstitucional(txtInstitucional.getText())
                 && Utilidades.validarCorreoPersonal(txtPersonal.getText())
                 && Utilidades.validarEdad(txtEdad.getText())

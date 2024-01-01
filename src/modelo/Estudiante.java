@@ -1,15 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo;
 
 import controlador.ed.lista.ListaEnlazada;
 
-/**
- *
- * @author cristian
- */
 public class Estudiante extends Usuario {
 
     private ListaEnlazada<Matricula> matriculas;
@@ -37,7 +29,7 @@ public class Estudiante extends Usuario {
 
     @Override
     public String toString() {
-        return this.getNombre() + " " + this.getApellido();
+        return this.getPrimer_nombre() + " " + this.getPrimer_apellido();
     }
 
     public String getCicloNombre() {

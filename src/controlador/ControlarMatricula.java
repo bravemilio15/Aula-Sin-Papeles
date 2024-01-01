@@ -71,7 +71,7 @@ public class ControlarMatricula {
         quickSortNombre(arreglo, 0, arreglo.length - 1);
 
         for (Estudiante pc : arreglo) {
-            if (pc.getNombre().toLowerCase().startsWith(nombre.toLowerCase())) {
+            if (pc.getPrimer_nombre().toLowerCase().startsWith(nombre.toLowerCase())) {
                 resultado.insertar(pc);
             }
         }
@@ -92,10 +92,10 @@ public class ControlarMatricula {
         while (l <= r) {
             int m = l + (r - l) / 2;
 
-            if (arreglo[m].getNombre().equalsIgnoreCase(nombre)) {
+            if (arreglo[m].getPrimer_nombre().equalsIgnoreCase(nombre)) {
                 resultado.insertar(arreglo[m]);
                 return resultado;
-            } else if (arreglo[m].getNombre().compareToIgnoreCase(nombre) < 0) {
+            } else if (arreglo[m].getPrimer_nombre().compareToIgnoreCase(nombre) < 0) {
                 l = m + 1;
             } else {
                 r = m - 1;
@@ -126,7 +126,7 @@ public class ControlarMatricula {
 
         for (int j = low; j <= high - 1; j++) {
 
-            if (arr[j].getNombre().compareToIgnoreCase(pivot.getNombre()) < 0) {
+            if (arr[j].getPrimer_nombre().compareToIgnoreCase(pivot.getPrimer_nombre()) < 0) {
                 i++;
                 swapNombre(arr, i, j);
             }
@@ -149,7 +149,7 @@ public class ControlarMatricula {
         quickSortNombre(arreglo, 0, arreglo.length - 1);
 
         for (Estudiante pc : arreglo) {
-            if (pc.getNombre().toLowerCase().startsWith(cedula.toLowerCase())) {
+            if (pc.getPrimer_nombre().toLowerCase().startsWith(cedula.toLowerCase())) {
                 resultado.insertar(pc);
             }
         }

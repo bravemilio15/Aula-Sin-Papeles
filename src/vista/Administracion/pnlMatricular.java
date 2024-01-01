@@ -7,13 +7,18 @@ package vista.Administracion;
 
 import controlador.ControlarEstudiante;
 import controlador.ControlarMatricula;
+import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
+import controlador.ed.lista.exception.IndexListException;
+import controlador.ed.lista.exception.NonExistentElementException;
 import controlador.ed.lista.exception.PositionException;
+import controlador.ed.lista.exception.VacioException;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Estudiante;
 import modelo.Matricula;
 import modelo.tabla.ModeloTablaEstudiante;
 import modelo.tabla.ModeloTablaMatricula;
@@ -26,10 +31,10 @@ import static vista.utilidades.Utilidades.cargarCursosPorCicloEItinerario;
  */
 public class pnlMatricular extends javax.swing.JPanel {
 
-    private ModeloTablaMatricula modelo = new ModeloTablaMatricula();
-    private ControlarMatricula control = new ControlarMatricula();
-    private ControlarEstudiante controlE = new ControlarEstudiante();
-    private ModeloTablaEstudiante modeloE = new ModeloTablaEstudiante();
+    private ModeloTablaMatricula modeloMatricula = new ModeloTablaMatricula();
+    private ControlarMatricula controlMatricula = new ControlarMatricula();
+    private ControlarEstudiante controlEstudiante;
+    private ModeloTablaEstudiante modeloEstudiante = new ModeloTablaEstudiante();
     private int pos = -1;
 
     /**
@@ -37,9 +42,100 @@ public class pnlMatricular extends javax.swing.JPanel {
      */
     public pnlMatricular() {
         initComponents();
+        controlEstudiante = new ControlarEstudiante();
         cargarCombos();
+        cargarTablaEstudiante();
         cargarTablaMatricula();
         desabilitarPanel();
+
+    }
+
+    private void cargarTablaEstudiante() {
+        modeloEstudiante.setDatos(controlEstudiante.listar());
+        tblEstudiantes.setModel(modeloEstudiante);
+        tblEstudiantes.updateUI();
+        actualizarTablaEstudiantes();
+    }
+
+    private void cargarTablaMatricula() {
+        modeloMatricula.setDatos(controlMatricula.listar());
+        tblMatricula.setModel(modeloMatricula);
+        tblMatricula.updateUI();
+        actualizarTablaMatricula();
+    }
+
+    private void actualizarTablaEstudiantes() {
+        tblEstudiantes.setModel(modeloEstudiante);
+        tblEstudiantes.updateUI();
+    }
+
+    private void actualizarTablaMatricula() {
+        tblEstudiantes.setModel(modeloEstudiante);
+        tblEstudiantes.updateUI();
+    }
+
+    private void cargarCombos() {
+        Utilidades.cargarCarrera(cbxCarrera);
+        Utilidades.cargarExpediente(cbxExpediente);
+        Utilidades.cargarGradoAcademico(cbxGrado);
+        Utilidades.cargarNumeroMatricula(cbxNumeroMatricula);
+        Utilidades.cargarCriterio(cbxCriterio);
+
+    }
+
+    private void limpiar() {
+
+    }
+
+    private Boolean validar() {
+        return (!cbxCarrera.getSelectedItem().toString().isEmpty() && !cbxMateria.getSelectedItem().toString().isEmpty());
+
+    }
+
+    private void modificarUsuario() {
+        int fila = tblMatriculas.getSelectedRow();
+
+        if (fila < 0) {
+            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            try {
+                Matricula usuarioAModificar = modeloMatricula.getDatos().get(fila);
+                cbxCarrera.setSelectedItem(usuarioAModificar.getCarrera());
+                cbxExpediente.setSelectedItem(usuarioAModificar.getEstado());
+                cbxMateria.setSelectedItem(usuarioAModificar.getNivel_academico());
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void guardar() throws EmptyException, PositionException, IOException {
+        String carrera = cbxCarrera.getSelectedItem().toString();
+        String estado = cbxExpediente.getSelectedItem().toString();
+        String nivel = cbxMateria.getSelectedItem().toString();
+
+        if (pos >= 0 && pos < controlEstudiante.getEstudiante().getMatriculas().size()) {
+            controlEstudiante.guardarMatricula(pos, carrera, estado, nivel);
+        }
+        cargarTablaMatricula();
+        limpiar();
+    }
+
+    private void mostrarEstudiante() throws EmptyException, PositionException {
+        int pos = tblEstudiantes.getSelectedRow();
+
+        if (pos >= controlEstudiante.getEstudiantes().size()) {
+            throw new EmptyException("El estudiante no existe");
+        }
+
+        if (pos >= 0) {
+            controlEstudiante.setEstudiante(modeloEstudiante.getDatos().get(pos));
+            habilitarPanel();
+            limpiar();
+        } else {
+            throw new PositionException("Seleccione una fila(estudiante)");
+        }
 
     }
 
@@ -63,124 +159,20 @@ public class pnlMatricular extends javax.swing.JPanel {
         btnModificar.setEnabled(true);
     }
 
-    private void cargarTablaEstudiante() {
-        modeloE.setDatos(controlE.listar());
-        tblEstudiantes.setModel(modelo);
-        tblEstudiantes.updateUI();
-    }
-
-    private void cargarTablaMatricula() {
-        modelo.setDatos(control.listar());
-        tblMatricula.setModel(modelo);
-        tblMatricula.updateUI();
-    }
-
-    private void actualizarTabla() {
-        tblEstudiantes.setModel(modeloE);
-        tblEstudiantes.updateUI();
-    }
-
     public void buscarBinaria() {
 
         switch (cbxCriterio.getSelectedItem().toString()) {
             case "Nombre":
-                modeloE.setDatos(control.buscarPorNombreBinaria(txtbuscar.getText()));
+                modeloEstudiante.setDatos(controlMatricula.buscarPorNombreBinaria(txtBuscar.getText()));
                 limpiar();
-                actualizarTabla();
+                actualizarTablaEstudiantes();
                 break;
             case "Cedula":
-                modeloE.setDatos(control.buscarPorCedulaBinaria(txtbuscar.getText()));
+                modeloEstudiante.setDatos(controlMatricula.buscarPorCedulaBinaria(txtBuscar.getText()));
                 limpiar();
-                actualizarTabla();
+                actualizarTablaEstudiantes();
                 break;
         }
-    }
-
-    private void cargarCombos() {
-        Utilidades.cargarCarrera(cbxCarrera);
-        Utilidades.cargarExpediente(cbxExpediente);
-        Utilidades.cargarGradoAcademico(cbxGrado);
-        Utilidades.cargarCriterio(cbxCriterio);
-        Utilidades.cargarNumeroMatricula(cbxNumeroMatricula);
-
-    }
-
-    private void limpiar() {
-    }
-
-    private Boolean validar() {
-        return (!cbxCarrera.getSelectedItem().toString().isEmpty() && !cbxMateria.getSelectedItem().toString().isEmpty());
-
-    }
-
-    private void modificarUsuario() {
-        int fila = tblMatriculas.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            try {
-                Matricula usuarioAModificar = modelo.getDatos().get(fila);
-                cbxCarrera.setSelectedItem(usuarioAModificar.getCarrera());
-                cbxExpediente.setSelectedItem(usuarioAModificar.getEstado());
-                cbxMateria.setSelectedItem(usuarioAModificar.getNivel_academico());
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-//    public void guardar() {
-//        try {
-//
-//            if (validar()) {
-//                String carrera = cbxCarrera.getSelectedItem().toString();
-//                String expediente = cbxExpediente.getSelectedItem().toString();
-//                String grado = cbxGrado.getSelectedItem().toString();
-//                control.guardarMatricula(carrera, expediente, grado);
-//                desabilitarPanel();
-//                JOptionPane.showMessageDialog(null, "Docente guardado correctamente", "Correcto", JOptionPane.INFORMATION_MESSAGE);
-//
-//                cargarTablaMatricula();
-//                limpiar();
-//                
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Llene todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        } catch (Exception ex) {
-//            JOptionPane.showMessageDialog(null, "Error al guardar el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//        }
-//        
-//    }
-    private void guardar() throws EmptyException, PositionException, IOException {
-//        double valor = Double.parseDouble(txtValor.getText());
-        String carrera = cbxCarrera.getSelectedItem().toString();
-        String estado = cbxExpediente.getSelectedItem().toString();
-        String nivel = cbxMateria.getSelectedItem().toString();
-
-        if (pos >= 0 && pos < controlE.getEstudiante().getMatriculas().size()) {
-            controlE.guardarMatricula(pos, carrera, estado, nivel);
-        }
-        cargarTablaMatricula();
-        limpiar();
-    }
-
-    private void mostrarEstudiante() throws EmptyException, PositionException {
-        int pos = tblEstudiantes.getSelectedRow();
-
-        if (pos >= controlE.getEstudiantes().size()) {
-            throw new EmptyException("El estudiante no existe");
-        }
-
-        if (pos >= 0) {
-            controlE.setEstudiante(modeloE.getDatos().get(pos));
-            habilitarPanel();
-            limpiar();
-        } else {
-            throw new PositionException("Seleccione una fila(estudiante)");
-        }
-
     }
 
     /**
@@ -198,8 +190,8 @@ public class pnlMatricular extends javax.swing.JPanel {
         jPanel2 = new javax.swing.JPanel();
         lbCriterio = new javax.swing.JLabel();
         cbxCriterio = new javax.swing.JComboBox<>();
-        txtbuscar = new javax.swing.JTextField();
-        btnBinaria = new javax.swing.JButton();
+        txtBuscar = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblEstudiantes = new javax.swing.JTable();
         btnMatricula = new javax.swing.JButton();
@@ -246,13 +238,23 @@ public class pnlMatricular extends javax.swing.JPanel {
         lbCriterio.setFont(new java.awt.Font("Roboto Black", 0, 12)); // NOI18N
         lbCriterio.setText("Buscar por:");
 
-        cbxCriterio.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        btnBinaria.setFont(new java.awt.Font("Roboto Black", 1, 14)); // NOI18N
-        btnBinaria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
-        btnBinaria.addActionListener(new java.awt.event.ActionListener() {
+        cbxCriterio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBinariaActionPerformed(evt);
+                cbxCriterioActionPerformed(evt);
+            }
+        });
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setFont(new java.awt.Font("Roboto Black", 1, 14)); // NOI18N
+        btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/buscar.png"))); // NOI18N
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
             }
         });
 
@@ -265,9 +267,9 @@ public class pnlMatricular extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 194, Short.MAX_VALUE)
-                .addComponent(btnBinaria)
+                .addComponent(btnBuscar)
                 .addGap(19, 19, 19))
         );
         jPanel2Layout.setVerticalGroup(
@@ -275,11 +277,11 @@ public class pnlMatricular extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnBinaria)
+                    .addComponent(btnBuscar)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(lbCriterio)
                         .addComponent(cbxCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -322,9 +324,9 @@ public class pnlMatricular extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnMatricula)
                 .addContainerGap())
         );
@@ -340,6 +342,11 @@ public class pnlMatricular extends javax.swing.JPanel {
         jLabel5.setText("Nivel Academico");
 
         cbxCarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxCarrera.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxCarreraActionPerformed(evt);
+            }
+        });
 
         cbxMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -520,11 +527,10 @@ public class pnlMatricular extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnBinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBinariaActionPerformed
-        // TODO add your handling code here:
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         buscarBinaria();
         limpiar();
-    }//GEN-LAST:event_btnBinariaActionPerformed
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatriculaActionPerformed
 
@@ -541,9 +547,21 @@ public class pnlMatricular extends javax.swing.JPanel {
         habilitarPanel();
     }//GEN-LAST:event_btnModificarActionPerformed
 
+    private void cbxCriterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCriterioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxCriterioActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void cbxCarreraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCarreraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbxCarreraActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBinaria;
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnMatricula;
     private javax.swing.JButton btnModificar;
@@ -573,6 +591,6 @@ public class pnlMatricular extends javax.swing.JPanel {
     private javax.swing.JTable tblEstudiantes;
     private javax.swing.JTable tblMatricula;
     private javax.swing.JTable tblMatriculas;
-    private javax.swing.JTextField txtbuscar;
+    private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

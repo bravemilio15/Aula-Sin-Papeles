@@ -38,7 +38,7 @@ public class MateriaDao extends AdaptadorDAO<Materia> {
     }
 
     public void modificar(Integer pos) throws EmptyException, PositionException, IOException {
-        super.modificar(materia, pos); //Cambie el This por el Super
+        this.modificar(materia, pos); //Cambie el This por el Super
     }
 
     private Integer generateID() {
