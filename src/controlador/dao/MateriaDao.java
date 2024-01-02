@@ -4,6 +4,7 @@
  */
 package controlador.dao;
 
+import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
@@ -34,14 +35,19 @@ public class MateriaDao extends AdaptadorDAO<Materia> {
 
     public void guardar() throws IOException {
         materia.setId(generateID());
-        this.guardar(materia);
+        super.guardar(materia);
     }
 
     public void modificar(Integer pos) throws EmptyException, PositionException, IOException {
-        this.modificar(materia, pos); //Cambie el This por el Super
+        super.modificar(materia, pos); 
     }
 
     private Integer generateID() {
-        return listar().size() + 1;
+        return generarId();
     }
+    
+    
+
+    
+
 }

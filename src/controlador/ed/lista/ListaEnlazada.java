@@ -21,9 +21,8 @@ import java.util.Random;
 public class ListaEnlazada<E> {
 
     private NodoLista<E> cabecera;
+    private NodoLista<E> last;
     private Integer size = 0;
-    private Field field;
-    private String typeField;
 
     public NodoLista getCabecera() {
         return cabecera;
@@ -63,6 +62,39 @@ public class ListaEnlazada<E> {
             this.size++;
         }
         return true;
+    }
+
+    public void insertarFinal(E data) {
+        if (estaVacia()) {
+            insertar(data);
+        } else {
+            NodoLista<E> aux = new NodoLista<>(null, data);
+            last.setSig(aux);
+            last = aux;
+            size++;
+        }
+
+    }
+
+    public boolean contiene(E elemento) {
+        NodoLista<E> actual = cabecera;
+
+        while (actual != null) {
+            if (actual.getInfo().equals(elemento)) {
+                return true; // El elemento ya está en la lista
+            }
+            actual = actual.getSig();
+        }
+
+        return false; // El elemento no está en la lista
+    }
+
+    public E getLast() throws VacioException {
+        if (estaVacia()) {
+            throw new VacioException("Lista Vacia");
+        } else {
+            return last.getInfo();
+        }
     }
 
     /**
@@ -229,348 +261,4 @@ public class ListaEnlazada<E> {
         return this;
     }
 
-    private void getAttribute(String attribute) {
-
-        Field[] fields = this.cabecera.getInfo().getClass().getDeclaredFields();
-
-        for (var fld : fields) {
-            if (fld.getName().equals(attribute)) {
-                this.field = fld;
-            }
-        }
-
-        field.setAccessible(true);
-
-        this.typeField = field.getType().getSimpleName();
-
-    }
-
-    private void resetAttribute() {
-        field = null;
-        typeField = null;
-    }
-
-    private Integer compare(E e1, E e2) throws IllegalAccessException {
-
-        if (field == null) {
-            System.out.println("Error en Compare Valor Nulo");
-            return 0;
-        }
-
-        if (typeField.equals("Integer") || typeField.equals("Double")) {
-
-            return Double.compare(((Number) field.get(e1)).doubleValue(), ((Number) field.get(e2)).doubleValue());
-
-        } else {
-
-            return Integer.compare(field.get(e1).toString().compareToIgnoreCase(field.get(e2).toString()), 0);
-
-        }
-
-    }
-
-    private Integer compareS(E e1, Object e2) throws IllegalAccessException {
-        if (field == null) {
-            System.out.println("Error en CompareS Valor Nulo");
-            return 0;
-        }
-
-        if (typeField.equals("Integer") || typeField.equals("Double")) {
-            return Double.compare(((Number) field.get(e1)).doubleValue(), ((Number) e2).doubleValue());
-        } else {
-            return Integer.compare(field.get(e1).toString().compareToIgnoreCase(e2.toString()), 0);
-        }
-    }
-
-    public void shuffle() throws VacioException {
-
-        var tmpArr = this.toArray();
-
-        Random random = new Random();
-
-        for (Integer i = 0; i < tmpArr.length; i++) {
-
-            Integer randomNum = random.nextInt(tmpArr.length - 1);
-
-            var tmp = tmpArr[i];
-
-            tmpArr[i] = tmpArr[randomNum];
-
-            tmpArr[randomNum] = tmp;
-
-        }
-
-        this.toList(tmpArr);
-
-    }
-
-    private Integer partition(E[] arr, Integer low, Integer high, boolean typeSort) throws IllegalAccessException {
-
-        var pivot = arr[high];
-
-        Integer i = (low - 1);
-
-        for (Integer j = low; j < high; j++) {
-
-            if (typeSort ? compare(arr[j], pivot) <= 0 : compare(arr[j], pivot) >= 0) {
-
-                i++;
-                var tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
-
-            }
-
-        }
-
-        var tmp = arr[i + 1];
-
-        arr[i + 1] = arr[high];
-
-        arr[high] = tmp;
-
-        return i + 1;
-
-    }
-
-    private void quick(E[] arr, Integer low, Integer high, boolean typeSort) throws IllegalAccessException {
-
-        if (low < high) {
-
-            Integer pi = partition(arr, low, high, typeSort);
-
-            quick(arr, low, pi - 1, typeSort);
-
-            quick(arr, pi + 1, high, typeSort);
-
-        }
-
-    }
-
-    private void merge(E[] arr, Integer l, Integer m, Integer r, boolean typeSort) throws IllegalAccessException {
-
-        Integer n1 = m - l + 1;
-        Integer n2 = r - m;
-
-        E[] L = (E[]) java.lang.reflect.Array.newInstance(this.cabecera.getInfo().getClass(), n1);
-
-        E[] R = (E[]) java.lang.reflect.Array.newInstance(this.cabecera.getInfo().getClass(), n2);
-
-        for (Integer i = 0; i < n1; ++i) {
-            L[i] = arr[l + i];
-        }
-
-        for (Integer j = 0; j < n2; ++j) {
-            R[j] = arr[m + 1 + j];
-        }
-
-        Integer i = 0, j = 0;
-
-        Integer k = l;
-
-        while (i < n1 && j < n2) {
-
-            if (typeSort ? compare(L[i], R[j]) <= 0 : compare(L[i], R[j]) >= 0) {
-
-                arr[k] = L[i];
-                i++;
-
-            } else {
-
-                arr[k] = R[j];
-                j++;
-
-            }
-
-            k++;
-        }
-
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
-        }
-
-    }
-
-    private void sortMerge(E[] arr, Integer l, Integer r, boolean typeSort) throws IllegalAccessException {
-
-        if (l < r) {
-
-            Integer m = l + (r - l) / 2;
-
-            sortMerge(arr, l, m, typeSort);
-
-            sortMerge(arr, m + 1, r, typeSort);
-
-            merge(arr, l, m, r, typeSort);
-
-        }
-
-    }
-
-    public void mergeSort(String attribute, boolean typeSort) throws VacioException, IllegalAccessException {
-
-        if (estaVacia()) {
-            throw new VacioException();
-        }
-
-        if (getSize() == 1) {
-            return;
-        }
-
-        getAttribute(attribute);
-
-        var tmp = this.toArray();
-
-        sortMerge(tmp, 0, (tmp.length - 1), typeSort);
-
-        resetAttribute();
-
-        this.toList(tmp);
-
-    }
-
-    public void quickSort(String attribute, boolean typeSort) throws VacioException, IllegalAccessException {
-
-        if (estaVacia()) {
-            throw new VacioException();
-        }
-
-        if (getSize() == 1) {
-            return;
-        }
-
-        getAttribute(attribute);
-
-        var tmp = this.toArray();
-
-        quick(tmp, 0, (tmp.length - 1), typeSort);
-
-        resetAttribute();
-
-        this.toList(tmp);
-
-    }
-
-    private Integer binary(E[] arr, Object element, Integer low, Integer high) throws IllegalAccessException {
-
-        if (high >= low) {
-
-            Integer mid = low + (high - low) / 2;
-
-            //check if mid-element is searched element
-            if (compareS(arr[mid], element) == 0) {
-                return mid;
-            }
-
-            //Search the left half of mid
-            if (compareS(arr[mid], element) > 0) {
-                return binary(arr, element, low, mid - 1);
-            }
-
-            //Search the right half of mid
-            return binary(arr, element, mid + 1, high);
-
-        }
-
-        return -1;
-    }
-
-    public E binarySearch(String attribute, Object info) throws VacioException, IllegalAccessException, NonExistentElementException, IndexListException, EmptyException, PositionException {
-
-        if (estaVacia()) {
-            throw new VacioException();
-        }
-
-        var tmpArray = this.toArray();
-
-        getAttribute(attribute);
-
-        Integer idx = binary(tmpArray, info, 0, tmpArray.length - 1);
-
-        resetAttribute();
-
-        if (idx == -1) {
-            System.out.println("Elemento no encontrado en la búsqueda binaria");
-            throw new NonExistentElementException();
-        }
-
-        return this.get(idx);
-    }
-
-    public ListaEnlazada<E> linearSearch(String attribute, Object info) throws VacioException, IllegalAccessException, NonExistentElementException, IndexListException, EmptyException, PositionException {
-
-        ListaEnlazada<E> result = new ListaEnlazada<>();
-
-        var tmpArray = toArray();
-
-        getAttribute(attribute);
-
-        Integer idx = binary(tmpArray, info, 0, tmpArray.length - 1);
-
-        if (idx == -1) {
-            throw new NonExistentElementException();
-        }
-
-        Integer tmpIdx = 0;
-
-        for (Integer i = idx; i >= 0; i--) {
-            if (compareS(this.get(i), info) != 0) {
-                break;
-            }
-            tmpIdx = i;
-        }
-
-        for (Integer i = tmpIdx; i < this.getSize(); i++) {
-            if (compareS(this.get(i), info) == 0) {
-                result.insertar(this.get(i));
-            } else {
-                break;
-            }
-        }
-
-        resetAttribute();
-
-        return result;
-    }
-
-    public ListaEnlazada<E> linearBinarySearch(String attribute, Object element) throws IllegalAccessException {
-
-        if (estaVacia()) {
-            throw new NullPointerException();
-        }
-
-        getAttribute(attribute);
-
-        var result = new ListaEnlazada<E>();
-
-        var tmp = this.toArray();
-
-        for (int i = 0; i < tmp.length; i++) {
-
-            if (compareS(tmp[i], element) == 0) {
-                result.insertar(tmp[i]);
-            }
-
-        }
-
-        return result;
-
-    }
-
-    private Integer indexOf(E element) throws VacioException, IndexListException, IllegalAccessException, NonExistentElementException, EmptyException, PositionException {
-        for (Integer i = 0; i < getSize(); i++) {
-            if (compareS(get(i), element) == 0) {
-                return i;
-            }
-        }
-        throw new NonExistentElementException(); // Cambiado a NonExistentElementException
-    }
 }

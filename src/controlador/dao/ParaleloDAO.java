@@ -61,11 +61,9 @@ public class ParaleloDAO extends AdaptadorDAO<Paralelo> {
         ParaleloDAO pd = new ParaleloDAO();
         pd.getParalelo().setId(1);
         pd.getParalelo().setNombre_paralelo("A");
-        pd.getParalelo().setHorario_paralelo(null);
         pd.guardar();
         pd.getParalelo().setId(2);
         pd.getParalelo().setNombre_paralelo("B");
-        pd.getParalelo().setHorario_paralelo(null);
         pd.guardar();
     }
 }

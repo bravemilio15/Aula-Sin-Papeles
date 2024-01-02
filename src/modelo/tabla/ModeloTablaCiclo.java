@@ -1,67 +1,75 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package modelo.tabla;
 
-import controlador.dao.MateriaDao;
 import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
 import javax.swing.table.AbstractTableModel;
-import modelo.Materia;
+import modelo.Ciclo;
 
-public class ModeloTablaMateria extends AbstractTableModel {
+/**
+ *
+ * @author cristian
+ */
+public class ModeloTablaCiclo extends AbstractTableModel {
 
-    public ListaEnlazada<Materia> datos;
+    private ListaEnlazada<Ciclo> datos;
 
-    public ListaEnlazada<Materia> getDatos() {
+    public ListaEnlazada<Ciclo> getDatos() {
         return datos;
     }
 
-    public void setDatos(ListaEnlazada<Materia> datos) {
+    public void setDatos(ListaEnlazada<Ciclo> datos) {
         this.datos = datos;
     }
 
     @Override
     public int getRowCount() {
+        if (datos == null) {
+            System.out.println("¡La lista de datos es nula!");
+            return 0;
+        }
         return datos.size();
     }
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 3;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         try {
-            Materia materia = datos.get(rowIndex);
-            MateriaDao md = new MateriaDao();
+            Ciclo d = datos.get(rowIndex);
+
             switch (columnIndex) {
                 case 0:
-                    return materia.getId();
+                    return d.getId();
                 case 1:
-                    return materia.getNombre();
+                    return d.getNombre_ciclo();
                 case 2:
-                    return materia.getCiclo().getNombre_ciclo();
-                case 3:
-                    return materia.getCategoria();
+                    return d.getDuracion();
             }
         } catch (EmptyException | PositionException ex) {
-
         }
         return null;
     }
 
-    @Override
-    public String getColumnName(int columnIndex) {
-        switch (columnIndex) {
+    public String getColumnName(int Column) {
+        switch (Column) {
             case 0:
                 return "ID";
             case 1:
                 return "Nombre";
             case 2:
-                return "Ciclo";
-            case 3:
-                return "Categoria";
+                return "Duracion";
+            
         }
+
         return null;
     }
+
 }

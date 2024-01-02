@@ -12,8 +12,8 @@ import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
 import modelo.Ciclo;
+
 import modelo.Materia;
-import modelo.Estudiante;
 
 /**
  *
@@ -21,14 +21,32 @@ import modelo.Estudiante;
  */
 public class ControlMateria {
 
+    private ListaEnlazada<Materia> materias;
     private MateriaDao materiaDao;
     private Materia materia;
+    
     private CicloDAO cd = new CicloDAO();
 
     public ControlMateria() {
         this.materiaDao = new MateriaDao();
     }
 
+    public ListaEnlazada<Materia> getMaterias() {
+        return materias;
+    }
+
+    public void setMaterias(ListaEnlazada<Materia> materias) {
+        this.materias = materias;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+    
     public MateriaDao getMateriaDao() {
         return materiaDao;
     }
@@ -36,116 +54,110 @@ public class ControlMateria {
     public void setMateriaDao(MateriaDao materiaDao) {
         this.materiaDao = materiaDao;
     }
+    
+    
+    public void guardarMateria(String nombreMateria, String categoriaMateria, Integer idCiclo) throws IOException, EmptyException, PositionException {
 
-    public Materia getMateria() {
-        if (materia == null) {
-            materia = new Materia();
-        }
-        return materia;
-    }
+        Ciclo ciclo = cd.obtenerCicloPorId(idCiclo);
 
-    public void setMateria(Materia materia) {
-        this.materia = materia;
-    }
+        if (ciclo == null) {
+            System.out.println("Error: Ciclo con ID " + idCiclo + " no encontrado. La materia no se guardará.");
+        } else {
 
-    public ListaEnlazada<Materia> listar() {
-        return materiaDao.listar();
-    }
+            Materia nuevaMateria = new Materia();
+            nuevaMateria.setId(materiaDao.generarId());
+            nuevaMateria.setNombre(nombreMateria);
+            nuevaMateria.setCategoria(categoriaMateria);
+            nuevaMateria.setCiclo(ciclo);
 
-    public void guardarMateria(String nombre, String categoria, String nombreCiclo) {
-        try {
+            try {
+                materiaDao.guardar(nuevaMateria);
 
-            Ciclo cicloAsociado = cd.obtenerCicloPorNombre(nombreCiclo);
-            if (cicloAsociado != null) {
-                if (materiaDao != null) {
-                    if (materiaDao.getMateria() != null) {
-                        materiaDao.getMateria().setNombre(nombre);
-                        materiaDao.getMateria().setCategoria(categoria);
-                        materiaDao.getMateria().setCiclo(cicloAsociado);
-                        try {
-                            materiaDao.guardar();
-                            System.out.println("Materia guardada exitosamente");
-                        } catch (IOException ex) {
-                            System.out.println("Error al guardar la materia: " + ex.getMessage());
-                        }
-                    } else {
-                        System.out.println("Error: materiaDao.getMateria() es null");
-                    }
-                } else {
-                    System.out.println("Error: materiaDao es null");
-                }
-            } else {
-                System.out.println("Ciclo no encontrado");
+                System.out.println("Materia guardada y asociada al ciclo exitosamente");
+            } catch (IOException ex) {
+                System.out.println("Error al guardar la materia: " + ex.getMessage());
             }
-        } catch (EmptyException | PositionException ex) {
-            System.out.println("Error al obtener el ciclo: " + ex.getMessage());
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EmptyException, PositionException, IOException {
         ControlMateria cm = new ControlMateria();
 
-        cm.guardarMateria("Diseno de Circuitos", "Basica", "Segundo");
-        cm.guardarMateria("Analisis Matematico", "Basica", "Segundo");
-        cm.guardarMateria("Teoria de la DIstribucion y probabilidad", "Basica", "Segundo");
-        cm.guardarMateria("Programacion Orientada a Objetos", "Basica", "Segundo");
-        cm.guardarMateria("Emprendimiento e Innovación Tecnológica", "Basica", "Segundo");
+//        cm.guardarCiclo("Primero", 120);
+//        cm.guardarCiclo("Segundo", 120);
+//        cm.guardarCiclo("Tercero", 120);
+//        cm.guardarCiclo("Cuarto", 120);
+//        cm.guardarCiclo("Quinto", 120);
+//        cm.guardarCiclo("Sexto", 120);
+//        cm.guardarCiclo("Septimo", 120);
+//        cm.guardarCiclo("Octavo", 120);
+//        cm.guardarCiclo("Noveno", 120);
+        cm.guardarMateria("Algebra Lineal", "Basica", 1);
+        cm.guardarMateria("Programacion", "Basica", 1);
+        cm.guardarMateria("Comunicacion", "Basica", 1);
+        cm.guardarMateria("Electricidad", "Basica", 1);
+        cm.guardarMateria("Matematicas Discretas", "Basica", 1);
 
-        cm.guardarMateria("Estructura de Datos", "Basica", "Tercero");
-        cm.guardarMateria("Requisitos de Sofware", "Basica", "Tercero");
-        cm.guardarMateria("Estadistica Analitica", "Basica", "Tercero");
-        cm.guardarMateria("Arquitectura de ordenadores", "Basica", "Tercero");
-        cm.guardarMateria("Base de Datos", "Basica", "Tercero");
+        cm.guardarMateria("Diseno de Circuitos", "Basica", 2);
+        cm.guardarMateria("Analisis Matematico", "Basica", 2);
+        cm.guardarMateria("Teoria de la DIstribucion y probabilidad", "Basica", 2);
+        cm.guardarMateria("Programacion Orientada a Objetos", "Basica", 2);
+        cm.guardarMateria("Emprendimiento e Innovación Tecnológica", "Basica", 2);
 
-        cm.guardarMateria("Complejidad Computacional", "Basica", "Cuarto");
-        cm.guardarMateria("Ecuaciones Diferenciales", "Basica", "Cuarto");
-        cm.guardarMateria("Diseño de Software", "Basica", "Cuarto");
-        cm.guardarMateria("Sistemas Operativos", "Basica", "Cuarto");
-        cm.guardarMateria("Metodología de la Investigación en Computación", "Basica", "Cuarto");
+        cm.guardarMateria("Estructura de Datos", "Basica", 3);
+        cm.guardarMateria("Requisitos de Sofware", "Basica", 3);
+        cm.guardarMateria("Estadistica Analitica", "Basica", 3);
+        cm.guardarMateria("Arquitectura de ordenadores", "Basica", 3);
+        cm.guardarMateria("Base de Datos", "Basica", 3);
 
-        cm.guardarMateria("Sistemas Digitales", "Basica", "Quinto");
-        cm.guardarMateria("Análisis Numérico", "Basica", "Quinto");
-        cm.guardarMateria("Desarrollo Basado en Plataformas", "Basica", "Quinto");
-        cm.guardarMateria("Simulación", "Basica", "Quinto");
-        cm.guardarMateria("Fundamentos de Redes de Comunicaciones", "Basica", "Quinto");
+        cm.guardarMateria("Complejidad Computacional", "Basica", 4);
+        cm.guardarMateria("Ecuaciones Diferenciales", "Basica", 4);
+        cm.guardarMateria("Diseño de Software", "Basica", 4);
+        cm.guardarMateria("Sistemas Operativos", "Basica", 4);
+        cm.guardarMateria("Metodología de la Investigación en Computación", "Basica", 4);
 
-        cm.guardarMateria("Teoría de Autómatas y Computabilidad Avanzada", "Basica", "Sexto");
-        cm.guardarMateria("Sistemas Distribuidos", "Basica", "Sexto");
-        cm.guardarMateria("Procesos de Software", "Basica", "Sexto");
-        cm.guardarMateria("Computación en la Nube", "Basica", "Sexto");
-        cm.guardarMateria("Gestión de Redes y Comunicaciones", "Basica", "Sexto");
-        cm.guardarMateria("Practicas Laborales", "Basica", "Sexto");
+        cm.guardarMateria("Sistemas Digitales", "Basica", 5);
+        cm.guardarMateria("Análisis Numérico", "Basica", 5);
+        cm.guardarMateria("Desarrollo Basado en Plataformas", "Basica", 5);
+        cm.guardarMateria("Simulación", "Basica", 5);
+        cm.guardarMateria("Fundamentos de Redes de Comunicaciones", "Basica", 5);
 
-        cm.guardarMateria("Algoritmos, Análisis y Programación Paralela", "Basica", "Septimo");
-        cm.guardarMateria("Seguridad de la Información", "Basica", "Septimo");
-        cm.guardarMateria("Proyectos Tecnológicos 1", "Basica", "Septimo");
+        cm.guardarMateria("Teoría de Autómatas y Computabilidad Avanzada", "Basica", 6);
+        cm.guardarMateria("Sistemas Distribuidos", "Basica", 6);
+        cm.guardarMateria("Procesos de Software", "Basica", 6);
+        cm.guardarMateria("Computación en la Nube", "Basica", 6);
+        cm.guardarMateria("Gestión de Redes y Comunicaciones", "Basica", 6);
+        cm.guardarMateria("Practicas Laborales", "Basica", 6);
 
-        cm.guardarMateria("Human-Computer Interaction", "Itinerario IA", "Septimo");
-        cm.guardarMateria("Data Mining", "Itinerario IA", "Septimo");
+        cm.guardarMateria("Algoritmos, Análisis y Programación Paralela", "Basica", 7);
+        cm.guardarMateria("Seguridad de la Información", "Basica", 7);
+        cm.guardarMateria("Proyectos Tecnológicos 1", "Basica", 7);
 
-        cm.guardarMateria("Software Engineering Models", "Itinerario Software", "Septimo");
-        cm.guardarMateria("Software Engineering Management", "Itinerario Software", "Septimo");
+        cm.guardarMateria("Human-Computer Interaction", "Itinerario IA", 7);
+        cm.guardarMateria("Data Mining", "Itinerario IA", 7);
 
-        cm.guardarMateria("Internet of Things", "Itinerario Aplicaciones", "Septimo");
-        cm.guardarMateria("Virtual Systems and Services", "Itinerario Aplicaciones", "Septimo");
+        cm.guardarMateria("Software Engineering Models", "Itinerario Software", 7);
+        cm.guardarMateria("Software Engineering Management", "Itinerario Software", 7);
 
-        cm.guardarMateria("Etica Profesional", "Basica", "Octavo");
-        cm.guardarMateria("Proyectos Tecnológicos 2", "Basica", "Octavo");
-        cm.guardarMateria("Servicio Comunitario 1", "Basica", "Octavo");
+        cm.guardarMateria("Internet of Things", "Itinerario Aplicaciones", 7);
+        cm.guardarMateria("Virtual Systems and Services", "Itinerario Aplicaciones", 7);
 
-        cm.guardarMateria("Machine Learningn", "Itinerario IA", "Octavo");
-        cm.guardarMateria("Human Perception in Computer Vision", "Itinerario IA", "Octavo");
+        cm.guardarMateria("Etica Profesional", "Basica", 8);
+        cm.guardarMateria("Proyectos Tecnológicos 2", "Basica", 8);
+        cm.guardarMateria("Servicio Comunitario 1", "Basica", 8);
 
-        cm.guardarMateria("Software Quality", "Itinerario Software", "Octavo");
-        cm.guardarMateria("Software Security", "Itinerario Software", "Octavo");
+        cm.guardarMateria("Machine Learningn", "Itinerario IA", 8);
+        cm.guardarMateria("Human Perception in Computer Vision", "Itinerario IA", 8);
 
-        cm.guardarMateria("Cybersecurity", "Itinerario Aplicaciones", "Octavo");
-        cm.guardarMateria("Data Science", "Itinerario Aplicaciones", "Octavo");
+        cm.guardarMateria("Software Quality", "Itinerario Software", 8);
+        cm.guardarMateria("Software Security", "Itinerario Software", 8);
 
-        cm.guardarMateria("Composición deTextos Científicos en Ingeniería", "Basica", "Noveno");
-        cm.guardarMateria("Laborales 2", "Basica", "Noveno");
-        cm.guardarMateria("Servicio Comunitario 2", "Basica", "Noveno");
-        cm.guardarMateria("Tranajo de Integracion Curricular", "Basica", "Noveno");
+        cm.guardarMateria("Cybersecurity", "Itinerario Aplicaciones", 8);
+        cm.guardarMateria("Data Science", "Itinerario Aplicaciones", 8);
 
+        cm.guardarMateria("Composición deTextos Científicos en Ingeniería", "Basica", 9);
+        cm.guardarMateria("Laborales 2", "Basica", 9);
+        cm.guardarMateria("Servicio Comunitario 2", "Basica", 9);
+        cm.guardarMateria("Tranajo de Integracion Curricular", "Basica", 9);
     }
 }

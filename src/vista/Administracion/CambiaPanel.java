@@ -32,4 +32,4 @@ public class CambiaPanel {
         this.container.repaint();
     }
 
-}//--> fin clase
+}
