@@ -4,12 +4,14 @@
  */
 package controlador.dao;
 
+import controlador.ControlMateria;
 import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
 import java.io.IOException;
 
 import modelo.Ciclo;
+import modelo.Materia;
 
 /**
  *
@@ -17,10 +19,19 @@ import modelo.Ciclo;
  */
 public class CicloDAO extends AdaptadorDAO<Ciclo> {
 
+    private ListaEnlazada<Ciclo> ciclos;
     private Ciclo ciclo;
 
     public CicloDAO() {
         super(Ciclo.class);
+    }
+
+    public ListaEnlazada<Ciclo> getCiclos() {
+        return ciclos;
+    }
+
+    public void setCiclos(ListaEnlazada<Ciclo> ciclos) {
+        this.ciclos = ciclos;
     }
 
     public Ciclo getCiclo() {
@@ -35,8 +46,21 @@ public class CicloDAO extends AdaptadorDAO<Ciclo> {
     }
 
     public void guardar() throws IOException {
-        ciclo.setId(generateID());
-        this.guardar(ciclo);
+        Integer idCiclo = generateID();
+        ciclo.setId(idCiclo);
+
+        try {
+            // Guardar el ciclo sin asociar las materias
+            this.guardar(ciclo);
+
+            // Actualizar el ciclo en la lista después de guardarlo
+            ciclo = obtener(idCiclo);
+
+            System.out.println("Ciclo guardado exitosamente. Asocie las materias más tarde.");
+
+        } catch (Exception e) {
+            System.out.println("Error en Guardar de CicloDAO");
+        }
     }
 
     public void modificar(Integer pos) throws EmptyException, PositionException, IOException {
@@ -47,19 +71,44 @@ public class CicloDAO extends AdaptadorDAO<Ciclo> {
         return listar().size() + 1;
     }
 
-    public Ciclo obtenerCicloPorNombre(String nombre) throws EmptyException, PositionException {
+    public Ciclo obtenerCicloPorId(Integer id) throws EmptyException, PositionException {
         ListaEnlazada<Ciclo> ciclos = listar();
         for (int i = 0; i < ciclos.size(); i++) {
             Ciclo ciclo = ciclos.get(i);
-            if (ciclo.getNombre_ciclo().equals(nombre)) {
+            if (ciclo.getId().equals(id)) {
                 return ciclo;
             }
         }
         return null; // Retornar null si no se encuentra
     }
 
-    public static void main(String[] args) throws IOException {
+    public int obtenerPosicionPorId(Integer id) throws EmptyException, PositionException {
+        ListaEnlazada<Ciclo> ciclos = listar();
+        for (int i = 0; i < ciclos.size(); i++) {
+            Ciclo ciclo = ciclos.get(i);
+            if (ciclo.getId().equals(id)) {
+                return i;
+            }
+        }
+        throw new EmptyException("Ciclo no encontrado");
+    }
+
+    public Ciclo obtenerCicloPorNombre(String nombreCiclo) throws EmptyException, PositionException {
+        ListaEnlazada<Ciclo> ciclos = listar();
+
+        for (int i = 0; i < ciclos.size(); i++) {
+            Ciclo ciclo = ciclos.get(i);
+            if (ciclo.getNombre_ciclo().equalsIgnoreCase(nombreCiclo)) {
+                return ciclo;
+            }
+        }
+
+        return null; // Retornar null si no se encuentra el ciclo con el nombre proporcionado
+    }
+
+    public static void main(String[] args) throws IOException, EmptyException, PositionException {
         CicloDAO cd = new CicloDAO();
+        MateriaDao md = new MateriaDao();
 
         cd.getCiclo().setId(1);
         cd.getCiclo().setNombre_ciclo("Primero");
@@ -97,7 +146,6 @@ public class CicloDAO extends AdaptadorDAO<Ciclo> {
         cd.getCiclo().setNombre_ciclo("Noveno");
         cd.getCiclo().setDuracion(120);
         cd.guardar();
-
     }
 
 }

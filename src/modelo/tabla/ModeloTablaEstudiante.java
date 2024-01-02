@@ -46,9 +46,9 @@ public class ModeloTablaEstudiante extends AbstractTableModel {
                 case 0:
                     return e.getId();
                 case 1:
-                    return e.getNombre();
+                    return e.getPrimer_nombre();
                 case 2:
-                    return e.getApellido();
+                    return e.getPrimer_apellido();
                 case 3:
                     return e.getCedula();
                 case 4:

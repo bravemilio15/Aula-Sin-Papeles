@@ -6,15 +6,10 @@ package modelo;
 
 import controlador.ed.lista.ListaEnlazada;
 
-/**
- *
- * @author cristian
- */
 public class Paralelo {
 
     private Integer id;
     private String nombre_paralelo;
-    private String horario_paralelo;
     private ListaEnlazada<Estudiante> estudiantes;
     private ListaEnlazada<Docente> docentes;
 
@@ -50,13 +45,7 @@ public class Paralelo {
         this.nombre_paralelo = nombre_paralelo;
     }
 
-    public String getHorario_paralelo() {
-        return horario_paralelo;
-    }
 
-    public void setHorario_paralelo(String horario_paralelo) {
-        this.horario_paralelo = horario_paralelo;
-    }
 
     public String toString() {
         return nombre_paralelo;

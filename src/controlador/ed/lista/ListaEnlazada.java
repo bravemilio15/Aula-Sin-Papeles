@@ -1,14 +1,18 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
+ * To change this license cabeceraer, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package controlador.ed.lista;
 
 import controlador.ed.lista.exception.EmptyException;
+import controlador.ed.lista.exception.IndexListException;
+import controlador.ed.lista.exception.NonExistentElementException;
 import controlador.ed.lista.exception.PositionException;
+import controlador.ed.lista.exception.VacioException;
+import java.lang.reflect.Field;
 import java.util.Iterator;
-
+import java.util.Random;
 
 /**
  *
@@ -17,6 +21,7 @@ import java.util.Iterator;
 public class ListaEnlazada<E> {
 
     private NodoLista<E> cabecera;
+    private NodoLista<E> last;
     private Integer size = 0;
 
     public NodoLista getCabecera() {
@@ -58,8 +63,39 @@ public class ListaEnlazada<E> {
         }
         return true;
     }
-    
-    
+
+    public void insertarFinal(E data) {
+        if (estaVacia()) {
+            insertar(data);
+        } else {
+            NodoLista<E> aux = new NodoLista<>(null, data);
+            last.setSig(aux);
+            last = aux;
+            size++;
+        }
+
+    }
+
+    public boolean contiene(E elemento) {
+        NodoLista<E> actual = cabecera;
+
+        while (actual != null) {
+            if (actual.getInfo().equals(elemento)) {
+                return true; // El elemento ya está en la lista
+            }
+            actual = actual.getSig();
+        }
+
+        return false; // El elemento no está en la lista
+    }
+
+    public E getLast() throws VacioException {
+        if (estaVacia()) {
+            throw new VacioException("Lista Vacia");
+        } else {
+            return last.getInfo();
+        }
+    }
 
     /**
      *
@@ -70,7 +106,7 @@ public class ListaEnlazada<E> {
         return size;
     }
 
-    public void imprimir() throws EmptyException{
+    public void imprimir() throws EmptyException {
         if (estaVacia()) {
             throw new EmptyException();
         } else {
@@ -96,7 +132,7 @@ public class ListaEnlazada<E> {
         }
     }
 
-    public void insertarPosicion(E info, Integer pos) throws PositionException{
+    public void insertarPosicion(E info, Integer pos) throws PositionException {
         if (estaVacia()) {
             insertar(info);
         } else if (pos >= 0 && pos < size() && pos == 0) {
@@ -179,28 +215,6 @@ public class ListaEnlazada<E> {
         this.size = 0;
     }
 
-    public E[] toArray() {
-        Class<E> clazz = null;
-        E[] matriz = null;
-        if (this.size > 0) {
-            matriz = (E[]) java.lang.reflect.Array.newInstance(cabecera.getInfo().getClass(), this.size);
-            NodoLista<E> aux = cabecera;
-            for (int i = 0; i < this.size; i++) {
-                matriz[i] = aux.getInfo();
-                aux = aux.getSig();
-            }
-        }
-        return matriz;
-    }
-
-    public ListaEnlazada<E> toList(E[] matriz) {
-        this.deleteAll();
-        for (int i = 0; i < matriz.length; i++) {
-            this.insertar(matriz[i]);
-        }
-        return this;
-    }
-
     public void update(Integer pos, E dato) throws EmptyException, PositionException {
         if (estaVacia()) {
             throw new EmptyException();
@@ -222,4 +236,29 @@ public class ListaEnlazada<E> {
         }
 
     }
+
+    public E[] toArray() {
+        Class clazz = null;
+        E[] matriz = null;
+        if (this.size > 0) {
+            clazz = cabecera.getInfo().getClass();
+            matriz = (E[]) java.lang.reflect.Array.newInstance(clazz, size);
+            NodoLista<E> aux = cabecera;
+            for (int i = 0; i < size; i++) {
+                matriz[i] = aux.getInfo();
+                aux = aux.getSig();
+            }
+        }
+        return matriz;
+    }
+
+    public ListaEnlazada<E> toList(E[] m) {
+        deleteAll();
+        for (int i = 0; i < m.length; i++) {
+            this.insertar(m[i]);
+        }
+
+        return this;
+    }
+
 }

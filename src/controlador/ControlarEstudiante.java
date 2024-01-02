@@ -5,11 +5,20 @@
 package controlador;
 
 import controlador.dao.EstudianteDao;
+import controlador.dao.MateriaDao;
 import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
+import controlador.ed.lista.exception.IndexListException;
+import controlador.ed.lista.exception.NonExistentElementException;
 import controlador.ed.lista.exception.PositionException;
+import controlador.ed.lista.exception.VacioException;
+import java.awt.List;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
 import modelo.Estudiante;
+import modelo.Materia;
 import modelo.Matricula;
 
 /**
@@ -59,17 +68,9 @@ public class ControlarEstudiante {
     }
 
     public void registrar() {
-
-        ListaEnlazada<Matricula> matriculas;
-        matriculas = new ListaEnlazada<>();
-
-        for (int i = 0; i < 3; i++) {
-            matriculas.insertar(new Matricula());
-        }
-        estudiante.setMatriculas(matriculas);
+        estudiante.setMatriculas(new ListaEnlazada<>());
         estudiante.setId(estudiantes.size() + 1);
         estudiantes.insertar(estudiante);
-
         guardarDao();
     }
 
@@ -90,21 +91,6 @@ public class ControlarEstudiante {
         }
     }
 
-    public void guardarMatricula(int pos, String carrera, String estado, String nivel) throws EmptyException, PositionException {
-
-        if (pos >= 0) {
-            if (estudiante != null) {
-                estudiante.getMatriculas().get(pos).setCarrera(carrera);
-                estudiante.getMatriculas().get(pos).setEstado(estado);
-                estudiante.getMatriculas().get(pos).setNivel_academico(nivel);
-                modificarDao(estudiante.getId() - 1);
-            } else {
-                throw new EmptyException("La sucursal esta vacia");
-            }
-        } else {
-            throw new PositionException("La posicion no existe");
-        }
-
-    }
+    
 
 }

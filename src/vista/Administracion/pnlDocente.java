@@ -48,7 +48,6 @@ public class pnlDocente extends javax.swing.JPanel {
         modelo.setDatos(control.getDocentes());
         tblUsuarios.setModel(modelo);
         tblUsuarios.updateUI();
-        actualizarTabla();
     }
 
     private void actualizarTabla() {
@@ -78,9 +77,14 @@ public class pnlDocente extends javax.swing.JPanel {
 
     private void guardar() throws IOException, EmptyException, PositionException {
         if (validar()) {
+            String[] nombres = txtNombre.getText().split("\\s+");
+            String[] apellidos = txtApellido.getText().split("\\s+");
 
-            control.getDocente().setNombre(txtNombre.getText());
-            control.getDocente().setApellido(txtApellido.getText());
+            control.getDocente().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
+            control.getDocente().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
+            control.getDocente().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
+            control.getDocente().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
+
             control.getDocente().setCedula(txtCedula.getText());
             control.getDocente().setCelular(txtCelular.getText());
             control.getDocente().setNacimiento(txtNacimiento.getText());
@@ -96,7 +100,7 @@ public class pnlDocente extends javax.swing.JPanel {
             control.getDocente().setGrado_academico((String) cbxGrado.getSelectedItem());
             control.getDocente().setEstado((String) cbxEstado.getSelectedItem());
 
-            control.guardarDao();
+            control.registrar();
             actualizarTabla();
             limpiar();
         } else {
@@ -114,8 +118,16 @@ public class pnlDocente extends javax.swing.JPanel {
                 Docente usuarioAModificar = modelo.getDatos().get(fila);
 
                 control.getDocente().setId(usuarioAModificar.getId());
-                control.getDocente().setNombre(txtNombre.getText());
-                control.getDocente().setApellido(txtApellido.getText());
+
+                // Dividir nombres y apellidos
+                String[] nombres = txtNombre.getText().split("\\s+");
+                String[] apellidos = txtApellido.getText().split("\\s+");
+
+                control.getDocente().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
+                control.getDocente().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
+                control.getDocente().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
+                control.getDocente().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
+
                 control.getDocente().setCedula(txtCedula.getText());
                 control.getDocente().setCelular(txtCelular.getText());
 
@@ -128,14 +140,13 @@ public class pnlDocente extends javax.swing.JPanel {
                     control.getDocente().setEdad(edad);
                     control.getDocente().setCorreoIns(txtInstitucional.getText());
                     control.getDocente().setCorreoPer(txtPersonal.getText());
-                    control.getDocente().setCiclo(usuarioAModificar.getCiclo());
-                    control.getDocente().setParalelo(usuarioAModificar.getParalelo());
 
                     control.getDocenteDao().modificar(pos);
                     actualizarTabla();
                 } else {
                     JOptionPane.showMessageDialog(null, "Ingrese una fecha de nacimiento válida", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -156,8 +167,8 @@ public class pnlDocente extends javax.swing.JPanel {
                 && !txtExperiencia.getText().trim().isEmpty()
                 && !txtEspecialidad.getText().trim().isEmpty()
                 && !cbxEstado.getSelectedItem().toString().isEmpty())
-                && Utilidades.validarCedula(txtCedula.getText())
-                && Utilidades.verificarCelular(txtCelular.getText())
+                //&& Utilidades.validarCedula(txtCedula.getText())
+                //&& Utilidades.verificarCelular(txtCelular.getText())
                 && Utilidades.validarCorreoInstitucional(txtInstitucional.getText())
                 && Utilidades.validarCorreoPersonal(txtPersonal.getText())
                 && Utilidades.validarEdad(txtEdad.getText())

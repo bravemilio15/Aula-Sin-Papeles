@@ -11,8 +11,10 @@ package modelo;
 public class Usuario {
 
     private Integer id;
-    private String nombre;
-    private String apellido;
+    private String primer_nombre;
+    private String segundo_nombre;
+    private String primer_apellido;
+    private String segundo_apellido;
     private String cedula;
     private String celular;
     private Integer edad;
@@ -75,20 +77,36 @@ public class Usuario {
         this.id = id;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getPrimer_nombre() {
+        return primer_nombre;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setPrimer_nombre(String primer_nombre) {
+        this.primer_nombre = primer_nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getSegundo_nombre() {
+        return segundo_nombre;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
+    public void setSegundo_nombre(String segundo_nombre) {
+        this.segundo_nombre = segundo_nombre;
+    }
+
+    public String getPrimer_apellido() {
+        return primer_apellido;
+    }
+
+    public void setPrimer_apellido(String primer_apellido) {
+        this.primer_apellido = primer_apellido;
+    }
+
+    public String getSegundo_apellido() {
+        return segundo_apellido;
+    }
+
+    public void setSegundo_apellido(String segundo_apellido) {
+        this.segundo_apellido = segundo_apellido;
     }
 
     public String getCedula() {

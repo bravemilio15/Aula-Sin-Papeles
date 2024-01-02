@@ -7,6 +7,7 @@ package modelo.tabla;
 import controlador.ed.lista.ListaEnlazada;
 import controlador.ed.lista.exception.EmptyException;
 import controlador.ed.lista.exception.PositionException;
+import java.util.stream.DoubleStream;
 import javax.swing.table.AbstractTableModel;
 import modelo.Docente;
 
@@ -16,7 +17,7 @@ import modelo.Docente;
  */
 public class ModeloTablaDocente extends AbstractTableModel {
 
-    ListaEnlazada<Docente> datos;
+    private ListaEnlazada<Docente> datos;
 
     public ListaEnlazada<Docente> getDatos() {
         return datos;
@@ -45,9 +46,9 @@ public class ModeloTablaDocente extends AbstractTableModel {
                 case 0:
                     return d.getId();
                 case 1:
-                    return d.getNombre();
+                    return d.getPrimer_nombre();
                 case 2:
-                    return d.getApellido();
+                    return d.getPrimer_apellido();
                 case 3:
                     return d.getCedula();
                 case 4:

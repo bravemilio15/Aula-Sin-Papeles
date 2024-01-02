@@ -4,6 +4,11 @@
  */
 package vista.utilidades;
 
+import controlador.dao.CicloDAO;
+import controlador.ed.lista.ListaEnlazada;
+import controlador.ed.lista.exception.EmptyException;
+import controlador.ed.lista.exception.PositionException;
+import controlador.ed.lista.exception.VacioException;
 import java.awt.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +20,7 @@ import java.util.Properties;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import modelo.Ciclo;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -149,6 +155,7 @@ public class Utilidades {
                     JOptionPane.ERROR_MESSAGE);
             return false;
         }
+
     }
 
     public static JDatePickerImpl createDatePicker() {
@@ -241,7 +248,7 @@ public class Utilidades {
         cbx.removeAllItems();
 
         cbx.addItem("Electricidad");
-        cbx.addItem("Matematicas Dsicretas");
+        cbx.addItem("Matematicas Discretas");
         cbx.addItem("Algebra Lineal");
         cbx.addItem("Teoria de la programcion");
         cbx.addItem("Comunicacion y redaccion tecnica");
@@ -251,7 +258,7 @@ public class Utilidades {
     public static void cargarSegundo(JComboBox cbx) {
         cbx.removeAllItems();
 
-        cbx.addItem("Estructura de datos");
+        cbx.addItem("Diseno de Circuitos");
         cbx.addItem("Analisis Matematico");
         cbx.addItem("Teoria de la DIstribucion y probabilidad");
         cbx.addItem("Programacion Orientada a Objetos");
@@ -262,7 +269,7 @@ public class Utilidades {
     public static void cargarTercero(JComboBox cbx) {
         cbx.removeAllItems();
 
-        cbx.addItem("Diseno de Circuitos");
+        cbx.addItem("Estructura de Datos");
         cbx.addItem("Requisitos de Sofware");
         cbx.addItem("Estadistica Analitica");
         cbx.addItem("Arquitectura de ordenadores");
@@ -481,92 +488,59 @@ public class Utilidades {
         }
     }
 
-    public static void cargarItinerarios(JComboBox cbx) {
-        cbx.removeAllItems();
-
-        cbx.addItem("Aplicaciones");
-        cbx.addItem("Inteligencia Artificial");
-        cbx.addItem("Software");
-
+    public static void cargarItinerariosComunes(JComboBox cbxItinerario) {
+        cbxItinerario.removeAllItems();
+        cbxItinerario.addItem("Aplicaciones");
+        cbxItinerario.addItem("Inteligencia Artificial");
+        cbxItinerario.addItem("Software");
     }
 
-    private static void cargarSeptimoItinerarios(JComboBox cbxItinerario) {
-        cargarSeptimoIA(cbxItinerario);
-        cargarSeptimoSof(cbxItinerario);
-        cargarSeptimoApli(cbxItinerario);
-    }
-
-    private static void cargarOctavoItinerarios(JComboBox cbxItinerario) {
-        // Lógica para cargar los itinerarios de octavo
-        cargarOctavoIA(cbxItinerario);
-        cargarOctavoSof(cbxItinerario);
-        cargarOctavoApli(cbxItinerario);
-    }
-
-    private static void cargarCursosIA(JComboBox cbxItinerarioSelec) {
-        cargarSeptimoIA(cbxItinerarioSelec);
-        cargarOctavoIA(cbxItinerarioSelec);
-        // Agrega más cursos específicos para IA según sea necesario
-    }
-
-    private static void cargarCursosSof(JComboBox cbxItinerarioSelec) {
-        cargarSeptimoSof(cbxItinerarioSelec);
-        cargarOctavoSof(cbxItinerarioSelec);
-        // Agrega más cursos específicos para Software según sea necesario
-    }
-
-    private static void cargarCursosApli(JComboBox cbxItinerarioSelec) {
-        cargarSeptimoApli(cbxItinerarioSelec);
-        cargarOctavoApli(cbxItinerarioSelec);
-
-    }
-
-    public static void cargarCursosPorCicloEItinerario(String cicloSeleccionado, String itinerarioSeleccionado, JComboBox cbxCurso) {
-        cbxCurso.removeAllItems();
+    public static void cargarCursosPorCicloEItinerario(String cicloSeleccionado,
+            String itinerarioSeleccionado, JComboBox cbxMateria, JComboBox cbxItinerario) {
+        cbxMateria.removeAllItems();
 
         switch (cicloSeleccionado) {
             case "Primero":
-                cargarPrimero(cbxCurso);
+                cargarPrimero(cbxMateria);
                 break;
             case "Segundo":
-                cargarSegundo(cbxCurso);
+                cargarSegundo(cbxMateria);
                 break;
             case "Tercero":
-                cargarTercero(cbxCurso);
+                cargarTercero(cbxMateria);
                 break;
             case "Cuarto":
-                cargarCuarto(cbxCurso);
+                cargarCuarto(cbxMateria);
                 break;
             case "Quinto":
-                cargarQuinto(cbxCurso);
+                cargarQuinto(cbxMateria);
                 break;
             case "Sexto":
-                cargarSexto(cbxCurso);
+                cargarSexto(cbxMateria);
                 break;
             case "Septimo":
-                cargarSeptimo(cbxCurso);
-                // Dependiendo del itinerario seleccionado, cargamos cursos específicos
+                cargarSeptimo(cbxMateria);
                 if (itinerarioSeleccionado.equals("Aplicaciones")) {
-                    cargarCursosApli(cbxCurso);
+                    cargarSeptimoApli(cbxItinerario);
                 } else if (itinerarioSeleccionado.equals("Inteligencia Artificial")) {
-                    cargarCursosIA(cbxCurso);
+                    cargarSeptimoIA(cbxItinerario);
                 } else if (itinerarioSeleccionado.equals("Software")) {
-                    cargarCursosSof(cbxCurso);
+                    cargarSeptimoSof(cbxItinerario);
                 }
                 break;
 
             case "Octavo":
-                cargarOctavo(cbxCurso);
+                cargarOctavo(cbxMateria);
                 if (itinerarioSeleccionado.equals("Aplicaciones")) {
-                    cargarCursosApli(cbxCurso);
+                    cargarOctavoApli(cbxItinerario);
                 } else if (itinerarioSeleccionado.equals("Inteligencia Artificial")) {
-                    cargarCursosIA(cbxCurso);
+                    cargarOctavoIA(cbxItinerario);
                 } else if (itinerarioSeleccionado.equals("Software")) {
-                    cargarCursosSof(cbxCurso);
+                    cargarOctavoSof(cbxItinerario);
                 }
                 break;
             case "Noveno":
-                cargarNoveno(cbxCurso);
+                cargarNoveno(cbxMateria);
                 break;
             default:
                 System.out.println("Escoga bien el Ciclo.");
@@ -574,13 +548,40 @@ public class Utilidades {
         }
     }
 
-    public static void main(String[] args) {
-        String cedula = "1105918419"; // C
-        if (validarCedula(cedula)) {
-            System.out.println("Cédula válida");
-        } else {
-            System.out.println("Cédula inválida");
+    public static void cargarCategoria(JComboBox cbx) {
+        cbx.removeAllItems();
+
+        cbx.addItem("Basica");
+        cbx.addItem("Itinerario IA");
+        cbx.addItem("Itinerario Software");
+        cbx.addItem("Itinerario Aplicaciones");
+
+    }
+
+    public static void cargarCiclosDisponibles(JComboBox cbxCensador) throws VacioException, EmptyException, PositionException {
+        CicloDAO csd = new CicloDAO();
+        cbxCensador.removeAllItems();
+
+
+        ListaEnlazada<Ciclo> ciclos = csd.listar();
+
+
+        if (ciclos != null) {
+            for (int i = 0; i < ciclos.getSize(); i++) {
+                Ciclo censador = ciclos.get(i);
+
+                if (censador != null) {
+                    cbxCensador.addItem(censador.getNombre_ciclo());
+                }
+            }
+            cbxCensador.updateUI();
         }
+    }
+
+    public static Ciclo getComboCiclos(JComboBox cbx) {
+        Object selectedObject = cbx.getSelectedItem();
+        System.out.println("Tipo de objeto seleccionado: " + selectedObject.getClass().getName());
+        return (Ciclo) selectedObject;
     }
 
 }
