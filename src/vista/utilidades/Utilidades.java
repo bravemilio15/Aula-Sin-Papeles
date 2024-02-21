@@ -6,6 +6,8 @@ package vista.utilidades;
 
 import contmallaador.aula.MallaDAO;
 import controlador.aula.CicloDAO;
+import controlador.aula.MateriaDAO;
+import controlador.aula.ParaleloDAO;
 import controlador.aula.RolDAO;
 import controlador.ed.listas.LinkedList;
 import java.awt.Component;
@@ -22,6 +24,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import modelo.Ciclo;
 import modelo.Malla;
+import modelo.Materia;
+import modelo.Paralelo;
 import modelo.Rol;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -435,8 +439,8 @@ public class Utilidades {
     public static void cargarExpediente(JComboBox cbx) {
         cbx.removeAllItems();
 
-        cbx.addItem("Activo");
         cbx.addItem("Inactivo");
+        cbx.addItem("Activo");
 
     }
 
@@ -645,6 +649,42 @@ public class Utilidades {
         }
     }
 
+    public static void cargarMateriasDisponibles(JComboBox cbxMaterias) throws Exception {
+        MateriaDAO materiaDAO = new MateriaDAO();
+        cbxMaterias.removeAllItems();
+
+        LinkedList<Materia> materias = materiaDAO.listar();
+
+        if (materias != null) {
+            for (int i = 0; i < materias.getSize(); i++) {
+                Materia materia = materias.get(i);
+
+                if (materia != null) {
+                    cbxMaterias.addItem(materia.getNombre());
+                }
+            }
+            cbxMaterias.updateUI();
+        }
+    }
+
+    public static void cargarParalelosDisponibles(JComboBox cbxParalelos) throws Exception {
+        ParaleloDAO paraleloDAO = new ParaleloDAO();
+        cbxParalelos.removeAllItems();
+
+        LinkedList<Paralelo> paralelos = paraleloDAO.listar();
+
+        if (paralelos != null) {
+            for (int i = 0; i < paralelos.getSize(); i++) {
+                Paralelo paralelo = paralelos.get(i);
+
+                if (paralelo != null) {
+                    cbxParalelos.addItem(paralelo.getNombre()); // Aquí se agrega el ID del paralelo
+                }
+            }
+            cbxParalelos.updateUI();
+        }
+    }
+
     public static String generarCodigo() {
         // Definir los caracteres permitidos en el código
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -665,9 +705,6 @@ public class Utilidades {
         // Devolver el código generado
         return codigo.toString();
     }
-    
-    
-    
 
     public static Ciclo getComboCiclos(JComboBox cbx) {
         Object selectedObject = cbx.getSelectedItem();

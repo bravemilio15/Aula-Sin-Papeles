@@ -97,64 +97,63 @@ public class pnlEstudiante extends javax.swing.JPanel {
     }
 
     private void guardar() {
-    try {
-        if (validar()) {
-            String modalidadSeleccionada = cbxModalidad.getSelectedItem().toString();
-            String[] nombres = txtNombre.getText().split("\\s+");
-            String[] apellidos = txtApellido.getText().split("\\s+");
-            String nombreRolSeleccionada = (String) cbxRol.getSelectedItem();
-            Integer idRolSeleccionada = rld.obtenerIdRolPorNombre(nombreRolSeleccionada);
+        try {
+            if (validar()) {
+                String modalidadSeleccionada = cbxModalidad.getSelectedItem().toString();
+                String[] nombres = txtNombre.getText().split("\\s+");
+                String[] apellidos = txtApellido.getText().split("\\s+");
+                String nombreRolSeleccionada = (String) cbxRol.getSelectedItem();
+                Integer idRolSeleccionada = rld.obtenerIdRolPorNombre(nombreRolSeleccionada);
 
-            if (idRolSeleccionada != null) {
-                ud.getUsuario().setPrimer_Nombre(nombres.length > 0 ? nombres[0] : "");
-                ud.getUsuario().setSegundo_Nombre(nombres.length > 1 ? nombres[1] : "");
-                ud.getUsuario().setPrimer_Apellido(apellidos.length > 0 ? apellidos[0] : "");
-                ud.getUsuario().setSegundo_Apellido(apellidos.length > 1 ? apellidos[1] : "");
-                ud.getUsuario().setDni(txtCedula.getText());
-                ud.getUsuario().setTelefono(txtCelular.getText());
-                ud.getUsuario().setFecha_Nacimiento(txtNacimiento.getText());
-                ud.getUsuario().setGenero((String) cbxGenero.getSelectedItem());
-                Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-                ud.getUsuario().setEdad(edad);
-                ud.getUsuario().setCorreo_Institucional(txtInstitucional.getText());
-                ud.getUsuario().setCorreo(txtPersonal.getText());
-                ud.getUsuario().setModalidad(modalidadSeleccionada);
-                ud.getUsuario().setEstado(cbxEstado.getSelectedIndex());
-                ud.getUsuario().setRol_Id(idRolSeleccionada);
-                Boolean usuarioGuardado = ud.save();
+                if (idRolSeleccionada != null) {
+                    ud.getUsuario().setPrimer_Nombre(nombres.length > 0 ? nombres[0] : "");
+                    ud.getUsuario().setSegundo_Nombre(nombres.length > 1 ? nombres[1] : "");
+                    ud.getUsuario().setPrimer_Apellido(apellidos.length > 0 ? apellidos[0] : "");
+                    ud.getUsuario().setSegundo_Apellido(apellidos.length > 1 ? apellidos[1] : "");
+                    ud.getUsuario().setDni(txtCedula.getText());
+                    ud.getUsuario().setTelefono(txtCelular.getText());
+                    ud.getUsuario().setFecha_Nacimiento(txtNacimiento.getText());
+                    ud.getUsuario().setGenero((String) cbxGenero.getSelectedItem());
+                    Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
+                    ud.getUsuario().setEdad(edad);
+                    ud.getUsuario().setCorreo_Institucional(txtInstitucional.getText());
+                    ud.getUsuario().setCorreo(txtPersonal.getText());
+                    ud.getUsuario().setModalidad(modalidadSeleccionada);
+                    ud.getUsuario().setEstado(cbxEstado.getSelectedIndex());
+                    ud.getUsuario().setRol_Id(idRolSeleccionada);
+                    Boolean usuarioGuardado = ud.save();
 
-                if (usuarioGuardado) {
-                    // Establecer la fecha de ingreso del estudiante con formato año-mes-día
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date fechaIngreso = new Date();
-                    String fechaIngresoFormateada = dateFormat.format(fechaIngreso);
-                    ed.getEstudiante().setFecha_Ingreso(dateFormat.parse(fechaIngresoFormateada)); // Corrección aquí
+                    if (usuarioGuardado) {
+                        // Establecer la fecha de ingreso del estudiante con formato año-mes-día
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        Date fechaIngreso = new Date();
+                        String fechaIngresoFormateada = dateFormat.format(fechaIngreso);
+                        ed.getEstudiante().setFecha_Ingreso(dateFormat.parse(fechaIngresoFormateada)); // Corrección aquí
 
-                    Integer idUnico = ud.getUsuario().getUsuario_Id();
-                    ed.getEstudiante().setEstudiante_Id(idUnico);
-                    cuentad.getCuenta().setCuenta_Id(idUnico);
-                    String claveAleatoria = ClaveEncriptada.generarClaveAlfanumerica();
-                    String claveEncriptada = ClaveEncriptada.encriptar(claveAleatoria);
-                    cuentad.getCuenta().setClave(claveEncriptada);
-                    cuentad.getCuenta().setNombre(txtInstitucional.getText());
-                    cuentad.getCuenta().setUsuario_Id(idUnico);
-                    ed.save();
-                    cuentad.save();
-                    limpiar();
-                    JOptionPane.showMessageDialog(null, "Usuario, estudiante y cuenta creados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error al guardar el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                        Integer idUnico = ud.getUsuario().getUsuario_Id();
+                        ed.getEstudiante().setEstudiante_Id(idUnico);
+                        cuentad.getCuenta().setCuenta_Id(idUnico);
+                        String claveAleatoria = ClaveEncriptada.generarClaveAlfanumerica();
+                        String claveEncriptada = ClaveEncriptada.encriptar(claveAleatoria);
+                        cuentad.getCuenta().setClave(claveEncriptada);
+                        cuentad.getCuenta().setNombre(txtInstitucional.getText());
+                        cuentad.getCuenta().setUsuario_Id(idUnico);
+                        ed.save();
+                        cuentad.save();
+                        limpiar();
+                        JOptionPane.showMessageDialog(null, "Usuario, estudiante y cuenta creados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al guardar el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de guardar.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar. Revise los datos e intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace(); // Puedes imprimir la traza para identificar el origen del error
         }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error al guardar. Revise los datos e intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace(); // Puedes imprimir la traza para identificar el origen del error
     }
-}
-
 
     /**
      * This method is called from within the constructor to initialize the form.

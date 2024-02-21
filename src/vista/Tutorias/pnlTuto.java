@@ -13,13 +13,17 @@ import controlador.aula.RolDAO;
 import controlador.aula.TutoriaDAO;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.tabla.ModeloTablaTutorias;
 import vista.utilidades.Utilidades;
 
 public class pnlTuto extends javax.swing.JPanel {
 
     private int pos = -1;
-    
+
     private CicloDAO cd = new CicloDAO();
     private ParaleloDAO pd = new ParaleloDAO();
     private CuentaDAO cuentad = new CuentaDAO();
@@ -33,29 +37,41 @@ public class pnlTuto extends javax.swing.JPanel {
      */
     public pnlTuto() {
         initComponents();
-        cargarCombos();
+        cargarCombo();
 
     }
-    
-    public void cargarCombos() {
-        Utilidades.cargarMaterias(cbxCiclo.getSelectedItem().toString(), cbxMaterias);
-        Utilidades.cargarParalelo(cbxParalelo);
-        Utilidades.cargarCiclos(cbxCiclo);
-        cbxCiclo.addItemListener(new ItemListener() {
-            
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    // Cuando se selecciona un ciclo, cargar las materias correspondientes
-                    try {
-                        String cicloSeleccionado = cbxCiclo.getSelectedItem().toString();
-                        Utilidades.cargarMaterias(cicloSeleccionado, cbxMaterias);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
+
+    public void cargarCombo() {
+        try {
+            Utilidades.cargarMateriasDisponibles(cbxMateria);
+        } catch (Exception ex) {
+            Logger.getLogger(pnlTuto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void Guardar() {
+
+        try {
+            td.getTutoria().setComentario(txtComentario.getText());
+            td.getTutoria().setEstado(0);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String fecha = dateFormat.format(new Date()); // Obtener fecha actual en el formato deseado
+
+            try {
+                Date fechaDate = dateFormat.parse(fecha); // Convertir la cadena de fecha a Date
+                td.getTutoria().setFecha(fechaDate); // Asignar la fecha a Tutoria
+            } catch (Exception e) {
+                // Manejar cualquier excepción de análisis de fecha aquí
+                e.printStackTrace(); // o Log.error("Error parsing date", e);
             }
-        });
+
+            td.getTutoria().setMateria_Id(cbxMateria.getSelectedIndex());
+            td.getTutoria().setTemaGeneral(txtTemaGeneral.getText());
+            td.save();
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -71,19 +87,15 @@ public class pnlTuto extends javax.swing.JPanel {
         tblMatriculas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         txtTemaGeneral = new javax.swing.JTextField();
-        cbxMaterias = new javax.swing.JComboBox<>();
-        cbxParalelo = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtDescripcion = new javax.swing.JTextArea();
+        txtComentario = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
         txtFecha = new javax.swing.JTextField();
-        cbxCiclo = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        cbxMateria = new javax.swing.JComboBox<>();
 
         tblMatriculas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -107,25 +119,15 @@ public class pnlTuto extends javax.swing.JPanel {
         jLabel2.setForeground(new java.awt.Color(0, 153, 255));
         jLabel2.setText("TEMA GENERAL");
 
-        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel3.setText("MATERIA");
-
-        jLabel4.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel4.setText("CURSO");
-
         jLabel5.setForeground(new java.awt.Color(0, 153, 255));
         jLabel5.setText("DESCRIPCION");
 
         jLabel6.setForeground(new java.awt.Color(0, 153, 255));
         jLabel6.setText("FECHA");
 
-        cbxMaterias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Base de Datos", "Estructura de Datos" }));
-
-        cbxParalelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        txtDescripcion.setColumns(20);
-        txtDescripcion.setRows(5);
-        jScrollPane2.setViewportView(txtDescripcion);
+        txtComentario.setColumns(20);
+        txtComentario.setRows(5);
+        jScrollPane2.setViewportView(txtComentario);
 
         jButton1.setText("Guardar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -134,10 +136,10 @@ public class pnlTuto extends javax.swing.JPanel {
             }
         });
 
-        cbxCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel3.setForeground(new java.awt.Color(0, 153, 255));
+        jLabel3.setText("MATERIA");
 
-        jLabel7.setForeground(new java.awt.Color(0, 153, 255));
-        jLabel7.setText("CICLO");
+        cbxMateria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -148,33 +150,21 @@ public class pnlTuto extends javax.swing.JPanel {
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel6)
-                                .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(jLabel5)))
-                        .addGap(27, 27, 27))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)))
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel5))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxMaterias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2)
-                    .addComponent(cbxParalelo, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtTemaGeneral, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                    .addComponent(cbxCiclo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cbxMateria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(32, 32, 32))
         );
         layout.setVerticalGroup(
@@ -187,52 +177,40 @@ public class pnlTuto extends javax.swing.JPanel {
                     .addComponent(jLabel2)
                     .addComponent(txtTemaGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(cbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(cbxMaterias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addComponent(cbxParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(21, 21, 21))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
+        Guardar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> cbxCiclo;
-    private javax.swing.JComboBox<String> cbxMaterias;
-    private javax.swing.JComboBox<String> cbxParalelo;
+    private javax.swing.JComboBox<String> cbxMateria;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblMatriculas;
-    private javax.swing.JTextArea txtDescripcion;
+    private javax.swing.JTextArea txtComentario;
     private javax.swing.JTextField txtFecha;
     private javax.swing.JTextField txtTemaGeneral;
     // End of variables declaration//GEN-END:variables

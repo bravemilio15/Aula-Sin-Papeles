@@ -7,9 +7,12 @@ package vista.Administracion;
 
 import contdocenteador.aula.DocenteDAO;
 import controlador.aula.MateriaDAO;
+import controlador.aula.UsuarioDAO;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import javax.swing.JOptionPane;
 import modelo.Docente;
+import modelo.Materia;
 import modelo.tabla.ModeloTablaDocente;
 import vista.utilidades.Utilidades;
 
@@ -22,6 +25,7 @@ public class pnlAsignar extends javax.swing.JPanel {
     private DocenteDAO dd = new DocenteDAO();
     private ModeloTablaDocente modeloDocente = new ModeloTablaDocente();
     private MateriaDAO materiad = new MateriaDAO();
+    private UsuarioDAO ud = new UsuarioDAO();
     private Integer pos = -1;
 
     public pnlAsignar() {
@@ -37,36 +41,62 @@ public class pnlAsignar extends javax.swing.JPanel {
     }
 
     private void cargarCombos() {
-        Utilidades.cargarCriterio(cbxCriterio);
-        Utilidades.cargarCiclos(cbxCiclos);
-
-        // Agregar un listener al ComboBox de ciclos
-        cbxCiclos.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    // Cuando se selecciona un ciclo, cargar las materias correspondientes
-                    try {
-                        String cicloSeleccionado = cbxCiclos.getSelectedItem().toString();
-                        Utilidades.cargarMaterias(cicloSeleccionado, cbxMateria);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-
         try {
-            String cicloSeleccionado = cbxCiclos.getSelectedItem().toString();
-            Utilidades.cargarMaterias(cicloSeleccionado, cbxMateria);
+            Utilidades.cargarMateriasDisponibles(cbxMateria);
         } catch (Exception e) {
-            e.printStackTrace();
         }
+
     }
 
     private void limpiar() {
         cargarCombos();
         cargarTablaDocente();
+    }
+
+    private void asignarMateria() {
+        // Obtener la fila seleccionada en la tabla
+        int filaSeleccionada = tblDocentes.getSelectedRow();
+
+        // Verificar si se seleccionó una fila válida
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un docente de la tabla.", "Seleccionar Docente", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+       
+        Object value = tblDocentes.getValueAt(filaSeleccionada, 0);
+        System.out.println("Valor de la celda: " + value); // Imprime el valor de la celda
+
+        int idDocenteSeleccionado;
+
+
+        try {
+            idDocenteSeleccionado = Integer.parseInt(value.toString());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener el ID del docente seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+// Ahora puedes continuar con el resto del código sabiendo que idDocenteSeleccionado tiene un valor válido
+        // Obtener la materia seleccionada del ComboBox
+        String nombreMateria = (String) cbxMateria.getSelectedItem();
+
+        // Realizar la modificación en la base de datos o donde sea necesario
+        try {
+            MateriaDAO materiaDAO = new MateriaDAO();
+            Materia materia = materiaDAO.obtenerPorNombre(nombreMateria);
+            materia.setDocente_Id(idDocenteSeleccionado);
+            materiaDAO.modificar(materia);
+
+            JOptionPane.showMessageDialog(this, "La materia ha sido asignada al docente correctamente.", "Asignación Exitosa", JOptionPane.INFORMATION_MESSAGE);
+
+            // Limpia la selección del ComboBox de materias
+            cbxMateria.setSelectedIndex(-1);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al asignar la materia al docente: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+        }
     }
 
     /**
@@ -86,11 +116,8 @@ public class pnlAsignar extends javax.swing.JPanel {
         btnBuscar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblDocentes = new javax.swing.JTable();
-        btnMatricula = new javax.swing.JButton();
         panelMatri1 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        cbxCiclos = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         cbxMateria = new javax.swing.JComboBox<>();
         btnGuardar = new javax.swing.JButton();
@@ -164,18 +191,7 @@ public class pnlAsignar extends javax.swing.JPanel {
         ));
         jScrollPane3.setViewportView(tblDocentes);
 
-        btnMatricula.setText("Seleccionar Docente");
-        btnMatricula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMatriculaActionPerformed(evt);
-            }
-        });
-
         panelMatri1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-
-        jLabel1.setText("Ciclos");
-
-        cbxCiclos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel7.setText("Materia");
 
@@ -192,33 +208,23 @@ public class pnlAsignar extends javax.swing.JPanel {
                         .addComponent(jLabel9))
                     .addGroup(panelMatri1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(panelMatri1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMatri1Layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbxCiclos, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panelMatri1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cbxMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cbxMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelMatri1Layout.setVerticalGroup(
             panelMatri1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelMatri1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelMatri1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(cbxCiclos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addContainerGap(29, Short.MAX_VALUE)
                 .addGroup(panelMatri1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(cbxMateria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(54, 54, 54)
                 .addComponent(jLabel9))
         );
 
-        btnGuardar.setText("guardar");
+        btnGuardar.setText("Asignar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
@@ -239,8 +245,7 @@ public class pnlAsignar extends javax.swing.JPanel {
                         .addComponent(panelMatri1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnGuardar)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnMatricula)))
+                        .addGap(9, 9, 9)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -250,14 +255,14 @@ public class pnlAsignar extends javax.swing.JPanel {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 10, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 10, Short.MAX_VALUE)
+                        .addComponent(panelMatri1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnMatricula)
-                            .addComponent(btnGuardar))
-                        .addContainerGap())
-                    .addComponent(panelMatri1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnGuardar)
+                        .addGap(20, 20, 20))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -290,24 +295,16 @@ public class pnlAsignar extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void btnMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatriculaActionPerformed
-
-
-    }//GEN-LAST:event_btnMatriculaActionPerformed
-
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-
+        asignarMateria();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnMatricula;
-    private javax.swing.JComboBox<String> cbxCiclos;
     private javax.swing.JComboBox<String> cbxCriterio;
     private javax.swing.JComboBox<String> cbxMateria;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

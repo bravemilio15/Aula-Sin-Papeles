@@ -48,7 +48,6 @@ public class pnlTutorias extends javax.swing.JPanel {
         tblTutorias = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         btnCrearTutoria = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
 
@@ -76,8 +75,6 @@ public class pnlTutorias extends javax.swing.JPanel {
             }
         });
 
-        jButton1.setText("Desactivar");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,9 +85,7 @@ public class pnlTutorias extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(btnCrearTutoria)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1))
+                        .addComponent(btnCrearTutoria))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 761, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
@@ -100,8 +95,7 @@ public class pnlTutorias extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(btnCrearTutoria)
-                    .addComponent(jButton1))
+                    .addComponent(btnCrearTutoria))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
@@ -122,7 +116,6 @@ public class pnlTutorias extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearTutoria;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblTutorias;

@@ -45,28 +45,11 @@ public class DocenteDAO extends AdaptadorDao<Docente> {
     }
 
     public Integer save() throws Exception {
-        docente.setDocente_Id(generated_id());
         return guardar(docente);
     }
 
     public void update() throws Exception {
         modificar(docente);
-    }
-
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
-
-        if (!listar().isEmpty()) {
-            Docente[] docentes = listar().toArray();
-            for (int i = 0; i < docentes.length; i++) {
-                if (id.intValue() == docentes[i].getDocente_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
-            }
-        }
-        return index;
-
     }
 
     
@@ -89,6 +72,5 @@ public class DocenteDAO extends AdaptadorDao<Docente> {
 //        docente.setNombre("Secretaria");
 //        docente.setDescripcion("Es Secretaria");
 //        r.modificar(docente);
-
     }
 }

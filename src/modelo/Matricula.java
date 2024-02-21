@@ -11,7 +11,7 @@ package modelo;
 public class Matricula {
 
     private Integer matricula_Id;
-    private String nivelAcademico;
+    private String nivel_Academico;
     private Integer estado;
 
     public Integer getMatricula_Id() {
@@ -22,12 +22,12 @@ public class Matricula {
         this.matricula_Id = matricula_Id;
     }
 
-    public String getNivelAcademico() {
-        return nivelAcademico;
+    public String getNivel_Academico() {
+        return nivel_Academico;
     }
 
-    public void setNivelAcademico(String nivelAcademico) {
-        this.nivelAcademico = nivelAcademico;
+    public void setNivel_Academico(String nivel_Academico) {
+        this.nivel_Academico = nivel_Academico;
     }
 
     public Integer getEstado() {
@@ -37,8 +37,5 @@ public class Matricula {
     public void setEstado(Integer estado) {
         this.estado = estado;
     }
-    
-    
-
 
 }

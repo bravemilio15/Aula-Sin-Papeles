@@ -8,11 +8,11 @@ package modelo;
  *
  * @author Bravo
  */
-public class Docente  {
+public class Docente {
 
     private String especialidad;
-    private String experienciaEducativa;
-    private String gradoAcademico;
+    private String experiencia_Educativa;
+    private String grado_Academico;
     private Integer docente_Id;
 
     public Docente() {
@@ -26,20 +26,20 @@ public class Docente  {
         this.especialidad = especialidad;
     }
 
-    public String getExperienciaEducativa() {
-        return experienciaEducativa;
+    public String getExperiencia_Educativa() {
+        return experiencia_Educativa;
     }
 
-    public void setExperienciaEducativa(String experienciaEducativa) {
-        this.experienciaEducativa = experienciaEducativa;
+    public void setExperiencia_Educativa(String experiencia_Educativa) {
+        this.experiencia_Educativa = experiencia_Educativa;
     }
 
-    public String getGradoAcademico() {
-        return gradoAcademico;
+    public String getGrado_Academico() {
+        return grado_Academico;
     }
 
-    public void setGradoAcademico(String gradoAcademico) {
-        this.gradoAcademico = gradoAcademico;
+    public void setGrado_Academico(String grado_Academico) {
+        this.grado_Academico = grado_Academico;
     }
 
     public Integer getDocente_Id() {

@@ -33,7 +33,7 @@ public class ModeloTablaMatricula extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 2;
+        return 3;
     }
 
     @Override
@@ -43,9 +43,11 @@ public class ModeloTablaMatricula extends AbstractTableModel {
 
             switch (columnIndex) {
                 case 0:
-                    return m.getEstado();
+                    return m.getMatricula_Id();
                 case 1:
-                    return m.getNivelAcademico();
+                    return convertirEstado(m.getEstado());
+                case 2:
+                    return m.getNivel_Academico();
 
             }
         } catch (Exception ex) {
@@ -53,12 +55,18 @@ public class ModeloTablaMatricula extends AbstractTableModel {
         return null;
     }
 
+    private String convertirEstado(int estado) {
+        // Convertir el valor del estado a un String representativo
+        return estado == 0 ? "Activa" : "Inactiva";
+    }
+
     public String getColumnName(int Column) {
         switch (Column) {
-
             case 0:
-                return "Estado de Matricula";
+                return "Matricula";
             case 1:
+                return "Estado de Matricula";
+            case 2:
                 return "Nivel Academico";
 
         }

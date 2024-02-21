@@ -44,28 +44,11 @@ public class EstudianteDAO extends AdaptadorDao<Estudiante> {
     }
 
     public Integer save() throws Exception {
-        estudiante.setEstudiante_Id(generated_id());
         return guardar(estudiante);
     }
 
     public void update() throws Exception {
         modificar(estudiante);
-    }
-
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
-
-        if (!listar().isEmpty()) {
-            Estudiante[] estudiantes = listar().toArray();
-            for (int i = 0; i < estudiantes.length; i++) {
-                if (id.intValue() == estudiantes[i].getEstudiante_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
-            }
-        }
-        return index;
-
     }
 
     public static void main(String[] args) throws Exception {

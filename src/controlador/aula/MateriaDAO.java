@@ -5,6 +5,7 @@
 package controlador.aula;
 
 import controlador.dao.*;
+import controlador.ed.ecepciones.VacioException;
 import controlador.ed.listas.LinkedList;
 import modelo.Ciclo;
 import modelo.Materia;
@@ -53,20 +54,26 @@ public class MateriaDAO extends AdaptadorDao<Materia> {
         modificar(materia);
     }
 
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
-
-        if (!listar().isEmpty()) {
-            Materia[] materias = listar().toArray();
-            for (int i = 0; i < materias.length; i++) {
-                if (id.intValue() == materias[i].getMateria_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
+    public Integer buscarIdMateria(Materia materiaSeleccionada) throws Exception {
+        LinkedList<Materia> materias = listar();
+        for (int i = 0; i < materias.getSize(); i++) {
+            Materia materia = materias.get(i);
+            if (materia.getNombre().equals(materiaSeleccionada.getNombre())) {
+                return materia.getMateria_Id();
             }
         }
-        return index;
+        throw new Exception("La materia seleccionada no se encuentra en la base de datos.");
+    }
 
+    public Materia obtenerPorNombre(String nombreMateria) throws VacioException {
+        LinkedList<Materia> materias = listar();
+        for (int i = 0; i < materias.getSize(); i++) {
+            Materia materia = materias.get(i);
+            if (materia.getNombre().equals(nombreMateria)) {
+                return materia;
+            }
+        }
+        return null; // Si no se encuentra ninguna materia con el nombre proporcionado
     }
 
 }

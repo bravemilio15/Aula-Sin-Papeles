@@ -4,6 +4,11 @@
  */
 package vista;
 
+import controlador.aula.CuentaDAO;
+import controlador.aula.UsuarioDAO;
+import controlador.dao.ControllerCuenta;
+import controlador.dao.ControllerUsuario;
+import controlador.ed.listas.LinkedList;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -12,6 +17,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
+import modelo.Cuenta;
+import modelo.Usuario;
 
 /**
  *
@@ -19,14 +26,15 @@ import javax.swing.text.PlainDocument;
  */
 public class PrincipalLogin extends javax.swing.JDialog {
 
-    /**
-     * Creates new form PrincipalLogin
-     */
+    UsuarioDAO ud = new UsuarioDAO();
+     ControllerCuenta cd = new ControllerCuenta();
+    ControllerUsuario uds = new ControllerUsuario();
+
     public PrincipalLogin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        limitarCampoTexto(txtCedula, 10);
-        pack();
+  
+   
         setLocationRelativeTo(null);
         cerrarTodo();
 
@@ -46,53 +54,42 @@ public class PrincipalLogin extends javax.swing.JDialog {
         System.exit(0);
     }
 
-    private void limitarCampoTexto(JTextField textField, int maxLength) {
-        PlainDocument document = (PlainDocument) textField.getDocument();
-        document.setDocumentFilter(new DocumentFilter() {
-            @Override
-            public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                if ((fb.getDocument().getLength() + string.length()) <= maxLength && string.matches("\\d*")) {
-                    super.insertString(fb, offset, string, attr);
+   
+
+   public void ingresar() {
+        String usuario = txtUsuario.getText();
+        String clave = txtClave.getText();
+
+        try {
+            if (cd.login(usuario, clave)) {
+
+                if (uds.validadorRol(usuario) == 3) {
+                    PrincipalAdministracion frmPersona = new PrincipalAdministracion();
+                    this.dispose();
+                    frmPersona.setVisible(true);
+                } else if (uds.validadorRol(usuario) == 1) {
+                    
+                    PrincipalTutorias frmEva = new PrincipalTutorias();
+                    this.dispose();
+                    frmEva.setVisible(true);
+                    this.dispose();
+                } else {
+                    PrincipalTutoriasDocentes frmPersona = new PrincipalTutoriasDocentes();
+                    frmPersona.setVisible(true);
+                    this.dispose();
                 }
+
+                JOptionPane.showMessageDialog(null,
+                        "Ingresado Correcto",
+                        "GUD", JOptionPane.INFORMATION_MESSAGE);
             }
-
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                int currentLength = fb.getDocument().getLength();
-                int overLimit = (currentLength + text.length()) - maxLength - length;
-                if (overLimit > 0) {
-                    text = text.substring(0, text.length() - overLimit);
-                }
-                if (text.length() > 0 && text.matches("\\d*")) {
-                    super.replace(fb, offset, length, text, attrs);
-                }
-            }
-        });
-    }
-
-    public void ingresar() {
-        String cedulaIngresada = txtCedula.getText();
-        String contraIngresada = txtContra.getText();
-
-        if (cedulaIngresada.equals("1") && contraIngresada.equals("admin")) {
-            PrincipalAdministracion frmPersona = new PrincipalAdministracion();
-            this.dispose();
-            frmPersona.setVisible(true);
-
-        } else if (cedulaIngresada.equals("2") && contraIngresada.equals("estudi")) {
-            PrincipalTutorias frmEva = new PrincipalTutorias();
-            this.dispose();
-            frmEva.setVisible(true);
-            this.dispose();
-        } else if (cedulaIngresada.equals("3") && contraIngresada.equals("profe")) {
-            PrincipalTutorias frmEva = new PrincipalTutorias();
-            this.dispose();
-            frmEva.setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error al Ingresar, No Existe Cuenta",
+                    "BAD", JOptionPane.ERROR_MESSAGE);
 
         }
+
     }
 
     /**
@@ -107,10 +104,10 @@ public class PrincipalLogin extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtCedula = new javax.swing.JTextField();
+        txtUsuario = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         btnIngresar = new javax.swing.JButton();
-        txtContra = new javax.swing.JPasswordField();
+        txtClave = new javax.swing.JPasswordField();
         selector = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -122,7 +119,7 @@ public class PrincipalLogin extends javax.swing.JDialog {
         jLabel2.setText("INICIAR SESIÓN");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
-        jLabel3.setText("Cedula");
+        jLabel3.setText("Usuario");
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 11)); // NOI18N
         jLabel4.setText("Contrasena");
@@ -152,12 +149,12 @@ public class PrincipalLogin extends javax.swing.JDialog {
                         .addGap(65, 65, 65)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(selector))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel3)
-                                .addComponent(txtCedula)
+                                .addComponent(txtUsuario)
                                 .addComponent(jLabel4)
                                 .addComponent(btnIngresar, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -173,12 +170,12 @@ public class PrincipalLogin extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addGap(9, 9, 9)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtContra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(selector))
                 .addGap(46, 46, 46)
                 .addComponent(btnIngresar)
@@ -211,9 +208,9 @@ public class PrincipalLogin extends javax.swing.JDialog {
 
     private void selectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectorActionPerformed
         if (selector.isSelected()) {
-            txtContra.setEchoChar((char) 0);
+            txtClave.setEchoChar((char) 0);
         } else {
-            txtContra.setEchoChar('*');
+            txtClave.setEchoChar('*');
         }
     }//GEN-LAST:event_selectorActionPerformed
 
@@ -267,7 +264,7 @@ public class PrincipalLogin extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JCheckBox selector;
-    private javax.swing.JTextField txtCedula;
-    private javax.swing.JPasswordField txtContra;
+    private javax.swing.JPasswordField txtClave;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

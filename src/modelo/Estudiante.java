@@ -8,6 +8,7 @@ package modelo;
  *
  * @author Bravo
  */
+import controlador.aula.UsuarioDAO;
 import java.util.Date;
 
 public class Estudiante {
@@ -39,5 +40,4 @@ public class Estudiante {
     public void setMatricula_Id(Integer matricula_Id) {
         this.matricula_Id = matricula_Id;
     }
-
 }

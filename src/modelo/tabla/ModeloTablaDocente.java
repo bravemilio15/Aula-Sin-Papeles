@@ -6,6 +6,7 @@ package modelo.tabla;
 
 
 
+import controlador.aula.UsuarioDAO;
 import controlador.ed.listas.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.Docente;
@@ -17,6 +18,7 @@ import modelo.Docente;
 public class ModeloTablaDocente extends AbstractTableModel {
 
     private LinkedList<Docente> datos;
+    private UsuarioDAO ud = new UsuarioDAO();
 
     public LinkedList<Docente> getDatos() {
         return datos;
@@ -33,40 +35,49 @@ public class ModeloTablaDocente extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 5;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
+        if (datos == null) {
+            System.out.println("¡La lista de datos es nula!");
+            return null;
+        }
+
         try {
             Docente d = datos.get(rowIndex);
 
             switch (columnIndex) {
                 case 0:
-                    return d.getPrimer_Nombre();
+                    return d.getDocente_Id();
                 case 1:
-                    return d.getPrimer_Apellido();
+                    return ud.obtenerNombrePorIdDocente(d.getDocente_Id());
                 case 2:
-                    return d.getDni();
+                    return ud.obtenerApellidoPorIdDocente(d.getDocente_Id());
                 case 3:
-                    return d.getGradoAcademico();
+                    return ud.obtenerDniPorIdDocente(d.getDocente_Id());
+                case 4:
+                    return d.getEspecialidad();
             }
         } catch (Exception ex) {
-            System.out.println("Error" + ex);
+            System.out.println("Error en tablaDocentes: " + ex.getMessage());
         }
+
         return null;
     }
 
     public String getColumnName(int Column) {
         switch (Column) {
-
             case 0:
-                return "Nombre";
+                return "id";
             case 1:
-                return "Apellido";
+                return "Nombre";
             case 2:
-                return "Cedula";
+                return "Apellido";
             case 3:
+                return "Cedula";
+            case 4:
                 return "Grado Academico";
         }
 

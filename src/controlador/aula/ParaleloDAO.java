@@ -52,20 +52,37 @@ public class ParaleloDAO extends AdaptadorDao<Paralelo> {
         modificar(paralelo);
     }
 
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
-
-        if (!listar().isEmpty()) {
-            Paralelo[] paralelos = listar().toArray();
-            for (int i = 0; i < paralelos.length; i++) {
-                if (id.intValue() == paralelos[i].getParalelo_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
+    public Paralelo obtenerParaleloPorNombre(String nombreParalelo) throws Exception {
+        LinkedList<Paralelo> paralelos = listar();
+        for (int i = 0; i < paralelos.getSize(); i++) {
+            Paralelo paralelo = paralelos.get(i);
+            if (paralelo.getNombre().equals(nombreParalelo)) {
+                return paralelo;
             }
         }
-        return index;
+        return null; // Si no se encuentra el paralelo, devolvemos null
+    }
 
+    public Integer buscarIdParalelo(Paralelo paraleloSeleccionado) throws Exception {
+        LinkedList<Paralelo> paralelos = listar();
+        for (int i = 0; i < paralelos.getSize(); i++) {
+            Paralelo paralelo = paralelos.get(i);
+            if (paralelo.getNombre().equals(paraleloSeleccionado.getNombre())) {
+                return paralelo.getParalelo_Id();
+            }
+        }
+        throw new Exception("El paralelo seleccionado no se encuentra en la base de datos.");
+    }
+    
+    public Paralelo obtenerPorNombre(String nombreParalelo) throws Exception {
+        LinkedList<Paralelo> materias = listar();
+        for (int i = 0; i < materias.getSize(); i++) {
+            Paralelo materia = materias.get(i);
+            if (materia.getNombre().equals(nombreParalelo)) {
+                return materia;
+            }
+        }
+        return null; // Si no se encuentra ninguna materia con el nombre proporcionado
     }
 
     public static void main(String[] args) throws Exception {

@@ -77,4 +77,11 @@ public class Materia {
         this.docente_Id = docente_Id;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
+    
+    
 }

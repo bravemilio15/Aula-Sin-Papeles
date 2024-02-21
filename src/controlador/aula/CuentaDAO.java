@@ -51,40 +51,29 @@ public class CuentaDAO extends AdaptadorDao<Cuenta> {
     public void update() throws Exception {
         modificar(cuenta);
     }
+    
+    public boolean verificarCuenta(String nombre, String clave) {
 
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
+        var cuentas = listar();
 
-        if (!listar().isEmpty()) {
-            Cuenta[] cuentas = listar().toArray();
-            for (int i = 0; i < cuentas.length; i++) {
-                if (id.intValue() == cuentas[i].getCuenta_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
-            }
+        if(cuentas.isEmpty()) return false;
+
+        try {
+            
+            cuentas.mergeSort("nombre", true);
+            
+            cuenta = cuentas.binarySearch("nombre", nombre);
+            
+            if(cuenta == null) return false;
+        
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-        return index;
+
+        return cuenta.getClave().equals(clave);
 
     }
+    
+    
 
-    public static void main(String[] args) throws Exception {
-        CuentaDAO r = new CuentaDAO();
-
-//                r.getCuenta().setNombre("Estudiante");
-//                r.getCuenta().setDescripcion("Es Estudiante");
-//                r.save();
-//                r.getCuenta().setNombre("Docente");
-//                r.getCuenta().setDescripcion("Es Docente");
-//                r.save();
-//                
-//                r.getCuenta().setNombre("Secretaria");
-//                r.getCuenta().setDescripcion("Es secre");
-//                r.save();
-//                var cuenta = r.obtener(3);
-//                System.out.println(cuenta);
-//                cuenta.setNombre("Secretaria");
-//                cuenta.setDescripcion("Es Secretaria");
-//                r.modificar(cuenta);
-    }
 }

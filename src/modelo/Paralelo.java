@@ -32,4 +32,11 @@ public class Paralelo {
         this.nombre = nombre;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
+    
+    
 }

@@ -4,6 +4,7 @@ import controlador.aula.UsuarioDAO;
 import controlador.ed.listas.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.Estudiante;
+import modelo.Usuario;
 
 public class ModeloTablaEstudiante extends AbstractTableModel {
 
@@ -44,7 +45,6 @@ public class ModeloTablaEstudiante extends AbstractTableModel {
 
         try {
             Estudiante e = datos.get(rowIndex);
-            
 
             switch (columnIndex) {
                 case 0:

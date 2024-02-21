@@ -46,6 +46,8 @@ public class ModeloTablaMateria extends AbstractTableModel {
         }
         return null;
     }
+    
+
 
     @Override
     public String getColumnName(int columnIndex) {

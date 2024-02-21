@@ -120,21 +120,19 @@ public class RolDAO extends AdaptadorDao<Rol> {
     public static void main(String[] args) throws Exception {
         RolDAO r = new RolDAO();
 
-//                r.getRol().setNombre("Estudiante");
-//                r.getRol().setDescripcion("Es Estudiante");
-//                r.save();
-//                r.getRol().setNombre("Docente");
-//                r.getRol().setDescripcion("Es Docente");
-//                r.save();
-//                
-//                r.getRol().setNombre("Secretaria");
-//                r.getRol().setDescripcion("Es secre");
-//                r.save();
-        var rol = r.obtener(3);
-        System.out.println(rol);
-        rol.setNombre("Secretaria");
-        rol.setDescripcion("Es Secretaria");
-        r.modificar(rol);
+                r.getRol().setNombre("Administrador");
+                r.getRol().setDescripcion("Es ADmin");
+                r.save();
+    
+              
+               // r.getRol().setNombre("Secretaria");
+                //r.getRol().setDescripcion("Es secre");
+                //r.save();
+//        var rol = r.obtener(3);
+  //      System.out.println(rol);
+    //    rol.setNombre("Secretaria");
+      //  rol.setDescripcion("Es Secretaria");
+        //r.modificar(rol);
 
     }
 }

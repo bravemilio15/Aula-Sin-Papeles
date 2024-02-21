@@ -5,7 +5,6 @@
 package controlador.aula;
 
 import controlador.dao.*;
-import controlador.ed.ecepciones.VacioException;
 import controlador.ed.listas.LinkedList;
 import modelo.Usuario;
 
@@ -53,29 +52,13 @@ public class UsuarioDAO extends AdaptadorDao<Usuario> {
         modificar(usuario);
     }
 
-    private Integer BuscarIndex(Integer id) {
-        Integer index = -1;
-
-        if (!listar().isEmpty()) {
-            Usuario[] usuarios = listar().toArray();
-            for (int i = 0; i < usuarios.length; i++) {
-                if (id.intValue() == usuarios[i].getUsuario_Id().intValue()) {
-                    index = 1;
-                    break;
-                }
-            }
-        }
-        return index;
-
-    }
-
     public String obtenerNombrePorIdEstudiante(Integer idEstudiante) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
 
         for (int i = 0; i < usuarios.getSize(); i++) {
             Usuario usuario = usuarios.get(i);
 
             if (usuario.getUsuario_Id().equals(idEstudiante)) {
-
                 return usuario.getPrimer_Nombre();
             }
         }
@@ -83,14 +66,13 @@ public class UsuarioDAO extends AdaptadorDao<Usuario> {
         return null;
     }
 
-// Método para obtener el apellido del estudiante por su ID
     public String obtenerApellidoPorIdEstudiante(Integer idEstudiante) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
 
         for (int i = 0; i < usuarios.getSize(); i++) {
             Usuario usuario = usuarios.get(i);
 
             if (usuario.getUsuario_Id().equals(idEstudiante)) {
-
                 return usuario.getPrimer_Apellido();
             }
         }
@@ -99,10 +81,12 @@ public class UsuarioDAO extends AdaptadorDao<Usuario> {
     }
 
     public String obtenerDniPorIdEstudiante(Integer idEstudiante) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+
         for (int i = 0; i < usuarios.getSize(); i++) {
             Usuario usuario = usuarios.get(i);
-            if (usuario.getUsuario_Id().equals(idEstudiante)) {
 
+            if (usuario.getUsuario_Id().equals(idEstudiante)) {
                 return usuario.getDni();
             }
         }
@@ -110,24 +94,132 @@ public class UsuarioDAO extends AdaptadorDao<Usuario> {
         return null;
     }
 
-//    public static void main(String[] args) throws Exception {
-//
-//        UsuarioDAO usuario = new UsuarioDAO();
-//
-//        usuario.getUsuario().setDni("1105918419");
-//        usuario.getUsuario().setPrimer_Nombre("Emilio");
-//        usuario.getUsuario().setSegundo_Nombre("Andres");
-//        usuario.getUsuario().setPrimer_Apellido("Bravo");
-//        usuario.getUsuario().setSegundo_Apellido("Herrera");
-//        usuario.getUsuario().setGenero("Masculino");
-//        usuario.getUsuario().setCorreo("@example.com");
-//        usuario.getUsuario().setCorreo_Institucional("perez@institucion.edu");
-//        usuario.getUsuario().setTelefono("123456789");
-//        usuario.getUsuario().setEstado(1);
-//        usuario.getUsuario().setRol_Id(1);
-//
-//        usuario.save();
-//
-//
-//    }
+    public String obtenerNombrePorIdDocente(Integer idDocente) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+
+            if (usuario.getUsuario_Id().equals(idDocente)) {
+                return usuario.getPrimer_Nombre();
+            }
+        }
+
+        return null;
+    }
+
+    public String obtenerApellidoPorIdDocente(Integer idDocente) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+
+            if (usuario.getUsuario_Id().equals(idDocente)) {
+                return usuario.getPrimer_Apellido();
+            }
+        }
+
+        return null;
+    }
+
+    public String obtenerDniPorIdDocente(Integer idDocente) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+
+            if (usuario.getUsuario_Id().equals(idDocente)) {
+                return usuario.getDni();
+            }
+        }
+
+        return null;
+    }
+
+    public LinkedList<Usuario> buscarPorNombre(String nombre) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+        LinkedList<Usuario> resultados = new LinkedList<>();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getPrimer_Nombre().equalsIgnoreCase(nombre)
+                    || (usuario.getSegundo_Nombre() != null && usuario.getSegundo_Nombre().equalsIgnoreCase(nombre))) {
+                resultados.add(usuario);
+            }
+        }
+
+        // Verificar si hay usuarios con ambos nombres
+        LinkedList<Usuario> resultadosFiltrados = new LinkedList<>();
+        for (int i = 0; i < resultados.getSize(); i++) {
+            Usuario usuario = resultados.get(i);
+            // Buscar otros usuarios con el mismo ID (mismo usuario)
+            boolean mismoId = true;
+            for (int j = 0; j < resultados.getSize(); j++) {
+                Usuario otroUsuario = resultados.get(j);
+                if (!usuario.getUsuario_Id().equals(otroUsuario.getUsuario_Id())) {
+                    mismoId = false;
+                    break;
+                }
+            }
+            // Si todos los resultados tienen el mismo ID, agregarlos a los resultados filtrados
+            if (mismoId) {
+                resultadosFiltrados.add(usuario);
+            }
+        }
+
+        return resultadosFiltrados;
+    }
+
+    public LinkedList<Usuario> buscarPorCedula(String cedula) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+        LinkedList<Usuario> resultados = new LinkedList<>();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getDni().equalsIgnoreCase(cedula)) {
+                resultados.add(usuario);
+            }
+        }
+
+        return resultados;
+    }
+
+    public Usuario buscarPorId(Integer idUsuario) throws Exception {
+        LinkedList<Usuario> usuarios = listar();
+
+        for (int i = 0; i < usuarios.getSize(); i++) {
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getUsuario_Id().equals(idUsuario)) {
+                return usuario;
+            }
+        }
+
+        return null; // Retornar null si no se encuentra ningún usuario con el ID especificado
+    }
+
+    public Usuario verificarRol(String atributo, Object rol) {
+        crear();
+        var usuarios = listar();
+
+
+        try {
+
+            usuarios.mergeSort(atributo, true);
+
+            usuario = usuarios.binarySearch(atributo, rol);
+
+  
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        return usuario;
+
+    }
+    
+    private void crear(){
+        usuario = new Usuario();
+        
+    }
+
 }
