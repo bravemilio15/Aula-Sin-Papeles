@@ -5,16 +5,9 @@
  */
 package vista.Tutorias;
 
-import vista.Administracion.*;
-import controlador.ControlarMatricula;
-import java.io.IOException;
-import java.net.URISyntaxException;
+import controlador.aula.TutoriaDAO;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import modelo.Matricula;
-import modelo.tabla.ModeloTablaEstudiante;
-import modelo.tabla.ModeloTablaMatricula;
-import vista.utilidades.Utilidades;
+import modelo.tabla.ModeloTablaTutorias;
 
 /**
  *
@@ -22,17 +15,25 @@ import vista.utilidades.Utilidades;
  */
 public class pnlTutorias extends javax.swing.JPanel {
 
-    private ModeloTablaMatricula modelo = new ModeloTablaMatricula();
-    private ControlarMatricula control = new ControlarMatricula();
-    private ModeloTablaEstudiante modeloE = new ModeloTablaEstudiante();
+    private int pos = -1;
+    private ModeloTablaTutorias modelo = new ModeloTablaTutorias();
+    private TutoriaDAO td = new TutoriaDAO();
 
     /**
      * Creates new form pnlHome
      */
     public pnlTutorias() {
         initComponents();
+        cargarTutorias();
 
     }
+    
+     public void cargarTutorias() {
+        modelo.setDatos(td.listar());
+        tblTutorias.setModel(modelo);
+        tblTutorias.updateUI();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -110,7 +111,7 @@ public class pnlTutorias extends javax.swing.JPanel {
     private void btnCrearTutoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearTutoriaActionPerformed
         pnlTuto crearTutorias = new pnlTuto();
         JFrame frame = new JFrame("Crear Tutoría");
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Cierra solo la ventana actual al hacer clic en cerrar
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         frame.getContentPane().add(crearTutorias);
         frame.pack();
         frame.setLocationRelativeTo(null); // Centra el frame en la pantalla

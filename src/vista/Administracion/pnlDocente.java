@@ -5,23 +5,11 @@
  */
 package vista.Administracion;
 
-import controlador.ControlarDocente;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import modelo.Ciclo;
+import contdocenteador.aula.DocenteDAO;
+import controlador.aula.CuentaDAO;
+import controlador.aula.RolDAO;
 import modelo.Docente;
-import modelo.Estudiante;
-import modelo.Paralelo;
 import modelo.tabla.ModeloTablaDocente;
-import org.jdatepicker.impl.JDatePickerImpl;
 import vista.utilidades.Utilidades;
 
 /**
@@ -31,7 +19,9 @@ import vista.utilidades.Utilidades;
 public class pnlDocente extends javax.swing.JPanel {
 
     private ModeloTablaDocente modelo = new ModeloTablaDocente();
-    private ControlarDocente control = new ControlarDocente();
+    private DocenteDAO dd = new DocenteDAO();
+    private CuentaDAO cuentad = new CuentaDAO();
+    private RolDAO rld = new RolDAO();
     private int pos = -1;
 
     /**
@@ -39,21 +29,17 @@ public class pnlDocente extends javax.swing.JPanel {
      */
     public pnlDocente() {
         initComponents();
-        initDatePickerForNacimiento();
-        cargarTabla();
-        cargarCombos();
+        limpiar();
     }
-
-    private void cargarTabla() {
-        modelo.setDatos(control.getDocentes());
+    
+    
+     private void cargarTabla() {
+        modelo.setDatos(dd.getDocentes());
         tblUsuarios.setModel(modelo);
         tblUsuarios.updateUI();
     }
 
-    private void actualizarTabla() {
-        tblUsuarios.setModel(modelo);
-        tblUsuarios.updateUI();
-    }
+
 
     private void cargarCombos() {
         Utilidades.cargarGenero(cbxGenero);
@@ -73,134 +59,8 @@ public class pnlDocente extends javax.swing.JPanel {
         txtInstitucional.setText("");
         txtEspecialidad.setText("");
         txtExperiencia.setText("");
-    }
-
-    private void guardar() throws IOException, EmptyException, PositionException {
-        if (validar()) {
-            String[] nombres = txtNombre.getText().split("\\s+");
-            String[] apellidos = txtApellido.getText().split("\\s+");
-
-            control.getDocente().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
-            control.getDocente().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
-            control.getDocente().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
-            control.getDocente().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
-
-            control.getDocente().setCedula(txtCedula.getText());
-            control.getDocente().setCelular(txtCelular.getText());
-            control.getDocente().setNacimiento(txtNacimiento.getText());
-            control.getDocente().setGenero((String) cbxGenero.getSelectedItem());
-
-            Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-            control.getDocente().setEdad(edad);
-
-            control.getDocente().setCorreoIns(txtInstitucional.getText());
-            control.getDocente().setCorreoPer(txtPersonal.getText());
-            control.getDocente().setEspecialidad(txtEspecialidad.getText());
-            control.getDocente().setExperiencia_educativa(txtExperiencia.getText());
-            control.getDocente().setGrado_academico((String) cbxGrado.getSelectedItem());
-            control.getDocente().setEstado((String) cbxEstado.getSelectedItem());
-
-            control.registrar();
-            actualizarTabla();
-            limpiar();
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de guardar.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void modificarUsuario() {
-        int fila = tblUsuarios.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            try {
-                Docente usuarioAModificar = modelo.getDatos().get(fila);
-
-                control.getDocente().setId(usuarioAModificar.getId());
-
-                // Dividir nombres y apellidos
-                String[] nombres = txtNombre.getText().split("\\s+");
-                String[] apellidos = txtApellido.getText().split("\\s+");
-
-                control.getDocente().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
-                control.getDocente().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
-                control.getDocente().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
-                control.getDocente().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
-
-                control.getDocente().setCedula(txtCedula.getText());
-                control.getDocente().setCelular(txtCelular.getText());
-
-                String fechaNacimiento = txtNacimiento.getText();
-                if (!fechaNacimiento.isEmpty()) {
-                    control.getDocente().setNacimiento(fechaNacimiento);
-
-                    control.getDocente().setGenero((String) cbxGenero.getSelectedItem());
-                    Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-                    control.getDocente().setEdad(edad);
-                    control.getDocente().setCorreoIns(txtInstitucional.getText());
-                    control.getDocente().setCorreoPer(txtPersonal.getText());
-
-                    control.getDocenteDao().modificar(pos);
-                    actualizarTabla();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ingrese una fecha de nacimiento válida", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    private Boolean validar() {
-        return (!txtNombre.getText().trim().isEmpty()
-                && !txtApellido.getText().trim().isEmpty()
-                && !txtCedula.getText().trim().isEmpty()
-                && !txtCelular.getText().trim().isEmpty()
-                && !txtNacimiento.getText().trim().isEmpty()
-                && !txtPersonal.getText().trim().isEmpty()
-                && !txtInstitucional.getText().trim().isEmpty()
-                && cbxEstado.getSelectedItem() != null
-                && cbxGrado.getSelectedItem() != null
-                && cbxGenero.getSelectedItem() != null
-                && !txtExperiencia.getText().trim().isEmpty()
-                && !txtEspecialidad.getText().trim().isEmpty()
-                && !cbxEstado.getSelectedItem().toString().isEmpty())
-                //&& Utilidades.validarCedula(txtCedula.getText())
-                //&& Utilidades.verificarCelular(txtCelular.getText())
-                && Utilidades.validarCorreoInstitucional(txtInstitucional.getText())
-                && Utilidades.validarCorreoPersonal(txtPersonal.getText())
-                && Utilidades.validarEdad(txtEdad.getText())
-                && Utilidades.validarNombresApellidos(txtNombre.getText(), txtApellido.getText());
-
-    }
-
-    private void initDatePickerForNacimiento() {
-        JDatePickerImpl datePicker = Utilidades.createDatePicker();
-
-        datePicker.addActionListener(e -> {
-            Date selectedDate = (Date) datePicker.getModel().getValue();
-            txtNacimiento.setText(Utilidades.formatDateString(selectedDate, "yyyy-MM-dd"));
-            actualizarEdad();
-        });
-
-        txtNacimiento.setEditable(false);
-        txtEdad.setEditable(false);
-
-        txtNacimiento.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    Utilidades.showDatePickerPopup(txtNacimiento, datePicker);
-                }
-            }
-        });
-    }
-
-    private void actualizarEdad() {
-        Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-        txtEdad.setText(edad.toString());
+        cargarTabla();
+        cargarCombos();
     }
 
     /**
@@ -240,6 +100,8 @@ public class pnlDocente extends javax.swing.JPanel {
         jLabel10 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtExperiencia = new javax.swing.JTextArea();
+        jLabel11 = new javax.swing.JLabel();
+        cbxRol = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
@@ -295,32 +157,16 @@ public class pnlDocente extends javax.swing.JPanel {
         txtExperiencia.setRows(5);
         jScrollPane2.setViewportView(txtExperiencia);
 
+        jLabel11.setText("ROL");
+
+        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(txtInstitucional, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(txtPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(38, 38, 38)
-                                .addComponent(lblNombre2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -351,19 +197,45 @@ public class pnlDocente extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtEdad, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel9)
-                        .addGap(26, 26, 26)
-                        .addComponent(txtEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(74, 74, 74)
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbxGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 907, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 907, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addGap(47, 47, 47)
+                            .addComponent(jLabel9)
+                            .addGap(26, 26, 26)
+                            .addComponent(txtEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(74, 74, 74)
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbxGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel7)
+                            .addGap(18, 18, 18)
+                            .addComponent(txtInstitucional, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(27, 27, 27)
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addGap(75, 75, 75)
+                                    .addComponent(jLabel4)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(txtPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(38, 38, 38)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel11)
+                                        .addGroup(jPanel3Layout.createSequentialGroup()
+                                            .addComponent(lblNombre2)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(cbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -399,13 +271,20 @@ public class pnlDocente extends javax.swing.JPanel {
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblNombre2)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(cbxGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txtEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addComponent(cbxGrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11))))
+                .addGap(12, 12, 12)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -496,19 +375,11 @@ public class pnlDocente extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        try {
-            guardar();
-        } catch (IOException ex) {
-            Logger.getLogger(pnlDocente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (EmptyException ex) {
-            Logger.getLogger(pnlDocente.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PositionException ex) {
-            Logger.getLogger(pnlDocente.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        modificarUsuario();
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
 
@@ -518,8 +389,10 @@ public class pnlDocente extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JComboBox<String> cbxGenero;
     private javax.swing.JComboBox<String> cbxGrado;
+    private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

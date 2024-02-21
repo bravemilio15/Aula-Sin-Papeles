@@ -5,38 +5,31 @@
  */
 package controlador.dao;
 
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
+import controlador.ed.ecepciones.PosicionException;
+import controlador.ed.ecepciones.VacioException;
+import controlador.ed.listas.LinkedList;
 import java.io.IOException;
-
 
 /**
  *
- * @author cristian
+ * @author walter
  */
-public interface InterfazDAO <T>{
+public interface InterfazDao<T> {
     /**
-     * Metodo que permite guardar
+     * Metodo que permite realizar el guardaddo
      * @param obj Objeto del modelo
+     * @return El id generado producto del guardado
      */
-    public void guardar(T obj) throws IOException;
+    public Integer guardar(T obj) throws Exception;
     /**
      * Permite modificar los datos en un repositorio de datos
-     * @param obj Objeto a modificar
-     * @param pos posicion del arreglo
+     * @param obj Objeto a modificar     
      */
-    public void modificar(T obj, Integer pos) throws EmptyException, PositionException,IOException;
+    public void modificar(T obj) throws Exception;
     /**
-     * Permite listar los elementos
-     * @return una lista enlazada
+     * LIstado de objetos en la BD
+     * @return Una LinkedList
      */
-    public ListaEnlazada<T> listar();
-    /**
-     * Permite obtener un elemento del arreglo
-     * @param id Posicion
-     * @return returna un dato
-     */
+    public LinkedList<T> listar();
     public T obtener(Integer id);
-      
 }

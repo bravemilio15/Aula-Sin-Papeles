@@ -1,20 +1,37 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
-
+/**
+ *
+ * @author Bravo
+ */
 public class Ciclo {
 
-    //Ciclo
-    private Integer id;
+    private Integer ciclo_Id;
+    private String nombre;
     private Integer duracion;
-    private String nombre_ciclo;
+    private Integer malla_Id;
 
-    public Integer getId() {
-        return id;
+    public Ciclo() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getCiclo_Id() {
+        return ciclo_Id;
+    }
+
+    public void setCiclo_Id(Integer ciclo_Id) {
+        this.ciclo_Id = ciclo_Id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public Integer getDuracion() {
@@ -25,17 +42,12 @@ public class Ciclo {
         this.duracion = duracion;
     }
 
-    public String getNombre_ciclo() {
-        return nombre_ciclo;
+    public Integer getMalla_Id() {
+        return malla_Id;
     }
 
-    public void setNombre_ciclo(String nombre_ciclo) {
-        this.nombre_ciclo = nombre_ciclo;
-    }
-
-    @Override
-    public String toString() {
-        return "Nombre:" + nombre_ciclo;
+    public void setMalla_Id(Integer malla_Id) {
+        this.malla_Id = malla_Id;
     }
 
 }

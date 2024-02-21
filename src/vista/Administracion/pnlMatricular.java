@@ -5,39 +5,20 @@
  */
 package vista.Administracion;
 
-import controlador.ControlarEstudiante;
-import controlador.ControlarMatricula;
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.IndexListException;
-import controlador.ed.lista.exception.NonExistentElementException;
-import controlador.ed.lista.exception.PositionException;
-import controlador.ed.lista.exception.VacioException;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.IOException;
-import java.time.LocalTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import modelo.Ciclo;
-import modelo.Estudiante;
-import modelo.Matricula;
+import controlador.aula.EstudianteDAO;
+import controlador.aula.MateriaDAO;
+import controlador.aula.MatriculaDAO;
 import modelo.tabla.ModeloTablaEstudiante;
 import modelo.tabla.ModeloTablaMatricula;
 import vista.utilidades.Utilidades;
-import static vista.utilidades.Utilidades.cargarCursosPorCicloEItinerario;
 
-/**
- *
- * @author cristian
- */
 public class pnlMatricular extends javax.swing.JPanel {
 
     private ModeloTablaMatricula modeloMatricula = new ModeloTablaMatricula();
-    private ControlarMatricula controlMatricula = new ControlarMatricula();
-    private ControlarEstudiante controlEstudiante;
+    private MatriculaDAO md = new MatriculaDAO();
+    private EstudianteDAO ed = new EstudianteDAO();
     private ModeloTablaEstudiante modeloEstudiante = new ModeloTablaEstudiante();
+    private MateriaDAO materiad = new MateriaDAO();
     private Integer pos = -1;
 
     /**
@@ -45,36 +26,22 @@ public class pnlMatricular extends javax.swing.JPanel {
      */
     public pnlMatricular() {
         initComponents();
-        controlEstudiante = new ControlarEstudiante();
-        cargarCombos();
-        cargarTablaEstudiante();
-        cargarTablaMatricula();
-        desabilitarPanel();
+        limpiar();
 
     }
 
     private void cargarTablaEstudiante() {
-        modeloEstudiante.setDatos(controlEstudiante.listar());
+        modeloEstudiante.setDatos(ed.listar());
         tblEstudiantes.setModel(modeloEstudiante);
         tblEstudiantes.updateUI();
-        actualizarTablaEstudiantes();
+
     }
 
     private void cargarTablaMatricula() {
-        modeloMatricula.setDatos(controlMatricula.listar());
+        modeloMatricula.setDatos(md.listar());
         tblMatricula.setModel(modeloMatricula);
         tblMatricula.updateUI();
-        actualizarTablaMatricula();
-    }
 
-    private void actualizarTablaEstudiantes() {
-        tblEstudiantes.setModel(modeloEstudiante);
-        tblEstudiantes.updateUI();
-    }
-
-    private void actualizarTablaMatricula() {
-        tblEstudiantes.setModel(modeloEstudiante);
-        tblEstudiantes.updateUI();
     }
 
     private void cargarCombos() {
@@ -86,165 +53,11 @@ public class pnlMatricular extends javax.swing.JPanel {
     }
 
     private void limpiar() {
-
+        cargarCombos();
+        cargarTablaEstudiante();
+        cargarTablaMatricula();
     }
 
-    private Boolean validar() {
-        return (!cbxCarrera.getSelectedItem().toString().isEmpty() && !cbxMateria.getSelectedItem().toString().isEmpty());
-
-    }
-
-    private void modificarUsuario() {
-        int fila = tblMatriculas.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            try {
-                Matricula usuarioAModificar = modeloMatricula.getDatos().get(fila);
-                cbxCarrera.setSelectedItem(usuarioAModificar.getCarrera());
-                cbxExpediente.setSelectedItem(usuarioAModificar.getEstado());
-                cbxMateria.setSelectedItem(usuarioAModificar.getNivel_academico());
-
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    private void mostrarEstudiante() throws EmptyException, PositionException {
-        int pos = tblEstudiantes.getSelectedRow();
-
-        if (pos >= controlEstudiante.getEstudiantes().size()) {
-            throw new EmptyException("El estudiante no existe");
-        }
-
-        if (pos >= 0) {
-            Estudiante estudianteSeleccionado = modeloEstudiante.getDatos().get(pos);
-            controlEstudiante.setEstudiante(estudianteSeleccionado);
-            habilitarPanel();
-            limpiar();
-
-            // Obtener el ciclo del estudiante
-            String cicloEstudiante = estudianteSeleccionado.getCiclo().getNombre_ciclo();
-
-            // Verificar si el ciclo es Septimo u Octavo
-            boolean esSeptimoOOctavo = cicloEstudiante.equals("Septimo") || cicloEstudiante.equals("Octavo");
-
-            // Ocultar o mostrar los componentes según sea necesario
-            cbxItinerario.setVisible(esSeptimoOOctavo);
-            cbxItinerarioSelec.setVisible(esSeptimoOOctavo);
-            ItinerarioJL.setVisible(esSeptimoOOctavo);
-
-            // Cargar itinerarios comunes
-            Utilidades.cargarItinerariosComunes(cbxItinerario);
-
-            // Agregar el ItemListener al JComboBox cbxItinerario
-            cbxItinerario.addItemListener(new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent e) {
-                    if (e.getStateChange() == ItemEvent.SELECTED) {
-                        // Obtener el itinerario seleccionado
-                        String itinerarioSeleccionado = cbxItinerario.getSelectedItem().toString();
-
-                        // Cargar las materias en el JComboBox cbxMateria
-                        cargarCursosPorCicloEItinerario(cicloEstudiante, itinerarioSeleccionado, cbxMateria, cbxItinerarioSelec);
-                    }
-                }
-            });
-
-            // Obtener el itinerario seleccionado (puede ser null si aún no se ha seleccionado)
-            String itinerarioSeleccionado = cbxItinerario.getSelectedItem() != null
-                    ? cbxItinerario.getSelectedItem().toString()
-                    : null;
-
-            // Cargar las materias en el JComboBox cbxMateria
-            cargarCursosPorCicloEItinerario(cicloEstudiante, itinerarioSeleccionado, cbxMateria, cbxItinerarioSelec);
-        } else {
-            throw new PositionException("Seleccione una fila (estudiante)");
-        }
-    }
-
-    public void desabilitarPanel() {
-        panelMatri.setEnabled(false);
-        panelMatri1.setEnabled(false);
-        cbxCarrera.setEnabled(false);
-        cbxMateria.setEnabled(false);
-        btnGuardar.setEnabled(false);
-        tblMatricula.setEnabled(false);
-        btnModificar.setEnabled(false);
-    }
-
-    public void habilitarPanel() {
-        panelMatri.setEnabled(true);
-        panelMatri1.setEnabled(true);
-        cbxCarrera.setEnabled(true);
-        cbxMateria.setEnabled(true);
-        btnGuardar.setEnabled(true);
-        tblMatricula.setEnabled(true);
-        btnModificar.setEnabled(true);
-    }
-
-    public void buscarBinaria() {
-
-        switch (cbxCriterio.getSelectedItem().toString()) {
-            case "Nombre":
-                modeloEstudiante.setDatos(controlMatricula.buscarPorNombreBinaria(txtBuscar.getText()));
-                limpiar();
-                actualizarTablaEstudiantes();
-                break;
-            case "Cedula":
-                modeloEstudiante.setDatos(controlMatricula.buscarPorCedulaBinaria(txtBuscar.getText()));
-                limpiar();
-                actualizarTablaEstudiantes();
-                break;
-        }
-    }
-
-    private void guardar() throws EmptyException, PositionException, IOException {
-        int pos = tblEstudiantes.getSelectedRow();
-        String carrera = cbxCarrera.getSelectedItem().toString();
-        String estado = cbxExpediente.getSelectedItem().toString();
-        String materia = cbxMateria.getSelectedItem().toString();
-
-        // Verificar si la lista de estudiantes no está vacía
-        if (!controlEstudiante.getEstudiantes().estaVacia()) {
-            // Verificar si pos es válido
-            if (pos >= 0 && pos < controlEstudiante.getEstudiantes().size()) {
-                Estudiante estudianteSeleccionado = obtenerEstudianteSeleccionado(pos);
-
-                // Verificar si se obtuvo un estudiante válido
-                if (estudianteSeleccionado != null) {
-                    Ciclo cicloEstudiante = estudianteSeleccionado.getCiclo();
-                    controlMatricula.getMatricula().setNivel_academico(cbxGrado.getSelectedItem().toString());
-
-                    // No es necesario verificar pos nuevamente, ya que ya lo hiciste antes
-                    controlEstudiante.guardarMatricula(pos, carrera, estado, materia);
-                    cargarTablaMatricula();
-                    limpiar();
-                } else {
-                    System.out.println("Estudiante no encontrado.");
-                }
-            } else {
-                // Manejar el caso en que pos no es válido
-                System.out.println("Posición no válida: " + pos);
-            }
-        } else {
-            // Manejar el caso en que la lista de estudiantes está vacía
-            System.out.println("La lista de estudiantes está vacía.");
-        }
-    }
-
-    private Estudiante obtenerEstudianteSeleccionado(int pos) throws EmptyException, PositionException {
-        ListaEnlazada<Estudiante> estudiantes = controlEstudiante.getEstudiantes();
-
-        if (pos >= 0 && pos < estudiantes.size()) {
-            return estudiantes.get(pos);
-        } else {
-            return null;  // Retornar null si la posición no es válida
-        }
-    }
-// Resto del código...
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -586,35 +399,20 @@ public class pnlMatricular extends javax.swing.JPanel {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        try {
-            guardar();
-        } catch (EmptyException ex) {
-            Logger.getLogger(pnlMatricular.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PositionException ex) {
-            Logger.getLogger(pnlMatricular.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(pnlMatricular.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        buscarBinaria();
-        limpiar();
+
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMatriculaActionPerformed
 
-        try {
-            mostrarEstudiante();
-        } catch (EmptyException ex) {
-            Logger.getLogger(pnlMatricular.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (PositionException ex) {
-            Logger.getLogger(pnlMatricular.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
     }//GEN-LAST:event_btnMatriculaActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        habilitarPanel();
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void cbxCriterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxCriterioActionPerformed

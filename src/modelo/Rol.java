@@ -6,36 +6,43 @@ package modelo;
 
 /**
  *
- * @author cristian
+ * @author Bravo
  */
 public class Rol {
-    private Integer rol;
-    private String nombre_rol;
-    private String descripccion;
 
-    public Integer getRol() {
-        return rol;
+    private Integer rol_Id;
+    private String nombre;
+    private String descripcion;
+
+    public Integer getRol_Id() {
+        return rol_Id;
     }
 
-    public void setRol(Integer rol) {
-        this.rol = rol;
+    public void setRol_Id(Integer rol_Id) {
+        this.rol_Id = rol_Id;
     }
 
-    public String getNombre_rol() {
-        return nombre_rol;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombre_rol(String nombre_rol) {
-        this.nombre_rol = nombre_rol;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getDescripccion() {
-        return descripccion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescripccion(String descripccion) {
-        this.descripccion = descripccion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
+
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     
     
 }

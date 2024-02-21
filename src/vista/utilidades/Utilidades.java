@@ -4,11 +4,10 @@
  */
 package vista.utilidades;
 
-import controlador.dao.CicloDAO;
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
-import controlador.ed.lista.exception.VacioException;
+import contmallaador.aula.MallaDAO;
+import controlador.aula.CicloDAO;
+import controlador.aula.RolDAO;
+import controlador.ed.listas.LinkedList;
 import java.awt.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,11 +15,14 @@ import java.util.Calendar;
 
 import java.util.Date;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import modelo.Ciclo;
+import modelo.Malla;
+import modelo.Rol;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -213,16 +215,6 @@ public class Utilidades {
         dialog.setLocationRelativeTo(component);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setVisible(true);
-    }
-
-    public static void cargarRoles(JComboBox cbx) {
-        cbx.removeAllItems();
-
-        cbx.addItem("Estudiante");
-        cbx.addItem("Docente");
-        cbx.addItem("Decano");
-        cbx.addItem("Secretaria");
-
     }
 
     public static void cargarGradoAcademico(JComboBox cbx) {
@@ -548,6 +540,45 @@ public class Utilidades {
         }
     }
 
+    public static void cargarMaterias(String cicloSeleccionado,
+            JComboBox cbxMateria) {
+        cbxMateria.removeAllItems();
+
+        switch (cicloSeleccionado) {
+            case "Primero":
+                cargarPrimero(cbxMateria);
+                break;
+            case "Segundo":
+                cargarSegundo(cbxMateria);
+                break;
+            case "Tercero":
+                cargarTercero(cbxMateria);
+                break;
+            case "Cuarto":
+                cargarCuarto(cbxMateria);
+                break;
+            case "Quinto":
+                cargarQuinto(cbxMateria);
+                break;
+            case "Sexto":
+                cargarSexto(cbxMateria);
+                break;
+            case "Septimo":
+                cargarSeptimo(cbxMateria);
+
+            case "Octavo":
+                cargarOctavo(cbxMateria);
+
+                break;
+            case "Noveno":
+                cargarNoveno(cbxMateria);
+                break;
+            default:
+                System.out.println("Escoga bien el Ciclo.");
+                break;
+        }
+    }
+
     public static void cargarCategoria(JComboBox cbx) {
         cbx.removeAllItems();
 
@@ -558,25 +589,85 @@ public class Utilidades {
 
     }
 
-    public static void cargarCiclosDisponibles(JComboBox cbxCensador) throws VacioException, EmptyException, PositionException {
+    public static void cargarCiclosDisponibles(JComboBox cbxCensador) throws Exception {
         CicloDAO csd = new CicloDAO();
         cbxCensador.removeAllItems();
 
-
-        ListaEnlazada<Ciclo> ciclos = csd.listar();
-
+        LinkedList<Ciclo> ciclos = csd.listar();
 
         if (ciclos != null) {
             for (int i = 0; i < ciclos.getSize(); i++) {
                 Ciclo censador = ciclos.get(i);
 
                 if (censador != null) {
-                    cbxCensador.addItem(censador.getNombre_ciclo());
+
+                    cbxCensador.addItem(censador.getNombre());
                 }
             }
             cbxCensador.updateUI();
         }
     }
+
+    public static void cargarMallasDisponibles(JComboBox cbxMallas) throws Exception {
+        MallaDAO mallaDAO = new MallaDAO();
+        cbxMallas.removeAllItems();
+
+        LinkedList<Malla> mallas = mallaDAO.listar();
+
+        if (mallas != null) {
+            for (int i = 0; i < mallas.getSize(); i++) {
+                Malla malla = mallas.get(i);
+
+                // Solo agregar mallas con estado igual a 0
+                if (malla != null && malla.getEstado() == 0) {
+                    cbxMallas.addItem(malla.getNombre());
+                }
+            }
+            cbxMallas.updateUI();
+        }
+    }
+
+    public static void cargarRolesDisponibles(JComboBox cbxRoles) throws Exception {
+        RolDAO rolDAO = new RolDAO();
+        cbxRoles.removeAllItems();
+
+        LinkedList<Rol> roles = rolDAO.listar();
+
+        if (roles != null) {
+            for (int i = 0; i < roles.getSize(); i++) {
+                Rol rol = roles.get(i);
+
+                if (rol != null) {
+                    cbxRoles.addItem(rol.getNombre());
+                }
+            }
+            cbxRoles.updateUI();
+        }
+    }
+
+    public static String generarCodigo() {
+        // Definir los caracteres permitidos en el código
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder codigo = new StringBuilder();
+
+        // Crear una instancia de Random
+        Random random = new Random();
+
+        // Generar cada uno de los 5 caracteres del código
+        for (int i = 0; i < 5; i++) {
+            // Obtener un índice aleatorio dentro del rango de caracteres
+            int indice = random.nextInt(caracteres.length());
+
+            // Agregar el caracter correspondiente al código (convertido a mayúscula)
+            codigo.append(Character.toUpperCase(caracteres.charAt(indice)));
+        }
+
+        // Devolver el código generado
+        return codigo.toString();
+    }
+    
+    
+    
 
     public static Ciclo getComboCiclos(JComboBox cbx) {
         Object selectedObject = cbx.getSelectedItem();

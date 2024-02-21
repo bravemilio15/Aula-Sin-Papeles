@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/controlador/ControlarDocente.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/vista/utilidades/Utilidades.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/modelo/Docente.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/controlador/ControlarEstudiante.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/vista/Administracion/pnlDocente.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/vista/PrincipalAdministracion.java</file>
-            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS/PROYECTOPIS/src/vista/Administracion/pnlEstudiante.java</file>
+            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS-AulaSinPapeles/src/modelo/tabla/ModeloTablaEstudiante.java</file>
+            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS-AulaSinPapeles/src/modelo/Usuario.java</file>
+            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS-AulaSinPapeles/src/modelo/Estudiante.java</file>
+            <file>file:/C:/Users/Bravo/Documents/NetBeansProjects/PIS-AulaSinPapeles/src/modelo/Docente.java</file>
         </group>
     </open-files>
 </project-private>

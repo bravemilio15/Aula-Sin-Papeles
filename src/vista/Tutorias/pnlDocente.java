@@ -5,14 +5,10 @@
  */
 package vista.Tutorias;
 
-import vista.Administracion.*;
-import controlador.ControlarDocente;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import javax.swing.JOptionPane;
-import modelo.Docente;
-import modelo.tabla.ModeloTablaDocente;
-import vista.utilidades.Utilidades;
+
+
 
 /**
  *
@@ -20,8 +16,7 @@ import vista.utilidades.Utilidades;
  */
 public class pnlDocente extends javax.swing.JPanel {
 
-    private ModeloTablaDocente modelo = new ModeloTablaDocente();
-    private ControlarDocente control = new ControlarDocente();
+ 
     private int pos = -1;
 
     /**

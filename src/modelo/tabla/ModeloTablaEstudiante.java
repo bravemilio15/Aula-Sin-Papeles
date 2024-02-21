@@ -1,20 +1,23 @@
 package modelo.tabla;
 
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
+import controlador.aula.UsuarioDAO;
+import controlador.ed.listas.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.Estudiante;
 
 public class ModeloTablaEstudiante extends AbstractTableModel {
 
-    private ListaEnlazada<Estudiante> datos;
+    private LinkedList<Estudiante> datos;
+    private UsuarioDAO ud = new UsuarioDAO();
 
-    public ListaEnlazada<Estudiante> getDatos() {
+    public ModeloTablaEstudiante() {
+    }
+
+    public LinkedList<Estudiante> getDatos() {
         return datos;
     }
 
-    public void setDatos(ListaEnlazada<Estudiante> datos) {
+    public void setDatos(LinkedList<Estudiante> datos) {
         this.datos = datos;
     }
 
@@ -24,12 +27,12 @@ public class ModeloTablaEstudiante extends AbstractTableModel {
             System.out.println("¡La lista de datos es nula!");
             return 0;
         }
-        return datos.size();
+        return datos.getSize();
     }
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 4;
     }
 
     @Override
@@ -41,24 +44,20 @@ public class ModeloTablaEstudiante extends AbstractTableModel {
 
         try {
             Estudiante e = datos.get(rowIndex);
+            
 
             switch (columnIndex) {
                 case 0:
-                    return e.getId();
+                    return ud.obtenerNombrePorIdEstudiante(e.getEstudiante_Id());
                 case 1:
-                    return e.getPrimer_nombre();
+
+                    return ud.obtenerApellidoPorIdEstudiante(e.getEstudiante_Id());
                 case 2:
-                    return e.getPrimer_apellido();
+                    return ud.obtenerDniPorIdEstudiante(e.getEstudiante_Id());
                 case 3:
-                    return e.getCedula();
-                case 4:
-                    return e.getCicloNombre();
-                case 5:
-                    return e.getParaleloNombre();
-                case 6:
-                    return e.getModalidad();
+                    return e.getFecha_Ingreso();
             }
-        } catch (EmptyException | PositionException ex) {
+        } catch (Exception ex) {
             System.out.println("Error en tablaEstudiantes: " + ex.getMessage());
         }
 
@@ -67,22 +66,15 @@ public class ModeloTablaEstudiante extends AbstractTableModel {
 
     @Override
     public String getColumnName(int columnIndex) {
-        // Ajustado al número de atributos en Estudiante
         switch (columnIndex) {
             case 0:
-                return "ID";
-            case 1:
                 return "Nombre";
-            case 2:
+            case 1:
                 return "Apellido";
+            case 2:
+                return "DNI";
             case 3:
-                return "Cedula";
-            case 4:
-                return "Ciclo";
-            case 5:
-                return "Paralelo";
-            case 6:
-                return "Modalidad";
+                return "Fecha Ingreso";
         }
 
         return null;

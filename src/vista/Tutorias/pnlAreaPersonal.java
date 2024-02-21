@@ -5,13 +5,6 @@
  */
 package vista.Tutorias;
 
-import vista.Administracion.*;
-import controlador.ControlarEstudiante;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import modelo.tabla.ModeloTablaEstudiante;
-import vista.utilidades.Utilidades;
 
 /**
  *
@@ -19,8 +12,6 @@ import vista.utilidades.Utilidades;
  */
 public class pnlAreaPersonal extends javax.swing.JPanel {
 
-    private ModeloTablaEstudiante modelo = new ModeloTablaEstudiante();
-    private ControlarEstudiante control = new ControlarEstudiante();
     private int pos = -1;
 
     /**

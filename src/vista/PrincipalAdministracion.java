@@ -54,7 +54,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         ocho = new vista.rsbuttom.RSButtonMetro();
-        siete = new vista.rsbuttom.RSButtonMetro();
         seis = new vista.rsbuttom.RSButtonMetro();
         cuatro = new vista.rsbuttom.RSButtonMetro();
         jPanel2 = new javax.swing.JPanel();
@@ -172,7 +171,7 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         cinco.setBackground(new java.awt.Color(239, 238, 244));
         cinco.setForeground(new java.awt.Color(128, 128, 131));
         cinco.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/configuraciones.png"))); // NOI18N
-        cinco.setText("Configuracion");
+        cinco.setText("Administracion");
         cinco.setColorHover(new java.awt.Color(204, 204, 204));
         cinco.setColorNormal(new java.awt.Color(239, 238, 244));
         cinco.setColorPressed(new java.awt.Color(204, 204, 204));
@@ -219,7 +218,7 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         ocho.setBackground(new java.awt.Color(239, 238, 244));
         ocho.setForeground(new java.awt.Color(128, 128, 131));
         ocho.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/historial.png"))); // NOI18N
-        ocho.setText("HIstorial");
+        ocho.setText("Periodo Academico");
         ocho.setColorHover(new java.awt.Color(204, 204, 204));
         ocho.setColorNormal(new java.awt.Color(239, 238, 244));
         ocho.setColorPressed(new java.awt.Color(204, 204, 204));
@@ -240,34 +239,10 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             }
         });
 
-        siete.setBackground(new java.awt.Color(239, 238, 244));
-        siete.setForeground(new java.awt.Color(128, 128, 131));
-        siete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/intercambiar.png"))); // NOI18N
-        siete.setText("Cambiar paralelo");
-        siete.setColorHover(new java.awt.Color(204, 204, 204));
-        siete.setColorNormal(new java.awt.Color(239, 238, 244));
-        siete.setColorPressed(new java.awt.Color(204, 204, 204));
-        siete.setColorTextHover(new java.awt.Color(128, 128, 131));
-        siete.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        siete.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        siete.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        siete.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        siete.setIconTextGap(19);
-        siete.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                sieteMousePressed(evt);
-            }
-        });
-        siete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sieteActionPerformed(evt);
-            }
-        });
-
         seis.setBackground(new java.awt.Color(239, 238, 244));
         seis.setForeground(new java.awt.Color(128, 128, 131));
         seis.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
-        seis.setText("Anular Materia");
+        seis.setText("Carreras");
         seis.setColorHover(new java.awt.Color(204, 204, 204));
         seis.setColorNormal(new java.awt.Color(239, 238, 244));
         seis.setColorPressed(new java.awt.Color(204, 204, 204));
@@ -326,7 +301,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
                     .addComponent(cuatro, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cinco, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(seis, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(siete, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -349,10 +323,9 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
                     .addComponent(cinco, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(4, 4, 4)
                 .addComponent(seis, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(siete, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ocho, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -541,9 +514,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
 
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
@@ -562,7 +532,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(false);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_unoMousePressed
 
@@ -593,10 +562,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
-
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
@@ -614,7 +579,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(false);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_tresMousePressed
 
@@ -625,7 +589,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(false);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_dosMousePressed
 
@@ -656,10 +619,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
-
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
             this.ocho.setColorPressed(new Color(204, 204, 204));
@@ -686,12 +645,11 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(false);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(true);
     }//GEN-LAST:event_ochoMousePressed
 
     private void ochoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ochoActionPerformed
-        new CambiaPanel(pnlPrincipal, new vista.Administracion.pnlHistorial());
+        new CambiaPanel(pnlPrincipal, new vista.Administracion.pnlPeriodoAcademico());
         if (this.ocho.isSelected()) {
             this.uno.setColorNormal(new Color(239, 238, 244));
             this.uno.setColorHover(new Color(204, 204, 204));
@@ -717,9 +675,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
 
             this.ocho.setColorNormal(new Color(204, 204, 204));
             this.ocho.setColorHover(new Color(204, 204, 204));
@@ -731,58 +686,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ochoActionPerformed
 
-    private void sieteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sieteMousePressed
-        this.uno.setSelected(false);
-        this.dos.setSelected(false);
-        this.tres.setSelected(false);
-        this.cuatro.setSelected(false);
-        this.cinco.setSelected(false);
-        this.seis.setSelected(false);
-        this.siete.setSelected(true);
-        this.ocho.setSelected(false);
-    }//GEN-LAST:event_sieteMousePressed
-
-    private void sieteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sieteActionPerformed
-        new CambiaPanel(pnlPrincipal, new vista.Administracion.pnlCambiar());
-        if (this.siete.isSelected()) {
-            this.uno.setColorNormal(new Color(239, 238, 244));
-            this.uno.setColorHover(new Color(204, 204, 204));
-            this.uno.setColorPressed(new Color(204, 204, 204));
-
-            this.dos.setColorNormal(new Color(239, 238, 244));
-            this.dos.setColorHover(new Color(204, 204, 204));
-            this.dos.setColorPressed(new Color(204, 204, 204));
-
-            this.tres.setColorNormal(new Color(239, 238, 244));
-            this.tres.setColorHover(new Color(204, 204, 204));
-            this.tres.setColorPressed(new Color(204, 204, 204));
-
-            this.cuatro.setColorNormal(new Color(239, 238, 244));
-            this.cuatro.setColorHover(new Color(204, 204, 204));
-            this.cuatro.setColorPressed(new Color(204, 204, 204));
-
-            this.cinco.setColorNormal(new Color(239, 238, 244));
-            this.cinco.setColorHover(new Color(204, 204, 204));
-            this.cinco.setColorPressed(new Color(204, 204, 204));
-
-            this.seis.setColorNormal(new Color(239, 238, 244));
-            this.seis.setColorHover(new Color(204, 204, 204));
-            this.seis.setColorPressed(new Color(204, 204, 204));
-
-            this.siete.setColorNormal(new Color(204, 204, 204));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
-
-            this.ocho.setColorNormal(new Color(239, 238, 244));
-            this.ocho.setColorHover(new Color(204, 204, 204));
-            this.ocho.setColorPressed(new Color(204, 204, 204));
-        } else {
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
-        }
-    }//GEN-LAST:event_sieteActionPerformed
-
     private void seisMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_seisMousePressed
         this.uno.setSelected(false);
         this.dos.setSelected(false);
@@ -790,12 +693,11 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(false);
         this.seis.setSelected(true);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_seisMousePressed
 
     private void seisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_seisActionPerformed
-        new CambiaPanel(pnlPrincipal, new vista.Administracion.pnlAnular());
+        new CambiaPanel(pnlPrincipal, new vista.Administracion.pnlCarrera());
         if (this.seis.isSelected()) {
             this.uno.setColorNormal(new Color(239, 238, 244));
             this.uno.setColorHover(new Color(204, 204, 204));
@@ -821,9 +723,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
 
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
@@ -862,9 +761,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
 
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
@@ -883,7 +779,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(false);
         this.cinco.setSelected(true);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_cincoMousePressed
 
@@ -894,7 +789,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         this.cuatro.setSelected(true);
         this.cinco.setSelected(false);
         this.seis.setSelected(false);
-        this.siete.setSelected(false);
         this.ocho.setSelected(false);
     }//GEN-LAST:event_cuatroMousePressed
 
@@ -925,9 +819,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
             this.seis.setColorHover(new Color(204, 204, 204));
             this.seis.setColorPressed(new Color(204, 204, 204));
 
-            this.siete.setColorNormal(new Color(239, 238, 244));
-            this.siete.setColorHover(new Color(204, 204, 204));
-            this.siete.setColorPressed(new Color(204, 204, 204));
 
             this.ocho.setColorNormal(new Color(239, 238, 244));
             this.ocho.setColorHover(new Color(204, 204, 204));
@@ -976,6 +867,8 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1011,7 +904,6 @@ public class PrincipalAdministracion extends javax.swing.JFrame {
     private javax.swing.JPanel pnlMenu;
     private javax.swing.JPanel pnlPrincipal;
     private vista.rsbuttom.RSButtonMetro seis;
-    private vista.rsbuttom.RSButtonMetro siete;
     private vista.rsbuttom.RSButtonMetro tres;
     private vista.rsbuttom.RSButtonMetro uno;
     // End of variables declaration//GEN-END:variables

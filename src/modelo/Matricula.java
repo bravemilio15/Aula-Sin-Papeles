@@ -1,62 +1,44 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
-
+/**
+ *
+ * @author Bravo
+ */
 public class Matricula {
 
-    private Integer id;
-    private Integer id_estudiante;
-    private String carrera;
-    private String nivel_academico;
-    private String estado;
-    private Ciclo ciclo;
+    private Integer matricula_Id;
+    private String nivelAcademico;
+    private Integer estado;
 
-    public Integer getId_estudiante() {
-        return id_estudiante;
+    public Integer getMatricula_Id() {
+        return matricula_Id;
     }
 
-    public void setId_estudiante(Integer id_estudiante) {
-        this.id_estudiante = id_estudiante;
+    public void setMatricula_Id(Integer matricula_Id) {
+        this.matricula_Id = matricula_Id;
     }
 
-    public Ciclo getCiclo() {
-        return ciclo;
+    public String getNivelAcademico() {
+        return nivelAcademico;
     }
 
-    public void setCiclo(Ciclo ciclo) {
-        this.ciclo = ciclo;
+    public void setNivelAcademico(String nivelAcademico) {
+        this.nivelAcademico = nivelAcademico;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getCarrera() {
-        return carrera;
-    }
-
-    public void setCarrera(String carrera) {
-        this.carrera = carrera;
-    }
-
-    public String getNivel_academico() {
-        return nivel_academico;
-    }
-
-    public void setNivel_academico(String nivel_academico) {
-        this.nivel_academico = nivel_academico;
-    }
-
-    public String getEstado() {
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
+    
+    
+
 
 }

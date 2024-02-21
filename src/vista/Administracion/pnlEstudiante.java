@@ -5,72 +5,61 @@
  */
 package vista.Administracion;
 
-import controlador.ControlarEstudiante;
-import controlador.dao.CicloDAO;
-import controlador.dao.ParaleloDAO;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
-import java.awt.Component;
-import java.awt.PopupMenu;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import controlador.aula.CicloDAO;
+import controlador.aula.CuentaDAO;
+import controlador.aula.EstudianteDAO;
+import controlador.aula.ParaleloDAO;
+import controlador.aula.RolDAO;
+import controlador.aula.UsuarioDAO;
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import modelo.Ciclo;
-import modelo.Estudiante;
 import modelo.Paralelo;
+import modelo.Rol;
 import modelo.tabla.ModeloTablaEstudiante;
-import org.jdatepicker.impl.JDatePickerImpl;
+import vista.utilidades.ClaveEncriptada;
 import vista.utilidades.Utilidades;
 
-/**
- *
- * @author cristian
- */
 public class pnlEstudiante extends javax.swing.JPanel {
 
     private ModeloTablaEstudiante modelo = new ModeloTablaEstudiante();
-    private ControlarEstudiante control = new ControlarEstudiante();
     private CicloDAO cd = new CicloDAO();
+    private EstudianteDAO ed = new EstudianteDAO();
     private ParaleloDAO pd = new ParaleloDAO();
+    private CuentaDAO cuentad = new CuentaDAO();
+    private RolDAO rld = new RolDAO();
+    private UsuarioDAO ud = new UsuarioDAO();
+
     private int pos = -1;
 
     public pnlEstudiante() {
         initComponents();
-        initDatePickerForNacimiento();
-        cargarTabla();
-        cargarCombos();
+        limpiar();
+
     }
 
     private void cargarTabla() {
-        modelo.setDatos(control.getEstudiantes());
-        tblUsuarios.setModel(modelo);
-        tblUsuarios.updateUI();
-    }
-
-    private void actualizarTabla() {
+        modelo.setDatos(ed.getEstudiantes());
         tblUsuarios.setModel(modelo);
         tblUsuarios.updateUI();
     }
 
     private void cargarCombos() {
-        Utilidades.cargarGenero(cbxGenero);
-        Utilidades.cargarEstado(cbxEstado);
-        Utilidades.cargarCiclos(cbxCiclo);
-        Utilidades.cargarParalelo(cbxParalelo);
-        Utilidades.cargarModalidad(cbxModalidad);
+        try {
+            Utilidades.cargarGenero(cbxGenero);
+            Utilidades.cargarEstado(cbxEstado);
+            Utilidades.cargarModalidad(cbxModalidad);
+            Utilidades.cargarRolesDisponibles(cbxRol);
+        } catch (Exception e) {
+            System.out.println("Error en Combos");
+        }
+
     }
 
     private void limpiar() {
@@ -83,95 +72,9 @@ public class pnlEstudiante extends javax.swing.JPanel {
         txtEdad.setText("");
         txtInstitucional.setText("");
         txtNacimiento.setText("");
-    }
 
-    private void guardar() throws IOException, EmptyException, PositionException {
-        if (validar()) {
-            String cicloSeleccionado = cbxCiclo.getSelectedItem().toString();
-            Ciclo ciclo = cd.obtenerCicloPorNombre(cicloSeleccionado);
-            String modalidadSeleccionada = cbxModalidad.getSelectedItem().toString();
-
-            String paraleloSeleccionado = cbxParalelo.getSelectedItem().toString();
-            Paralelo paralelo = pd.obtenerParaleloPorNombre(paraleloSeleccionado);
-
-            // Dividir nombres y apellidos
-            String[] nombres = txtNombre.getText().split("\\s+");
-            String[] apellidos = txtApellido.getText().split("\\s+");
-
-            // Configurar los valores en el objeto Estudiante
-            control.getEstudiante().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
-            control.getEstudiante().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
-            control.getEstudiante().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
-            control.getEstudiante().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
-
-            control.getEstudiante().setCedula(txtCedula.getText());
-            control.getEstudiante().setCelular(txtCelular.getText());
-            control.getEstudiante().setNacimiento(txtNacimiento.getText());
-            control.getEstudiante().setGenero((String) cbxGenero.getSelectedItem());
-
-            Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-            control.getEstudiante().setEdad(edad);
-
-            control.getEstudiante().setCorreoIns(txtInstitucional.getText());
-            control.getEstudiante().setCorreoPer(txtPersonal.getText());
-            control.getEstudiante().setCiclo(ciclo);
-            control.getEstudiante().setParalelo(paralelo);
-            control.getEstudiante().setModalidad(modalidadSeleccionada);
-
-            control.registrar();
-            actualizarTabla();
-            limpiar();
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de guardar.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void modificarUsuario() {
-        int fila = tblUsuarios.getSelectedRow();
-
-        if (fila < 0) {
-            JOptionPane.showMessageDialog(null, "Seleccione una fila", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            try {
-                Estudiante usuarioAModificar = modelo.getDatos().get(fila);
-
-                control.getEstudiante().setId(usuarioAModificar.getId());
-
-                // Dividir nombres y apellidos
-                String[] nombres = txtNombre.getText().split("\\s+");
-                String[] apellidos = txtApellido.getText().split("\\s+");
-
-                // Configurar los valores en el objeto Estudiante
-                control.getEstudiante().setPrimer_nombre(nombres.length > 0 ? nombres[0] : "");
-                control.getEstudiante().setSegundo_nombre(nombres.length > 1 ? nombres[1] : "");
-                control.getEstudiante().setPrimer_apellido(apellidos.length > 0 ? apellidos[0] : "");
-                control.getEstudiante().setSegundo_apellido(apellidos.length > 1 ? apellidos[1] : "");
-
-                control.getEstudiante().setCedula(txtCedula.getText());
-                control.getEstudiante().setCelular(txtCelular.getText());
-
-                String fechaNacimiento = txtNacimiento.getText();
-                if (!fechaNacimiento.isEmpty()) {
-                    control.getEstudiante().setNacimiento(fechaNacimiento);
-
-                    control.getEstudiante().setGenero((String) cbxGenero.getSelectedItem());
-                    Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-                    control.getEstudiante().setEdad(edad);
-                    control.getEstudiante().setCorreoIns(txtInstitucional.getText());
-                    control.getEstudiante().setCorreoPer(txtPersonal.getText());
-                    control.getEstudiante().setCiclo(usuarioAModificar.getCiclo());
-                    control.getEstudiante().setParalelo(usuarioAModificar.getParalelo());
-                    control.getEstudiante().setModalidad(cbxModalidad.getSelectedItem().toString());
-
-                    control.getEstudianteDao().modificar(pos);
-                    actualizarTabla();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Ingrese una fecha de nacimiento válida", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        cargarCombos();
+        cargarTabla();
     }
 
     private Boolean validar() {
@@ -184,8 +87,8 @@ public class pnlEstudiante extends javax.swing.JPanel {
                 && !txtInstitucional.getText().trim().isEmpty()
                 && cbxEstado.getSelectedItem() != null
                 && !cbxEstado.getSelectedItem().toString().isEmpty())
-                //&& Utilidades.validarCedula(txtCedula.getText())
-                //&& Utilidades.verificarCelular(txtCelular.getText())
+                && Utilidades.validarCedula(txtCedula.getText())
+                && Utilidades.verificarCelular(txtCelular.getText())
                 && Utilidades.validarCorreoInstitucional(txtInstitucional.getText())
                 && Utilidades.validarCorreoPersonal(txtPersonal.getText())
                 && Utilidades.validarEdad(txtEdad.getText())
@@ -193,32 +96,65 @@ public class pnlEstudiante extends javax.swing.JPanel {
 
     }
 
-    private void initDatePickerForNacimiento() {
-        JDatePickerImpl datePicker = Utilidades.createDatePicker();
+    private void guardar() {
+    try {
+        if (validar()) {
+            String modalidadSeleccionada = cbxModalidad.getSelectedItem().toString();
+            String[] nombres = txtNombre.getText().split("\\s+");
+            String[] apellidos = txtApellido.getText().split("\\s+");
+            String nombreRolSeleccionada = (String) cbxRol.getSelectedItem();
+            Integer idRolSeleccionada = rld.obtenerIdRolPorNombre(nombreRolSeleccionada);
 
-        datePicker.addActionListener(e -> {
-            Date selectedDate = (Date) datePicker.getModel().getValue();
-            txtNacimiento.setText(Utilidades.formatDateString(selectedDate, "yyyy-MM-dd"));
-            actualizarEdad();
-        });
+            if (idRolSeleccionada != null) {
+                ud.getUsuario().setPrimer_Nombre(nombres.length > 0 ? nombres[0] : "");
+                ud.getUsuario().setSegundo_Nombre(nombres.length > 1 ? nombres[1] : "");
+                ud.getUsuario().setPrimer_Apellido(apellidos.length > 0 ? apellidos[0] : "");
+                ud.getUsuario().setSegundo_Apellido(apellidos.length > 1 ? apellidos[1] : "");
+                ud.getUsuario().setDni(txtCedula.getText());
+                ud.getUsuario().setTelefono(txtCelular.getText());
+                ud.getUsuario().setFecha_Nacimiento(txtNacimiento.getText());
+                ud.getUsuario().setGenero((String) cbxGenero.getSelectedItem());
+                Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
+                ud.getUsuario().setEdad(edad);
+                ud.getUsuario().setCorreo_Institucional(txtInstitucional.getText());
+                ud.getUsuario().setCorreo(txtPersonal.getText());
+                ud.getUsuario().setModalidad(modalidadSeleccionada);
+                ud.getUsuario().setEstado(cbxEstado.getSelectedIndex());
+                ud.getUsuario().setRol_Id(idRolSeleccionada);
+                Boolean usuarioGuardado = ud.save();
 
-        txtNacimiento.setEditable(false);
-        txtEdad.setEditable(false);
+                if (usuarioGuardado) {
+                    // Establecer la fecha de ingreso del estudiante con formato año-mes-día
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date fechaIngreso = new Date();
+                    String fechaIngresoFormateada = dateFormat.format(fechaIngreso);
+                    ed.getEstudiante().setFecha_Ingreso(dateFormat.parse(fechaIngresoFormateada)); // Corrección aquí
 
-        txtNacimiento.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (SwingUtilities.isLeftMouseButton(e)) {
-                    Utilidades.showDatePickerPopup(txtNacimiento, datePicker);
+                    Integer idUnico = ud.getUsuario().getUsuario_Id();
+                    ed.getEstudiante().setEstudiante_Id(idUnico);
+                    cuentad.getCuenta().setCuenta_Id(idUnico);
+                    String claveAleatoria = ClaveEncriptada.generarClaveAlfanumerica();
+                    String claveEncriptada = ClaveEncriptada.encriptar(claveAleatoria);
+                    cuentad.getCuenta().setClave(claveEncriptada);
+                    cuentad.getCuenta().setNombre(txtInstitucional.getText());
+                    cuentad.getCuenta().setUsuario_Id(idUnico);
+                    ed.save();
+                    cuentad.save();
+                    limpiar();
+                    JOptionPane.showMessageDialog(null, "Usuario, estudiante y cuenta creados correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error al guardar el usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-        });
+        } else {
+            JOptionPane.showMessageDialog(null, "Por favor, complete todos los campos antes de guardar.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al guardar. Revise los datos e intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+        e.printStackTrace(); // Puedes imprimir la traza para identificar el origen del error
     }
+}
 
-    private void actualizarEdad() {
-        Integer edad = Utilidades.calcularEdad(txtNacimiento.getText());
-        txtEdad.setText(edad.toString());
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -247,15 +183,13 @@ public class pnlEstudiante extends javax.swing.JPanel {
         jLabel8 = new javax.swing.JLabel();
         txtPersonal = new javax.swing.JTextField();
         txtNacimiento = new javax.swing.JTextField();
-        cbxCiclo = new javax.swing.JComboBox<>();
         lblNombre2 = new javax.swing.JLabel();
         cbxGenero = new javax.swing.JComboBox<>();
         cbxEstado = new javax.swing.JComboBox<>();
-        jLabel9 = new javax.swing.JLabel();
-        cbxParalelo = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         cbxModalidad = new javax.swing.JComboBox<>();
+        jLabel11 = new javax.swing.JLabel();
+        cbxRol = new javax.swing.JComboBox<>();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblUsuarios = new javax.swing.JTable();
@@ -292,34 +226,25 @@ public class pnlEstudiante extends javax.swing.JPanel {
 
         jLabel8.setText("Correo Personal");
 
-        cbxCiclo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         lblNombre2.setFont(new java.awt.Font("Roboto Black", 0, 12)); // NOI18N
         lblNombre2.setText("GENERO");
 
         cbxGenero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
         cbxEstado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbxEstadoActionPerformed(evt);
             }
         });
 
-        jLabel9.setText("PARALELO");
-
-        cbxParalelo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cbxParalelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxParaleloActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText("CICLO");
-
         jLabel1.setText("MODALIDAD");
 
         cbxModalidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel11.setText("ROL");
+
+        cbxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -340,12 +265,9 @@ public class pnlEstudiante extends javax.swing.JPanel {
                                 .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(198, 198, 198))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(lblPrecio)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                            .addComponent(jLabel5)
+                            .addComponent(lblPrecio))
+                        .addGap(198, 198, 198)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,31 +291,28 @@ public class pnlEstudiante extends javax.swing.JPanel {
                                 .addGap(18, 18, 18)))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel10))
+                                .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(58, 58, 58)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cbxParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(lblNombre2)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(txtEdad))))
+                                .addComponent(cbxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(cbxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(cbxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(lblNombre2)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbxGenero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtEdad))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(17, 17, 17)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -425,18 +344,16 @@ public class pnlEstudiante extends javax.swing.JPanel {
                         .addComponent(txtNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbxCiclo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel9)
-                    .addComponent(cbxParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtInstitucional, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel1)
+                    .addComponent(cbxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(cbxRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel1)
-                    .addComponent(cbxModalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel8))
                 .addContainerGap(14, Short.MAX_VALUE))
         );
 
@@ -527,25 +444,15 @@ public class pnlEstudiante extends javax.swing.JPanel {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {
-            try {
-                guardar();
-            } catch (EmptyException ex) {
-                Logger.getLogger(pnlEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (PositionException ex) {
-                Logger.getLogger(pnlEstudiante.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (IOException ex) {
+            guardar();
+        } catch (Exception ex) {
             Logger.getLogger(pnlEstudiante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        modificarUsuario();
-    }//GEN-LAST:event_btnModificarActionPerformed
 
-    private void cbxParaleloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxParaleloActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxParaleloActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void cbxEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxEstadoActionPerformed
         // TODO add your handling code here:
@@ -555,13 +462,12 @@ public class pnlEstudiante extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<String> cbxCiclo;
     private javax.swing.JComboBox<String> cbxEstado;
     private javax.swing.JComboBox<String> cbxGenero;
     private javax.swing.JComboBox<String> cbxModalidad;
-    private javax.swing.JComboBox<String> cbxParalelo;
+    private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -569,7 +475,6 @@ public class pnlEstudiante extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;

@@ -1,20 +1,21 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
-
-public class Docente extends Usuario {
+/**
+ *
+ * @author Bravo
+ */
+public class Docente  {
 
     private String especialidad;
-    private String grado_academico;
-    private String experiencia_educativa;
-    private ListaEnlazada<Materia> materias;
+    private String experienciaEducativa;
+    private String gradoAcademico;
+    private Integer docente_Id;
 
-    public ListaEnlazada<Materia> getMaterias() {
-        return materias;
-    }
-
-    public void setMaterias(ListaEnlazada<Materia> materias) {
-        this.materias = materias;
+    public Docente() {
     }
 
     public String getEspecialidad() {
@@ -25,20 +26,28 @@ public class Docente extends Usuario {
         this.especialidad = especialidad;
     }
 
-    public String getGrado_academico() {
-        return grado_academico;
+    public String getExperienciaEducativa() {
+        return experienciaEducativa;
     }
 
-    public void setGrado_academico(String grado_academico) {
-        this.grado_academico = grado_academico;
+    public void setExperienciaEducativa(String experienciaEducativa) {
+        this.experienciaEducativa = experienciaEducativa;
     }
 
-    public String getExperiencia_educativa() {
-        return experiencia_educativa;
+    public String getGradoAcademico() {
+        return gradoAcademico;
     }
 
-    public void setExperiencia_educativa(String experiencia_educativa) {
-        this.experiencia_educativa = experiencia_educativa;
+    public void setGradoAcademico(String gradoAcademico) {
+        this.gradoAcademico = gradoAcademico;
+    }
+
+    public Integer getDocente_Id() {
+        return docente_Id;
+    }
+
+    public void setDocente_Id(Integer docente_Id) {
+        this.docente_Id = docente_Id;
     }
 
 }

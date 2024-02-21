@@ -4,9 +4,9 @@
  */
 package modelo.tabla;
 
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
+import controlador.aula.CarreraDAO;
+import controlador.ed.colas.ColaI;
+import controlador.ed.listas.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.Matricula;
 
@@ -16,24 +16,24 @@ import modelo.Matricula;
  */
 public class ModeloTablaMatricula extends AbstractTableModel {
 
-    ListaEnlazada<Matricula> datos;
+    LinkedList<Matricula> datos = new LinkedList<>();
 
-    public ListaEnlazada<Matricula> getDatos() {
+    public LinkedList<Matricula> getDatos() {
         return datos;
     }
 
-    public void setDatos(ListaEnlazada<Matricula> datos) {
+    public void setDatos(LinkedList<Matricula> datos) {
         this.datos = datos;
     }
 
     @Override
     public int getRowCount() {
-        return datos.size();
+        return datos.getSize();
     }
 
     @Override
     public int getColumnCount() {
-        return 4;
+        return 2;
     }
 
     @Override
@@ -43,29 +43,24 @@ public class ModeloTablaMatricula extends AbstractTableModel {
 
             switch (columnIndex) {
                 case 0:
-                    return m.getId();
-                case 1:
-                    return m.getCarrera();
-                case 2:
-                    return m.getNivel_academico();
-                case 3:
                     return m.getEstado();
+                case 1:
+                    return m.getNivelAcademico();
+
             }
-        } catch (EmptyException | PositionException ex) {
+        } catch (Exception ex) {
         }
         return null;
     }
 
     public String getColumnName(int Column) {
         switch (Column) {
+
             case 0:
-                return "ID";
-            case 1:
-                return "Nombre de Carrera";
-            case 2:
-                return "Nivel Academico";
-            case 3:
                 return "Estado de Matricula";
+            case 1:
+                return "Nivel Academico";
+
         }
 
         return null;

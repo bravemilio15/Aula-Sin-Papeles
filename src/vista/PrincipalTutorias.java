@@ -32,10 +32,9 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(this);
-        this.AreaPersonal.setSelected(true);
 
         new CambiaPanel(pnlPrincipal, new vista.Tutorias.pnlAreaPersonal());
-        
+
         agregarMouseListenerMenu();
     }
 
@@ -51,19 +50,9 @@ public class PrincipalTutorias extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         pnlMenu = new javax.swing.JPanel();
-        AreaPersonal = new vista.rsbuttom.RSButtonMetro();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        Calendario = new vista.rsbuttom.RSButtonMetro();
-        PaginaPrincipal = new vista.rsbuttom.RSButtonMetro();
-        Configuracion = new vista.rsbuttom.RSButtonMetro();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        Historial = new vista.rsbuttom.RSButtonMetro();
-        CambiarParalelo = new vista.rsbuttom.RSButtonMetro();
-        AnularMateria = new vista.rsbuttom.RSButtonMetro();
         Tutorias = new vista.rsbuttom.RSButtonMetro();
+        jPanel5 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         BarraLateral = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -81,224 +70,7 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         pnlMenu.setBackground(new java.awt.Color(239, 238, 244));
         pnlMenu.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 5, 0, 0, new java.awt.Color(239, 238, 244)));
 
-        AreaPersonal.setForeground(new java.awt.Color(128, 128, 131));
-        AreaPersonal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/area.png.png"))); // NOI18N
-        AreaPersonal.setText("Area Personal");
-        AreaPersonal.setColorHover(new java.awt.Color(204, 204, 204));
-        AreaPersonal.setColorNormal(new java.awt.Color(204, 204, 204));
-        AreaPersonal.setColorPressed(new java.awt.Color(204, 204, 204));
-        AreaPersonal.setColorTextHover(new java.awt.Color(128, 128, 131));
-        AreaPersonal.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        AreaPersonal.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        AreaPersonal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        AreaPersonal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        AreaPersonal.setIconTextGap(25);
-        AreaPersonal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                AreaPersonalMousePressed(evt);
-            }
-        });
-        AreaPersonal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AreaPersonalActionPerformed(evt);
-            }
-        });
-
         jPanel4.setBackground(new java.awt.Color(239, 238, 244));
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(128, 128, 131));
-        jLabel1.setText("Menu");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(41, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
-        );
-
-        Calendario.setBackground(new java.awt.Color(239, 238, 244));
-        Calendario.setForeground(new java.awt.Color(128, 128, 131));
-        Calendario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/calendario.png"))); // NOI18N
-        Calendario.setText("Calendario");
-        Calendario.setColorHover(new java.awt.Color(204, 204, 204));
-        Calendario.setColorNormal(new java.awt.Color(239, 238, 244));
-        Calendario.setColorPressed(new java.awt.Color(204, 204, 204));
-        Calendario.setColorTextHover(new java.awt.Color(128, 128, 131));
-        Calendario.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        Calendario.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        Calendario.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Calendario.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        Calendario.setIconTextGap(19);
-        Calendario.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CalendarioMousePressed(evt);
-            }
-        });
-        Calendario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CalendarioActionPerformed(evt);
-            }
-        });
-
-        PaginaPrincipal.setBackground(new java.awt.Color(239, 238, 244));
-        PaginaPrincipal.setForeground(new java.awt.Color(128, 128, 131));
-        PaginaPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/casa.png"))); // NOI18N
-        PaginaPrincipal.setText("Pagina Principal del Sitio");
-        PaginaPrincipal.setColorHover(new java.awt.Color(204, 204, 204));
-        PaginaPrincipal.setColorNormal(new java.awt.Color(239, 238, 244));
-        PaginaPrincipal.setColorPressed(new java.awt.Color(204, 204, 204));
-        PaginaPrincipal.setColorTextHover(new java.awt.Color(128, 128, 131));
-        PaginaPrincipal.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        PaginaPrincipal.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        PaginaPrincipal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        PaginaPrincipal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        PaginaPrincipal.setIconTextGap(25);
-        PaginaPrincipal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                PaginaPrincipalMousePressed(evt);
-            }
-        });
-        PaginaPrincipal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PaginaPrincipalActionPerformed(evt);
-            }
-        });
-
-        Configuracion.setBackground(new java.awt.Color(239, 238, 244));
-        Configuracion.setForeground(new java.awt.Color(128, 128, 131));
-        Configuracion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/configuraciones.png"))); // NOI18N
-        Configuracion.setText("Configuracion");
-        Configuracion.setColorHover(new java.awt.Color(204, 204, 204));
-        Configuracion.setColorNormal(new java.awt.Color(239, 238, 244));
-        Configuracion.setColorPressed(new java.awt.Color(204, 204, 204));
-        Configuracion.setColorTextHover(new java.awt.Color(128, 128, 131));
-        Configuracion.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        Configuracion.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        Configuracion.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Configuracion.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        Configuracion.setIconTextGap(19);
-        Configuracion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                ConfiguracionMousePressed(evt);
-            }
-        });
-        Configuracion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ConfiguracionActionPerformed(evt);
-            }
-        });
-
-        jPanel5.setBackground(new java.awt.Color(239, 238, 244));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(128, 128, 131));
-        jLabel3.setText("Mis cursos");
-
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grado.png"))); // NOI18N
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(1, 1, 1)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addContainerGap())
-        );
-
-        Historial.setBackground(new java.awt.Color(239, 238, 244));
-        Historial.setForeground(new java.awt.Color(128, 128, 131));
-        Historial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grado.png"))); // NOI18N
-        Historial.setText("HIstorial");
-        Historial.setColorHover(new java.awt.Color(204, 204, 204));
-        Historial.setColorNormal(new java.awt.Color(239, 238, 244));
-        Historial.setColorPressed(new java.awt.Color(204, 204, 204));
-        Historial.setColorTextHover(new java.awt.Color(128, 128, 131));
-        Historial.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        Historial.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        Historial.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        Historial.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        Historial.setIconTextGap(19);
-        Historial.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                HistorialMousePressed(evt);
-            }
-        });
-        Historial.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HistorialActionPerformed(evt);
-            }
-        });
-
-        CambiarParalelo.setBackground(new java.awt.Color(239, 238, 244));
-        CambiarParalelo.setForeground(new java.awt.Color(128, 128, 131));
-        CambiarParalelo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grado.png"))); // NOI18N
-        CambiarParalelo.setText("Cambiar paralelo");
-        CambiarParalelo.setColorHover(new java.awt.Color(204, 204, 204));
-        CambiarParalelo.setColorNormal(new java.awt.Color(239, 238, 244));
-        CambiarParalelo.setColorPressed(new java.awt.Color(204, 204, 204));
-        CambiarParalelo.setColorTextHover(new java.awt.Color(128, 128, 131));
-        CambiarParalelo.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        CambiarParalelo.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        CambiarParalelo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        CambiarParalelo.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        CambiarParalelo.setIconTextGap(19);
-        CambiarParalelo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                CambiarParaleloMousePressed(evt);
-            }
-        });
-        CambiarParalelo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CambiarParaleloActionPerformed(evt);
-            }
-        });
-
-        AnularMateria.setBackground(new java.awt.Color(239, 238, 244));
-        AnularMateria.setForeground(new java.awt.Color(128, 128, 131));
-        AnularMateria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/grado.png"))); // NOI18N
-        AnularMateria.setText("Anular Materia");
-        AnularMateria.setColorHover(new java.awt.Color(204, 204, 204));
-        AnularMateria.setColorNormal(new java.awt.Color(239, 238, 244));
-        AnularMateria.setColorPressed(new java.awt.Color(204, 204, 204));
-        AnularMateria.setColorTextHover(new java.awt.Color(128, 128, 131));
-        AnularMateria.setColorTextNormal(new java.awt.Color(128, 128, 131));
-        AnularMateria.setColorTextPressed(new java.awt.Color(128, 128, 131));
-        AnularMateria.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        AnularMateria.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
-        AnularMateria.setIconTextGap(25);
-        AnularMateria.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                AnularMateriaMousePressed(evt);
-            }
-        });
-        AnularMateria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AnularMateriaActionPerformed(evt);
-            }
-        });
 
         Tutorias.setBackground(new java.awt.Color(239, 238, 244));
         Tutorias.setForeground(new java.awt.Color(128, 128, 131));
@@ -324,47 +96,49 @@ public class PrincipalTutorias extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(Tutorias, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 12, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(Tutorias, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        jPanel5.setBackground(new java.awt.Color(239, 238, 244));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 61, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout pnlMenuLayout = new javax.swing.GroupLayout(pnlMenu);
         pnlMenu.setLayout(pnlMenuLayout);
         pnlMenuLayout.setHorizontalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(pnlMenuLayout.createSequentialGroup()
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(AreaPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(PaginaPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Tutorias, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AnularMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CambiarParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnlMenuLayout.setVerticalGroup(
             pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMenuLayout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(AreaPersonal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(PaginaPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(Calendario, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(Tutorias, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(pnlMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlMenuLayout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(Configuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
-                .addComponent(AnularMateria, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(CambiarParalelo, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(Historial, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(287, 287, 287)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(224, 224, 224))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -454,7 +228,7 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 943, Short.MAX_VALUE)
+            .addGap(0, 931, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -534,51 +308,6 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         }
     }
 
-    private void AreaPersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AreaPersonalActionPerformed
-        updateButtonState(AreaPersonal, new vista.Tutorias.pnlAreaPersonal());
-    }//GEN-LAST:event_AreaPersonalActionPerformed
-
-    private void AreaPersonalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AreaPersonalMousePressed
-        this.AreaPersonal.setSelected(true);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_AreaPersonalMousePressed
-
-    private void CalendarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CalendarioActionPerformed
-        updateButtonState(Calendario, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_CalendarioActionPerformed
-
-    private void CalendarioMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CalendarioMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(true);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_CalendarioMousePressed
-
-    private void PaginaPrincipalMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PaginaPrincipalMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(true);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_PaginaPrincipalMousePressed
-
-    private void PaginaPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PaginaPrincipalActionPerformed
-        updateButtonState(PaginaPrincipal, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_PaginaPrincipalActionPerformed
-
     private void BarraLateralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BarraLateralActionPerformed
         int posicion = pnlMenu.getX();
         if (posicion > -1) {
@@ -588,75 +317,9 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BarraLateralActionPerformed
 
-    private void HistorialMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HistorialMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(true);
-    }//GEN-LAST:event_HistorialMousePressed
-
-    private void HistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HistorialActionPerformed
-        updateButtonState(Historial, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_HistorialActionPerformed
-
-    private void CambiarParaleloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CambiarParaleloMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(true);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_CambiarParaleloMousePressed
-
-    private void CambiarParaleloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CambiarParaleloActionPerformed
-        updateButtonState(CambiarParalelo, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_CambiarParaleloActionPerformed
-
-    private void AnularMateriaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_AnularMateriaMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(true);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_AnularMateriaMousePressed
-
-    private void AnularMateriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AnularMateriaActionPerformed
-        updateButtonState(AnularMateria, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_AnularMateriaActionPerformed
-
-    private void ConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfiguracionActionPerformed
-        updateButtonState(Tutorias, new vista.Tutorias.pnlTutorias());
-    }//GEN-LAST:event_ConfiguracionActionPerformed
-
-    private void ConfiguracionMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ConfiguracionMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
-        this.Tutorias.setSelected(false);
-        this.Configuracion.setSelected(true);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
-    }//GEN-LAST:event_ConfiguracionMousePressed
-
     private void TutoriasMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TutoriasMousePressed
-        this.AreaPersonal.setSelected(false);
-        this.PaginaPrincipal.setSelected(false);
-        this.Calendario.setSelected(false);
+
         this.Tutorias.setSelected(true);
-        this.Configuracion.setSelected(false);
-        this.AnularMateria.setSelected(false);
-        this.CambiarParalelo.setSelected(false);
-        this.Historial.setSelected(false);
     }//GEN-LAST:event_TutoriasMousePressed
 
     private void TutoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TutoriasActionPerformed
@@ -702,6 +365,10 @@ public class PrincipalTutorias extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -717,20 +384,10 @@ public class PrincipalTutorias extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private vista.rsbuttom.RSButtonMetro AnularMateria;
-    private vista.rsbuttom.RSButtonMetro AreaPersonal;
     private javax.swing.JButton BarraLateral;
-    private vista.rsbuttom.RSButtonMetro Calendario;
-    private vista.rsbuttom.RSButtonMetro CambiarParalelo;
-    private vista.rsbuttom.RSButtonMetro Configuracion;
-    private vista.rsbuttom.RSButtonMetro Historial;
     private javax.swing.JLabel Menu;
-    private vista.rsbuttom.RSButtonMetro PaginaPrincipal;
     private vista.rsbuttom.RSButtonMetro Tutorias;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

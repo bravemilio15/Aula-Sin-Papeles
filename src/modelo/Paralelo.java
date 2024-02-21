@@ -4,51 +4,32 @@
  */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
-
+/**
+ *
+ * @author Bravo
+ */
 public class Paralelo {
 
-    private Integer id;
-    private String nombre_paralelo;
-    private ListaEnlazada<Estudiante> estudiantes;
-    private ListaEnlazada<Docente> docentes;
+    private Integer paralelo_Id;
+    private String nombre;
 
-    public ListaEnlazada<Docente> getDocentes() {
-        return docentes;
+    public Paralelo() {
     }
 
-    public void setDocentes(ListaEnlazada<Docente> docentes) {
-        this.docentes = docentes;
+    public Integer getParalelo_Id() {
+        return paralelo_Id;
     }
 
-    public ListaEnlazada<Estudiante> getEstudiantes() {
-        return estudiantes;
+    public void setParalelo_Id(Integer paralelo_Id) {
+        this.paralelo_Id = paralelo_Id;
     }
 
-    public void setEstudiantes(ListaEnlazada<Estudiante> estudiantes) {
-        this.estudiantes = estudiantes;
+    public String getNombre() {
+        return nombre;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre_paralelo() {
-        return nombre_paralelo;
-    }
-
-    public void setNombre_paralelo(String nombre_paralelo) {
-        this.nombre_paralelo = nombre_paralelo;
-    }
-
-
-
-    public String toString() {
-        return nombre_paralelo;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package vista.utilidades;
 
 import java.text.ParseException;
@@ -15,7 +11,7 @@ import javax.swing.JFormattedTextField;
  */
 public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 
-    private String datePattern = "yyyy-MM-dd";
+    private String datePattern = "dd/MM/yyyy"; // Formato Dia/Mes/Año
     private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
     @Override

@@ -10,31 +10,23 @@ package modelo;
  */
 public class Usuario {
 
-    private Integer id;
-    private String primer_nombre;
-    private String segundo_nombre;
-    private String primer_apellido;
-    private String segundo_apellido;
-    private String cedula;
-    private String celular;
-    private Integer edad;
+    private Integer usuario_Id;
+    private String dni;
+    private String primer_Nombre;
+    private String segundo_Nombre;
+    private String primer_Apellido;
+    private String segundo_Apellido;
     private String genero;
-    private String estado;
-    private String nacimiento;
-    private String correoPer;
-    private String correoIns;
-    private Rol rol;
-    private String jornada;
+    private String correo;
+    private String correo_Institucional;
+    private String telefono;
+    private Integer estado;
+    private String fecha_Nacimiento;
+    private Integer edad;
     private String modalidad;
-    public Ciclo ciclo;
-    public Paralelo paralelo;
+    private Integer rol_Id;
 
-    public String getJornada() {
-        return jornada;
-    }
-
-    public void setJornada(String jornada) {
-        this.jornada = jornada;
+    public Usuario() {
     }
 
     public String getModalidad() {
@@ -45,84 +37,12 @@ public class Usuario {
         this.modalidad = modalidad;
     }
 
-    public Ciclo getCiclo() {
-        return ciclo;
+    public String getFecha_Nacimiento() {
+        return fecha_Nacimiento;
     }
 
-    public void setCiclo(Ciclo ciclo) {
-        this.ciclo = ciclo;
-    }
-
-    public Paralelo getParalelo() {
-        return paralelo;
-    }
-
-    public void setParalelo(Paralelo paralelo) {
-        this.paralelo = paralelo;
-    }
-
-    public Rol getRol() {
-        return rol;
-    }
-
-    public void setRol(Rol rol) {
-        this.rol = rol;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getPrimer_nombre() {
-        return primer_nombre;
-    }
-
-    public void setPrimer_nombre(String primer_nombre) {
-        this.primer_nombre = primer_nombre;
-    }
-
-    public String getSegundo_nombre() {
-        return segundo_nombre;
-    }
-
-    public void setSegundo_nombre(String segundo_nombre) {
-        this.segundo_nombre = segundo_nombre;
-    }
-
-    public String getPrimer_apellido() {
-        return primer_apellido;
-    }
-
-    public void setPrimer_apellido(String primer_apellido) {
-        this.primer_apellido = primer_apellido;
-    }
-
-    public String getSegundo_apellido() {
-        return segundo_apellido;
-    }
-
-    public void setSegundo_apellido(String segundo_apellido) {
-        this.segundo_apellido = segundo_apellido;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
+    public void setFecha_Nacimiento(String fecha_Nacimiento) {
+        this.fecha_Nacimiento = fecha_Nacimiento;
     }
 
     public Integer getEdad() {
@@ -133,6 +53,54 @@ public class Usuario {
         this.edad = edad;
     }
 
+    public Integer getUsuario_Id() {
+        return usuario_Id;
+    }
+
+    public void setUsuario_Id(Integer usuario_Id) {
+        this.usuario_Id = usuario_Id;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getPrimer_Nombre() {
+        return primer_Nombre;
+    }
+
+    public void setPrimer_Nombre(String primer_Nombre) {
+        this.primer_Nombre = primer_Nombre;
+    }
+
+    public String getSegundo_Nombre() {
+        return segundo_Nombre;
+    }
+
+    public void setSegundo_Nombre(String segundo_Nombre) {
+        this.segundo_Nombre = segundo_Nombre;
+    }
+
+    public String getPrimer_Apellido() {
+        return primer_Apellido;
+    }
+
+    public void setPrimer_Apellido(String primer_Apellido) {
+        this.primer_Apellido = primer_Apellido;
+    }
+
+    public String getSegundo_Apellido() {
+        return segundo_Apellido;
+    }
+
+    public void setSegundo_Apellido(String segundo_Apellido) {
+        this.segundo_Apellido = segundo_Apellido;
+    }
+
     public String getGenero() {
         return genero;
     }
@@ -141,36 +109,49 @@ public class Usuario {
         this.genero = genero;
     }
 
-    public String getEstado() {
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getCorreo_Institucional() {
+        return correo_Institucional;
+    }
+
+    public void setCorreo_Institucional(String correo_Institucional) {
+        this.correo_Institucional = correo_Institucional;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public Integer getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
     }
 
-    public String getNacimiento() {
-        return nacimiento;
+    public Integer getRol_Id() {
+        return rol_Id;
     }
 
-    public void setNacimiento(String nacimiento) {
-        this.nacimiento = nacimiento;
+    public void setRol_Id(Integer rol_Id) {
+        this.rol_Id = rol_Id;
     }
 
-    public String getCorreoPer() {
-        return correoPer;
-    }
-
-    public void setCorreoPer(String correoPer) {
-        this.correoPer = correoPer;
-    }
-
-    public String getCorreoIns() {
-        return correoIns;
-    }
-
-    public void setCorreoIns(String correoIns) {
-        this.correoIns = correoIns;
+    @Override
+    public String toString() {
+        return primer_Nombre + primer_Apellido;
     }
 
 }

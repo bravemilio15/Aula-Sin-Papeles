@@ -4,9 +4,7 @@
  */
 package modelo.tabla;
 
-import controlador.ed.lista.ListaEnlazada;
-import controlador.ed.lista.exception.EmptyException;
-import controlador.ed.lista.exception.PositionException;
+import controlador.ed.listas.LinkedList;
 import javax.swing.table.AbstractTableModel;
 import modelo.Ciclo;
 
@@ -16,13 +14,13 @@ import modelo.Ciclo;
  */
 public class ModeloTablaCiclo extends AbstractTableModel {
 
-    private ListaEnlazada<Ciclo> datos;
+    private LinkedList<Ciclo> datos;
 
-    public ListaEnlazada<Ciclo> getDatos() {
+    public LinkedList<Ciclo> getDatos() {
         return datos;
     }
 
-    public void setDatos(ListaEnlazada<Ciclo> datos) {
+    public void setDatos(LinkedList<Ciclo> datos) {
         this.datos = datos;
     }
 
@@ -32,12 +30,12 @@ public class ModeloTablaCiclo extends AbstractTableModel {
             System.out.println("¡La lista de datos es nula!");
             return 0;
         }
-        return datos.size();
+        return datos.getSize();
     }
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 2;
     }
 
     @Override
@@ -47,13 +45,12 @@ public class ModeloTablaCiclo extends AbstractTableModel {
 
             switch (columnIndex) {
                 case 0:
-                    return d.getId();
+                    return d.getNombre();
                 case 1:
-                    return d.getNombre_ciclo();
-                case 2:
                     return d.getDuracion();
             }
-        } catch (EmptyException | PositionException ex) {
+        } catch (Exception ex) {
+            System.out.println("Error en Datos Ciclo");
         }
         return null;
     }
@@ -61,12 +58,10 @@ public class ModeloTablaCiclo extends AbstractTableModel {
     public String getColumnName(int Column) {
         switch (Column) {
             case 0:
-                return "ID";
-            case 1:
                 return "Nombre";
-            case 2:
+            case 1:
                 return "Duracion";
-            
+
         }
 
         return null;

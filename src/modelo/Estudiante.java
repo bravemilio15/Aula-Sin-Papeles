@@ -1,42 +1,43 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package modelo;
 
-import controlador.ed.lista.ListaEnlazada;
+/**
+ *
+ * @author Bravo
+ */
+import java.util.Date;
 
-public class Estudiante extends Usuario {
+public class Estudiante {
 
-    private ListaEnlazada<Matricula> matriculas;
-    private Paralelo paralelo;
+    private Date fecha_Ingreso;
+    private Integer estudiante_Id;
+    private Integer matricula_Id;
 
-    public Estudiante() {
-        this.matriculas = new ListaEnlazada<>();
+    public Date getFecha_Ingreso() {
+        return fecha_Ingreso;
     }
 
-    public ListaEnlazada<Matricula> getMatriculas() {
-        return matriculas;
+    public void setFecha_Ingreso(Date fecha_Ingreso) {
+        this.fecha_Ingreso = fecha_Ingreso;
     }
 
-    public Paralelo getParalelo() {
-        return paralelo;
+    public Integer getEstudiante_Id() {
+        return estudiante_Id;
     }
 
-    public void setParalelo(Paralelo paralelo) {
-        this.paralelo = paralelo;
+    public void setEstudiante_Id(Integer estudiante_Id) {
+        this.estudiante_Id = estudiante_Id;
     }
 
-    public void setMatriculas(ListaEnlazada<Matricula> matriculas) {
-        this.matriculas = matriculas;
+    public Integer getMatricula_Id() {
+        return matricula_Id;
     }
 
-    @Override
-    public String toString() {
-        return this.getPrimer_nombre() + " " + this.getPrimer_apellido();
+    public void setMatricula_Id(Integer matricula_Id) {
+        this.matricula_Id = matricula_Id;
     }
 
-    public String getCicloNombre() {
-        return ciclo != null ? ciclo.toString() : "";
-    }
-
-    public String getParaleloNombre() {
-        return paralelo != null ? paralelo.toString() : "";
-    }
 }

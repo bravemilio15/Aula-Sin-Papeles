@@ -6,38 +6,35 @@ package modelo;
 
 import java.util.Date;
 
-
 public class Malla {
-    private Integer id;
-    private String nombre_malla;
-    private String descripccion;
+
+    private Integer malla_Id;
+    private String nombre;
+    private Integer estado;
     private Date fecha;
-    private String estado;
-    private String Carrera;
-    private Date duracion;
 
-    public Integer getId() {
-        return id;
+    public Integer getMalla_Id() {
+        return malla_Id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setMalla_Id(Integer malla_Id) {
+        this.malla_Id = malla_Id;
     }
 
-    public String getNombre_malla() {
-        return nombre_malla;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombre_malla(String nombre_malla) {
-        this.nombre_malla = nombre_malla;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getDescripccion() {
-        return descripccion;
+    public Integer getEstado() {
+        return estado;
     }
 
-    public void setDescripccion(String descripccion) {
-        this.descripccion = descripccion;
+    public void setEstado(Integer estado) {
+        this.estado = estado;
     }
 
     public Date getFecha() {
@@ -48,29 +45,13 @@ public class Malla {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
-        return estado;
+    @Override
+    public String toString() {
+        return nombre;
     }
+    
+    
+    
+    
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getCarrera() {
-        return Carrera;
-    }
-
-    public void setCarrera(String Carrera) {
-        this.Carrera = Carrera;
-    }
-
-    public Date getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(Date duracion) {
-        this.duracion = duracion;
-    }
-
-   
 }
